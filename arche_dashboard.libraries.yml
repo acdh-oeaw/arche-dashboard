@@ -1,0 +1,8 @@
+arche-dashboard-css-and-js:
+  css:
+    theme:
+      css/arche-dashboard.css: {}
+  js:
+    js/arche-dashboard.js: {}
+  dependencies:
+    - core/jquery

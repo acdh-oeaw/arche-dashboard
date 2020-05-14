@@ -1,0 +1,18 @@
+### Dashboard
+dashboard_overview:    
+    ### this will be the url on the gui
+    path: '/dashboard_overview' 
+    defaults:
+        ### this is the function which will be called
+        _controller: '\Drupal\arche_dashboard\Controller\DashboardController::dashboard_overview'
+    requirements:
+        _permission: 'access content'
+        _access: 'TRUE'    
+
+dashboard_detail:    
+    path: '/dashboard/{key}' 
+    defaults:
+        _controller: '\Drupal\arche_dashboard\Controller\DashboardController::dashboard_detail'
+    requirements:
+        _permission: 'access content'
+        _access: 'TRUE'    

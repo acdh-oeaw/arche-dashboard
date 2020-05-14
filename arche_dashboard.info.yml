@@ -1,0 +1,9 @@
+name: arche_dashboard
+type: module
+description: 'ARCHE GUI Dashboard'
+core: 8.x
+package: oeaw
+configure: arche_dashboard.settings_form
+libraries:
+    - arche_dashboard/repo-styles
+    

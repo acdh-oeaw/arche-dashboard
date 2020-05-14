@@ -1,0 +1,22 @@
+<?php
+
+function arche_dashboard_page_attachments(&$page)
+{
+    // This could in most cases be added in template as well with:
+    $page['#attached']['library'][] = 'arche_dashboard/arche-dashboard-css-and-js';
+}
+
+function arche_dashboard_theme($existing, $type, $theme, $path)
+{
+    return [
+        //define the template name
+        'arche-dashboard-table' => [
+            //define the variables
+            'variables' => ['basic' => NULL, 'key' => NULL]
+        ],
+        'arche-dashboard-overview' => [
+            'variables' => ['basic' => NULL]
+        ],
+    ];
+}
+
