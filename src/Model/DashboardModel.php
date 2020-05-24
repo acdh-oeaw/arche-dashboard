@@ -68,7 +68,37 @@ class DashboardModel  {
         }
         
     }
+
+   
     
+    /**
+     * Retrieve the data: faceting: distinct values of a property
+     * @return array
+    */
+    public function getFacet($property): array {
+     
+        $queryStr = "
+            SELECT 
+                value as key, count(*) as cnt
+            from public.metadata 
+		where property = '" & $property & "'" &
+		" group by value ";
+      
+        try {
+            $query = $this->repodb->query($queryStr);
+            $return = $query->fetchAll();
+            
+            $this->changeBackDBConnection();
+            return $return;
+        } catch (Exception $ex) {
+            \Drupal::logger('arche_dashboard')->notice($ex->getMessage());
+            return array();
+        } catch (\Drupal\Core\Database\DatabaseExceptionWrapper $ex) {
+            \Drupal::logger('arche_dashboard')->notice($ex->getMessage());
+            return array();
+        }
+      }  
+ 
     public function changeBackDBConnection()
     {
         \Drupal\Core\Database\Database::setActiveConnection();

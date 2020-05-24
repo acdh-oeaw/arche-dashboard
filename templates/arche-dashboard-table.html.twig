@@ -1,3 +1,4 @@
+
 <h2>Statistics - {{key}} </h2>
 <table class="display table table-striped" id='db-properties' cellspacing="0" width="100%">
     <thead>
@@ -18,9 +19,16 @@
 	{% endif %}
 	{% if value.property %}
                 <td >
+		 <a href="./dashboard-property/{{value.property}}" >
                     {{ value.property }}
+		</a>
                 </td>
 	{% endif %}
+        {% if value.value %}
+                <td >
+                    {{ value.value }}
+                </td>
+        {% endif %}
 
 	{% if value.cnt_distinct_value %}
                 <td >

@@ -32,7 +32,6 @@ class DashboardController extends ControllerBase {
 		$cols = array();
 	}
         // print_r ($cols); 
-        //return the theme with the 
         return  [
             '#theme' => 'arche-dashboard-table',
             '#basic' => $data,
@@ -42,10 +41,33 @@ class DashboardController extends ControllerBase {
         ]; 
     }
     
-    
+
+     /**
+     * Dashboard property count distinct values  view
+     * 
+     * @return array
+     */
+    public function dashboard_property_detail(string $property): array {
+        //generate the view
+        $data = $this->model->getFacet($property);
+
+	if (count($data) > 0 ) {
+		$cols = get_object_vars($data[0]);
+	} else {
+		$cols = array();
+	}
+        // print_r ($cols); 
+        return  [
+            '#theme' => 'arche-dashboard-table',
+            '#basic' => $data,
+	    '#key' => $property,
+	    '#cols' => $cols,
+            '#cache' => ['max-age' => 0]
+	];
+   }
+ 
     public function dashboard_overview(): array {
         
-        //return the theme with the 
         return  [
             '#theme' => 'arche-dashboard-overview',
             '#cache' => ['max-age' => 0]

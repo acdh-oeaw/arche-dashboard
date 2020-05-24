@@ -1,7 +1,7 @@
 ### Dashboard
 dashboard_overview:    
     ### this will be the url on the gui
-    path: '/dashboard_overview' 
+    path: '/dashboard' 
     defaults:
         ### this is the function which will be called
         _controller: '\Drupal\arche_dashboard\Controller\DashboardController::dashboard_overview'
@@ -16,3 +16,11 @@ dashboard_detail:
     requirements:
         _permission: 'authenticated'
         _access: 'TRUE'    
+
+dashboard_property:    
+    path: '/dashboard-property/{property}' 
+    defaults:
+        _controller: '\Drupal\arche_dashboard\Controller\DashboardController::dashboard_property_detail'
+    requirements:
+        _permission: 'authenticated'
+        _access: 'TRUE'
