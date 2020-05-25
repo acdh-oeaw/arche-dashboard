@@ -28,7 +28,7 @@ class DashboardModel  {
 			) t_class 
 		inner join public.metadata tp on t_class.id =tp.id
 		group by t_class.value, tp.property",
-		"topcollections"=>"SELECT rootids.rootid topcoll_id, 
+		"topcollections"=>"SELECT rootids.rootid id, 
 					(select value from metadata where property = 'https://vocabs.acdh.oeaw.ac.at/schema#hasTitle' and id = rootids.rootid limit 1) title,
 					count(rel.id) count_items, max(rel.n), sum(m_rawsize.value_n ) sum_size_items,
 					(select value_n from metadata where property = 'https://vocabs.acdh.oeaw.ac.at/schema#hasBinarySize' and id = rootids.rootid) bsize
@@ -52,7 +52,7 @@ class DashboardModel  {
 				group by rootids.rootid, title",
 		"formats"=>"select value as format, count(*) from metadata where property = 'https://vocabs.acdh.oeaw.ac.at/schema#hasFormat'
 	group by value",
-	"formatspercollection"=>"SELECT rootids.rootid topcoll_id, 
+	"formatspercollection"=>"SELECT rootids.rootid id,
 		(select value from metadata where property = 'https://vocabs.acdh.oeaw.ac.at/schema#hasTitle' and id = rootids.rootid limit 1) title,
 		m_type.value as type, m_format.value as format, count(rel.id) as count			
 		from (select DISTINCT(r.id) as rootid

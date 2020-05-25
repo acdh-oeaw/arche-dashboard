@@ -20,7 +20,11 @@
                         <a href="./dashboard-property/{{ attribute(value, kc) }}" >
                             {{ attribute(value, kc) }}
                         </a>
-                    {% else %}       
+                    {% elseif kc == 'id' %} 
+                        <a href="/browser/oeaw_detail/{{ attribute(value, kc) }}" >
+                            {{ attribute(value, kc) }}
+                        </a>
+		    {% else %}      
                         <!-- use this special function to pass the field names from the keys array -->
                         {{ attribute(value, kc) }}
                     {% endif %}    
