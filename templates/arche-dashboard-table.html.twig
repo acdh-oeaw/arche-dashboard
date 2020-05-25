@@ -1,5 +1,37 @@
 
 <h2>Statistics - {{key}} </h2>
+
+<table class="display table table-striped" id='db-properties' cellspacing="0" width="100%">
+    <thead>
+        <tr>
+        {% for key,value in cols %}
+            <th>{{ key }}</th>
+	{% endfor %}
+        </tr>
+    </thead>
+    <tbody>
+        <!-- loop through the basic array -->
+        {% for key,value in basic %}
+            <tr>
+                <!-- loop through thekeys array -->
+                {% for kc,kv in cols %}
+                    <td>
+                    {% if kc == 'property' %}
+                        <a href="./dashboard-property/{{ attribute(value, kc) }}" >
+                            {{ attribute(value, kc) }}
+                        </a>
+                    {% else %}       
+                        <!-- use this special function to pass the field names from the keys array -->
+                        {{ attribute(value, kc) }}
+                    {% endif %}    
+                    </td>
+                {% endfor %}
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+    
+<!--
 <table class="display table table-striped" id='db-properties' cellspacing="0" width="100%">
     <thead>
         <tr>
@@ -11,9 +43,8 @@
     <tbody>
         {% for key,value in basic %}
             <tr>
-
 	{% if value.class %}
-                <td >
+                <td>
                     {{ value.class }}
                 </td>
 	{% endif %}
@@ -42,3 +73,4 @@
         {% endfor %}
     </tbody>
 </table>
+-->
