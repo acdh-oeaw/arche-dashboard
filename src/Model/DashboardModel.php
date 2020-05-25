@@ -51,10 +51,10 @@ class DashboardModel  {
 					and m_rawsize.property = 'https://vocabs.acdh.oeaw.ac.at/schema#hasRawBinarySize'
 				group by rootids.rootid, title",
 		"formats"=>"select value as format, count(*) from metadata where property = 'https://vocabs.acdh.oeaw.ac.at/schema#hasFormat'
-	group by value"
+	group by value",
 	"formatspercollection"=>"SELECT rootids.rootid topcoll_id, 
 		(select value from metadata where property = 'https://vocabs.acdh.oeaw.ac.at/schema#hasTitle' and id = rootids.rootid limit 1) title,
-		m_format.value as format, count(m_format.id) as count			
+		m_type.value as type, m_format.value as format, count(rel.id) as count			
 		from (select DISTINCT(r.id) as rootid
 					from metadata as m
 					left join relations as r on r.id = m.id
@@ -72,7 +72,9 @@ class DashboardModel  {
 				) as rootids, public.get_relatives(rootid,'https://vocabs.acdh.oeaw.ac.at/schema#isPartOf') rel
 				left join metadata m_format on m_format.id = rel.id
 					and m_format.property = 'https://vocabs.acdh.oeaw.ac.at/schema#hasFormat'
-				group by rootids.rootid, title, m_format.value"
+				left join metadata m_type on m_type.id = rel.id
+					and m_type.property = 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type'
+				group by rootids.rootid, title, m_format.value, m_type.value"
 
  	);
 
