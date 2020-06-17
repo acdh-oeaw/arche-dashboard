@@ -1,0 +1,6 @@
+services:
+    arche_dashboard.path_processor:
+        class: 'Drupal\arche_dashboard\PathProcessor\ArcheDashboardPathProcessor'
+        tags:
+            - { name: path_processor_inbound, priority: 350 }
+

@@ -17,7 +17,7 @@
                 {% for kc,kv in cols %}
                     <td>
                     {% if kc == 'property' %}
-                        <a href="./dashboard-property/{{ attribute(value, kc) }}" >
+                        <a href="/browser/dashboard-property/{{ attribute(value, kc) }}" >
                             {{ attribute(value, kc) }}
                         </a>
                     {% elseif kc == 'id' %} 

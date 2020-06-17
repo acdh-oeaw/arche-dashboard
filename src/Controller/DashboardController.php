@@ -18,6 +18,23 @@ class DashboardController extends ControllerBase {
     }
     
      /**
+     * This function handle the # removing problem in the browser
+     * 
+     * @param array $data
+     * @return array
+     */
+    private function generatePropertyUrl(array $data): array {
+        foreach($data as $k => $v) {
+            if(isset($v->property)) {
+                if (strpos($v->property, "#") !== false) {
+                    $data[$k]->property = str_replace("#", "%23", $v->property);
+                }
+            }
+        }
+        return $data;
+    }
+    
+     /**
      * Dashboard property count view
      * 
      * @return array
@@ -31,6 +48,11 @@ class DashboardController extends ControllerBase {
 	} else {
 		$cols = array();
 	}
+        /* if the key is the properties then we need to change the # in the url */
+        if($key == 'properties') {
+            $data = $this->generatePropertyUrl($data);
+        }
+        
         // print_r ($cols); 
         return  [
             '#theme' => 'arche-dashboard-table',
@@ -41,16 +63,17 @@ class DashboardController extends ControllerBase {
         ]; 
     }
     
-
      /**
      * Dashboard property count distinct values  view
      * 
      * @return array
      */
     public function dashboard_property_detail(string $property): array {
-        //generate the view
-        $data = $this->model->getFacet($property);
 
+        $property = base64_decode($property);
+        echo $property;
+        $data = $this->model->getFacet($property);
+        
 	if (count($data) > 0 ) {
 		$cols = get_object_vars($data[0]);
 	} else {
