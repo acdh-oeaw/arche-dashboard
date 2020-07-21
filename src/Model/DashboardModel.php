@@ -121,7 +121,6 @@ and ms.property = 'https://vocabs.acdh.oeaw.ac.at/schema#hasRawBinarySize'
         }
         
     }
-
    
     
     /**
@@ -129,16 +128,19 @@ and ms.property = 'https://vocabs.acdh.oeaw.ac.at/schema#hasRawBinarySize'
      * @return array
     */
     public function getFacet($property): array {
-     
-        $queryStr = "
-            SELECT 
-                value as key, count(*) as cnt
-            from public.metadata 
-		where property = '" & $property & "'" &
-		" group by value ";
       
         try {
-            $query = $this->repodb->query($queryStr);
+           $query = $this->repodb->query(
+                "SELECT 
+                value as key, count(*) as cnt
+                from public.metadata 
+		where property = :property 
+                group by value
+                ",
+                array(
+                    ':property' => $property
+                )
+            );
             $return = $query->fetchAll();
             
             $this->changeBackDBConnection();
