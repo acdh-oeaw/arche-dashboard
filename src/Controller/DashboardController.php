@@ -53,6 +53,11 @@ class DashboardController extends ControllerBase {
             $data = $this->generatePropertyUrl($data);
         }
         
+        echo "<pre>";
+        var_dump($data);
+        echo "</pre>";
+
+
         // print_r ($cols); 
         return  [
             '#theme' => 'arche-dashboard-table',
@@ -79,6 +84,7 @@ class DashboardController extends ControllerBase {
 	} else {
 		$cols = array();
 	}
+        
         // print_r ($cols); 
         return  [
             '#theme' => 'arche-dashboard-table',
