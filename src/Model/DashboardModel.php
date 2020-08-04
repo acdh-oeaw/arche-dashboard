@@ -28,8 +28,9 @@ class DashboardModel  {
     
     /**
      * Generate the sql data
+     * @param string $key
      * @return array
-    */
+     */
     public function getViewData(string $key="properties"): array {
      
       if(array_key_exists($key, $this->queries)) {
@@ -56,12 +57,12 @@ class DashboardModel  {
         }
         
     }
-   
-    
+       
     /**
      * Retrieve the data: faceting: distinct values of a property
+     * @param string $property
      * @return array
-    */
+     */
     public function getFacet(string $property): array {
       
         try {
@@ -70,6 +71,41 @@ class DashboardModel  {
                 "SELECT * FROM gui.dash_get_facet_func(:property);
                 ",
                 array(
+                    ':property' => $property
+                )
+            );
+            $return = $query->fetchAll();
+            
+            $this->changeBackDBConnection();
+            return $return;
+        } catch (Exception $ex) {
+            \Drupal::logger('arche_dashboard')->notice($ex->getMessage());
+            return array();
+        } catch (\Drupal\Core\Database\DatabaseExceptionWrapper $ex) {
+            \Drupal::logger('arche_dashboard')->notice($ex->getMessage());
+            return array();
+        }
+    }  
+    
+    /**
+     * Retrieve the faceting detail data
+     * @param string $property
+     * @param string $value
+     * @return array
+     */
+    public function getFacetDetail(string $property, string $value): array {
+      
+        try {
+           $query = $this->repodb->query(
+                "select mv.id, 
+                (select mv2.value from metadata_view as mv2 where mv2.id = mv.id and mv2.property = 'https://vocabs.acdh.oeaw.ac.at/schema#hasTitle' limit 1) as title,
+                (select mv2.value from metadata_view as mv2 where mv2.id = mv.id and mv2.property = 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type' limit 1) as type
+                from metadata_view as mv
+                where 
+                mv.value = :value and mv.property = :property;
+                ",
+                array(
+                    ':value' => $value,
                     ':property' => $property
                 )
             );

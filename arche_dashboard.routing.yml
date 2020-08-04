@@ -24,3 +24,12 @@ dashboard_property:
     requirements:
         _permission: 'authenticated'
         _access: 'TRUE'
+        
+dashboard_detail_api:    
+    path: '/dashboard-detail-api/{property}' 
+    defaults:
+        _controller: '\Drupal\arche_dashboard\Controller\DashboardController::dashboard_property_detail_api'
+    requirements:
+        _permission: 'authenticated'
+        _access: 'TRUE'        
+        

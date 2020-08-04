@@ -3,6 +3,8 @@
 namespace Drupal\arche_dashboard\Controller;
 
 use Drupal\Core\Controller\ControllerBase;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 class DashboardController extends ControllerBase {
     
@@ -52,11 +54,6 @@ class DashboardController extends ControllerBase {
         if($key == 'properties') {
             $data = $this->generatePropertyUrl($data);
         }
-        
-        echo "<pre>";
-        var_dump($data);
-        echo "</pre>";
-
 
         // print_r ($cols); 
         return  [
@@ -74,9 +71,8 @@ class DashboardController extends ControllerBase {
      * @return array
      */
     public function dashboard_property_detail(string $property): array {
-
-        $property = base64_decode($property);
         
+        $property = base64_decode($property);
         $data = $this->model->getFacet($property);
         
         if (count($data) > 0 ) {
@@ -116,4 +112,32 @@ class DashboardController extends ControllerBase {
         
         return $this->model->getHeaders($key);
     }
+    
+    public function dashboard_property_detail_api(string $property): Response
+    {
+        $property = base64_decode($property);
+        //get the value the value after the last /
+        $value = substr($property, strrpos($property, '/') + 1);
+        $property = str_replace('/'.$value, '', $property);
+        
+        $data = $this->model->getFacetDetail($property, $value);
+        
+        if (count($data) > 0 ) {
+		$cols = get_object_vars($data[0]);
+	} else {
+		$cols = array();
+	}
+        
+        $build = [
+            '#theme' => 'arche-dashboard-table-detail',
+            '#basic' => $data,
+	    '#key' => $property,
+            '#keyValue' => $value,
+	    '#cols' => $cols,
+            '#cache' => ['max-age' => 0]
+        ];
+        
+        return new Response(render($build));
+    }
 }
+
