@@ -1,18 +1,12 @@
-
-<h2>Statistics - {{key}} </h2>
-
-<div id='dashboard_property_details_table_div' style='display:none'>
-    <div id='dashboard_property_details_table'></div>
-    <hr>
-</div>
-        
-        
-<table class="display table table-striped" id='db-properties' cellspacing="0" width="100%">
+<br/>
+<hr>
+<h5><b>Details For Key: {{ keyValue }}</b></h5>
+<table class="display table db-detail-view table-striped no-footer dataTable" id='dashboardDetailTable' cellspacing="0" width="100%">
     <thead>
         <tr>
         {% for key,value in cols %}
             <th>{{ key }}</th>
-	{% endfor %}
+        {% endfor %}
         </tr>
     </thead>
     <tbody>
@@ -23,7 +17,7 @@
                 {% for kc,kv in cols %}
                     <td>
                     {% if kc == 'title' and kv is not empty  %}
-                        <a href="/browser/oeaw_detail/{{ attribute(value, 'key') }}" >
+                        <a href="/browser/oeaw_detail/{{ attribute(value, 'id') }}" >
                             {{ attribute(value, kc) }}
                         </a>
                     {% elseif kc == 'property' %}
@@ -48,4 +42,4 @@
         {% endfor %}
     </tbody>
 </table>
-  
+<br/>
