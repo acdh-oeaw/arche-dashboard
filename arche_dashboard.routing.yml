@@ -28,4 +28,3 @@ dashboard_detail_api:
         _controller: '\Drupal\arche_dashboard\Controller\DashboardController::dashboard_property_detail_api'
     requirements:
         _role: 'authenticated'
-        
