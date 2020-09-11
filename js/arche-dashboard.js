@@ -1,6 +1,10 @@
 (function ($, Drupal) {
     'use strict';
     
+    var table = $('table.display').DataTable({
+       "lengthMenu": [[20, 35, 50, -1], [20, 35, 50, "All"]]
+    });
+    
     $(document ).delegate( "a#getAttributesView", "click", function(e) {
         
         $('table.display-dashboard-detail').DataTable();
