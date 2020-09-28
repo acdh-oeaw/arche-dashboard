@@ -44,36 +44,55 @@ class DashboardController extends ControllerBase {
     public function dashboard_detail(string $key="properties"): array {
         //generate the view
         $data = $this->generateView($key);
-
+        //set up the detail page url 
+       
+        
+        echo 'detail';
+        echo '<br>';
 	if (count($data) > 0 ) {
 		$cols = get_object_vars($data[0]);
 	} else {
 		$cols = array();
 	}
+        echo $key;
         /* if the key is the properties then we need to change the # in the url */
-        if($key == 'properties') {
+        if($key == 'properties' || $key == 'classes' || $key == 'classesproperties') {
             $data = $this->generatePropertyUrl($data);
         }
+        
+        switch ($key) {
+            case 'classes':
+                $detailPageUrl = 'dashboard-class-property';
+                break;
+            case 'formats':
+                $detailPageUrl = 'dashboard-format-property';
+                break;
 
+            default:
+                $detailPageUrl = 'dashboard-property';
+                break;
+        }
+       
+        echo '<br>';
+        echo 'detial page url: ';
+        echo $detailPageUrl;
         // print_r ($cols); 
         return  [
             '#theme' => 'arche-dashboard-table',
             '#basic' => $data,
 	    '#key' => $key,
 	    '#cols' => $cols,
+            '#detailPageUrl' => $detailPageUrl,
             '#cache' => ['max-age' => 0]
         ]; 
     }
     
-     /**
-     * Dashboard property count distinct values  view
-     * 
-     * @return array
-     */
-    public function dashboard_property_detail(string $property): array {
-        
-        $property = base64_decode($property);
-        $data = $this->model->getFacet($property);
+    
+    public function dashboard_format_property_detail(string $property): array {
+        echo 'class_prop_detail';
+        echo '<br>';
+        echo $property = base64_decode($property);
+        $data = $this->model->getFacetDetail('https://vocabs.acdh.oeaw.ac.at/schema#hasFormat', $property);
         
         if (count($data) > 0 ) {
 		$cols = get_object_vars($data[0]);
@@ -89,16 +108,87 @@ class DashboardController extends ControllerBase {
 	    '#cols' => $cols,
             '#cache' => ['max-age' => 0]
 	];
+    }
+    
+    /**
+     * The rdf:type class properties detail view
+     * 
+     * @param string $property
+     * @return array
+     */
+    public function dashboard_class_property_detail(string $property): array {
+        echo 'class_prop_detail';
+        echo '<br>';
+        echo $property = base64_decode($property);
+        $data = $this->model->getFacetDetail('http://www.w3.org/1999/02/22-rdf-syntax-ns#type', $property);
+        
+        if (count($data) > 0 ) {
+		$cols = get_object_vars($data[0]);
+	} else {
+		$cols = array();
+	}
+        
+        // print_r ($cols); 
+        return  [
+            '#theme' => 'arche-dashboard-table',
+            '#basic' => $data,
+	    '#key' => $property,
+	    '#cols' => $cols,
+            '#cache' => ['max-age' => 0]
+	];
+    }
+    
+     /**
+     * Dashboard property count distinct values  view
+     * 
+     * @return array
+     */
+    public function dashboard_property_detail(string $property): array {
+        
+        echo 'prop_detail';
+        echo '<br>';
+        echo $property = base64_decode($property);
+        $data = $this->model->getFacet($property);
+        
+        if (count($data) > 0 ) {
+		$cols = get_object_vars($data[0]);
+	} else {
+		$cols = array();
+	}
+        echo '<pre>';
+        var_dump($data);
+        echo '</pre>';
+        // print_r ($cols); 
+        return  [
+            '#theme' => 'arche-dashboard-table',
+            '#basic' => $data,
+	    '#key' => $property,
+	    '#cols' => $cols,
+            '#cache' => ['max-age' => 0]
+	];
    }
  
+   
+    /**
+     * The Dashboard Main Menu View
+     * 
+     * @return array
+     */
     public function dashboard_overview(): array {
         
         return  [
             '#theme' => 'arche-dashboard-overview',
             '#cache' => ['max-age' => 0]
 	];
-   } 
+    } 
     
+    /**
+     * The basic view generation function, which will handle the sql queries based 
+     * on the passed property
+     * 
+     * @param type $key
+     * @return array
+     */
     public function generateView($key): array {
         
         //get the data from the DB
@@ -113,8 +203,15 @@ class DashboardController extends ControllerBase {
         return $this->model->getHeaders($key);
     }
     
+    /**
+     * The properties deatil view
+     * 
+     * @param string $property
+     * @return Response
+     */
     public function dashboard_property_detail_api(string $property): Response
     {
+        echo 'property detail api';
         $property = base64_decode($property);
         //get the value the value after the last /
         $value = substr($property, strrpos($property, '/') + 1);

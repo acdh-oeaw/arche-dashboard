@@ -16,12 +16,17 @@
                 <!-- loop through thekeys array -->
                 {% for kc,kv in cols %}
                     <td>
+                       
                     {% if kc == 'title' and kv is not empty  %}
+                        {% if attribute(value, 'key') %}
                         <a href="/browser/oeaw_detail/{{ attribute(value, 'key') }}" >
+                        {% elseif attribute(value, 'id') %}   
+                            <a href="/browser/oeaw_detail/{{ attribute(value, 'id') }}" >
+                        {% endif %}
                             {{ attribute(value, kc) }}
                         </a>
                     {% elseif kc == 'property' %}
-                        <a href="/browser/dashboard-property/{{ attribute(value, kc) }}" >
+                        <a href="/browser/{{ detailPageUrl }}/{{ attribute(value, kc) }}" >
                             {{ attribute(value, kc) }}
                         </a>
                     {% elseif kc == 'type' %} 
@@ -30,9 +35,13 @@
                         <a href="/browser/oeaw_detail/{{ attribute(value, kc) }}" >
                             {{ attribute(value, kc) }}
                         </a>
-                    {% elseif kc == 'cnt' and attribute(value, 'type') %} 
+                    {% elseif kc == 'cnt' and attribute(value, 'type') and attribute(value, 'type') != 'REL' %} 
                         <a href="#" id="getAttributesView" data-property="{{ key }}" data-value="{{ attribute(value, 'key') }}">{{ attribute(value, kc) }}</a>
-		    {% else %}
+		    {% elseif kc == 'format' %}
+                         <a href="/browser/{{ detailPageUrl }}/{{ attribute(value, kc) }}" >
+                              {{ attribute(value, kc) }}
+                        </a>
+                    {% else %}
                         <!-- use this special function to pass the field names from the keys array -->
                         {{ attribute(value, kc) }}
                     {% endif %}    

@@ -12,7 +12,7 @@ function arche_dashboard_theme($existing, $type, $theme, $path)
         //define the template name
         'arche-dashboard-table' => [
             //define the variables
-            'variables' => ['basic' => NULL, 'key' => NULL, 'cols' => NULL]
+            'variables' => ['basic' => NULL, 'key' => NULL, 'cols' => NULL, 'detailPageUrl' => NULL]
         ],
         'arche-dashboard-overview' => [
             'variables' => ['basic' => NULL]
