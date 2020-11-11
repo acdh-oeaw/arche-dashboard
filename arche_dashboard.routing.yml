@@ -42,3 +42,19 @@ dashboard_detail_api:
         _controller: '\Drupal\arche_dashboard\Controller\DashboardController::dashboard_property_detail_api'
     requirements:
         _role: 'authenticated'
+        
+dashboard_detail_view:    
+    path: '/dashboard-dissemination-services' 
+    defaults:
+        _controller: '\Drupal\arche_dashboard\Controller\DashboardController::dashboard_dissemination_services_list'
+    requirements:
+        _role: 'authenticated'
+        
+dashboard_detail_api:    
+    path: '/dashboard-dissserv-api' 
+    defaults:
+        _controller: '\Drupal\arche_dashboard\Controller\DashboardController::getDisseminationServiceApi'
+    requirements:
+        _permission: 'access content'
+        _access: 'TRUE'   
+        

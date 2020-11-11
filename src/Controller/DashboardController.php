@@ -219,5 +219,34 @@ class DashboardController extends ControllerBase {
         
         return new Response(render($build));
     }
+    
+    /**
+     * The properties deatil view
+     * 
+     * @param string $property
+     * @return Response
+     */
+    public function dashboard_dissemination_services_list()
+    {
+        $disservHelper = new \Drupal\arche_dashboard\Helper\DisseminationServiceHelper();
+        $data = $disservHelper->getDissServices();
+        return  [
+            '#theme' => 'arche-dashboard-disserv-table',
+            '#cache' => ['max-age' => 0]
+        ];
+    }
+    
+    public function getDisseminationServiceApi(): Response 
+    {
+        $data = array();
+        
+        $disservHelper = new \Drupal\arche_dashboard\Helper\DisseminationServiceHelper();
+        $data = $disservHelper->getDissServices();
+      
+        $response = new Response();
+        $response->setContent(json_encode(array("data" => $data)));
+        $response->headers->set('Content-Type', 'application/json');
+        return $response;
+    }
 }
 
