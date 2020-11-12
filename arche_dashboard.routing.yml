@@ -6,49 +6,56 @@ dashboard_overview:
         ### this is the function which will be called
         _controller: '\Drupal\arche_dashboard\Controller\DashboardController::dashboard_overview'
     requirements:
-        _role: 'authenticated'
+        _permission: 'access content'
+        _access: 'TRUE' 
 
 dashboard_detail:    
     path: '/dashboard/{key}' 
     defaults:
         _controller: '\Drupal\arche_dashboard\Controller\DashboardController::dashboard_detail'
     requirements:
-        _role: 'authenticated'
+        _permission: 'access content'
+        _access: 'TRUE' 
 
 dashboard_property:    
     path: '/dashboard-property/{property}' 
     defaults:
         _controller: '\Drupal\arche_dashboard\Controller\DashboardController::dashboard_property_detail'
     requirements:
-        _role: 'authenticated'
+        _permission: 'access content'
+        _access: 'TRUE' 
         
 dashboard_class_property:    
     path: '/dashboard-class-property/{property}' 
     defaults:
         _controller: '\Drupal\arche_dashboard\Controller\DashboardController::dashboard_class_property_detail'
     requirements:
-        _role: 'authenticated'
+        _permission: 'access content'
+        _access: 'TRUE' 
 
 dashboard_format_property:    
     path: '/dashboard-format-property/{property}' 
     defaults:
         _controller: '\Drupal\arche_dashboard\Controller\DashboardController::dashboard_format_property_detail'
     requirements:
-        _role: 'authenticated'
+        _permission: 'access content'
+        _access: 'TRUE' 
         
 dashboard_detail_api:    
     path: '/dashboard-detail-api/{property}' 
     defaults:
         _controller: '\Drupal\arche_dashboard\Controller\DashboardController::dashboard_property_detail_api'
     requirements:
-        _role: 'authenticated'
+        _permission: 'access content'
+        _access: 'TRUE' 
         
 dashboard_detail_view:    
     path: '/dashboard-dissemination-services' 
     defaults:
         _controller: '\Drupal\arche_dashboard\Controller\DashboardController::dashboard_dissemination_services_list'
     requirements:
-        _role: 'authenticated'
+        _permission: 'access content'
+        _access: 'TRUE' 
         
 dashboard_detail_api:    
     path: '/dashboard-dissserv-api' 
