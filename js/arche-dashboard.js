@@ -11,43 +11,51 @@
         // `d` is the original data object for the row
         return '<table cellspacing="0" border="0" style="padding-left:50px; width: 100%!important;">' +
                 '<tr>' +
-                '<td>Description:</td>' +
-                '<td>' + d.hasDescription + '</td>' +
+                '<td width="150px">Description:</td>' +
+                '<td>' + d.description + '</td>' +
                 '</tr>' +
                 '<tr>' +
-                '<td>Binary Size:</td>' +
-                '<td>' + d.hasBinarySize + '</td>' +
-                '</tr>' +
-                '<tr>' +                
-                '<td>Return Type:</td>' +
-                '<td>' + d.hasReturnType + '</td>' +
+                '<td width="150px">Formats:</td>' +
+                '<td>' + d.formats + '</td>' +
                 '</tr>' +
                 '<tr>' +
-                '<td>ServiceLocation:</td>' +
-                '<td>' + d.serviceLocation + '</td>' +
+                '<td width="150px">Return Type:</td>' +
+                '<td>' + d.returnType + '</td>' +
                 '</tr>' +
                 '<tr>' +
-                '<td>NumberOfItems:</td>' +
-                '<td>' + d.hasNumberOfItems + '</td>' +
+                '<td width="150px">Load params:</td>' +
+                '<td>' + d.loadParams + '</td>' +
+                '</tr>' +
+                '<tr>' +
+                '<td width="150px">NumberOfItems:</td>' +
+                '<td>' + d.numberOfItems + '</td>' +
+                '</tr>' +
+                '<tr>' +
+                '<td width="150px">Location:</td>' +
+                '<td>' + d.location + '</td>' +
                 '</tr>' +
                 '</table>';
     }
-    
-    var disserv_table = $('#dissserv-table').DataTable( {   
+
+    var disserv_table = $('#dissserv-table').DataTable({
         "paging": true,
         "searching": true,
         "info": true,
         "ajax": "/browser/dashboard-dissserv-api",
         "columns": [
-             {
-                "className":      'details-control',
-                "orderable":      false,
-                "data":           null,
+            {
+                "className": 'details-control',
+                "orderable": false,
+                "data": null,
                 "defaultContent": '<i class="material-icons">add_circle</i>'
             },
-            { "data": "uri" },
-            { "data": "hasTitle" },            
-            { "data": "key" }
+            {"data": "url"},
+            {"data": "title",
+                "render": function (data, dissid, row, meta) {
+                    return '<a href="/browser/dashboard-dissserv-detail/' + row.id + '">' + data + '</a>';
+                }
+            },
+            {"data": "count"}
         ],
         "order": [[1, 'asc']]
     });
@@ -56,13 +64,13 @@
     $('#dissserv-table tbody').on('click', 'td.details-control', function () {
         var tr = $(this).closest('tr');
         var row = disserv_table.row(tr);
-        
-        if($(this).text() == 'add_circle') {
+
+        if ($(this).text() == 'add_circle') {
             $(this).html('<i class="material-icons">remove_circle</i>');
-        }else {
+        } else {
             $(this).html('<i class="material-icons">add_circle</i>');
         }
-        
+
         if (row.child.isShown()) {
             // This row is already open - close it
             row.child.hide();
@@ -75,8 +83,8 @@
     });
 
     ////// Dissemination service datatable settings  end //////////
-    
-    
+
+
     $(document).delegate("a#getAttributesView", "click", function (e) {
 
         $('table.display-dashboard-detail').DataTable();

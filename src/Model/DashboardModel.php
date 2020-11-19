@@ -121,6 +121,31 @@ class DashboardModel  {
             return array();
         }
     }  
+    
+    
+    /**
+     * Count the selected dissemination service matching resources
+     * @param object $sql
+     * @return int
+     */
+    public function countAllMatchingResourcesForDisseminationService(object $sql): int {
+        try {
+            $query = $this->repodb->query(
+                $sql->query,
+                $sql->param
+            );
+            
+            $return = $query->fetchObject();          
+            $this->changeBackDBConnection();
+            return (int)$return->count;
+        } catch (Exception $ex) {
+            \Drupal::logger('arche_dashboard')->notice($ex->getMessage());
+            return 0;
+        } catch (\Drupal\Core\Database\DatabaseExceptionWrapper $ex) {
+            \Drupal::logger('arche_dashboard')->notice($ex->getMessage());
+            return 0;
+        }
+    }
  
     public function changeBackDBConnection()
     {

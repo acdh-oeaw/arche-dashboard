@@ -22,6 +22,9 @@ function arche_dashboard_theme($existing, $type, $theme, $path)
         ],
         'arche-dashboard-disserv-table' => [
             'variables' => ['basic' => NULL]
+        ],
+        'arche-dashboard-disserv-detail' => [
+            'variables' => ['basic' => NULL]
         ]
     ];
 }
