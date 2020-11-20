@@ -91,7 +91,7 @@
     var disserv_matching_table = $('#dissserv-matching-table').DataTable({
         "paging": true,
         "searching": false,
-        "pageLength": 25,
+        "pageLength": 10,
         "processing": true,
         "serverSide": true,
         "serverMethod": "post",
