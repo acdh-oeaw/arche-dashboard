@@ -10,3 +10,5 @@ arche-dashboard-css-and-js:
     
   dependencies:
     - core/jquery
+    - core/drupal
+    - core/drupalSettings
