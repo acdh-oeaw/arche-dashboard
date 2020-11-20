@@ -157,11 +157,15 @@ class DisseminationService {
     }
     
     private function setId(): void {
-        $this->id = (int) substr($this->obj->getUri(), strrpos($this->obj->getUri(), '/') + 1);
+        $this->id = $this->getIdFromUri($this->obj->getUri());
     }
 
     // </editor-fold>
 
+    private function getIdFromUri(string $uri): int
+    {
+        return (int) substr($uri, strrpos($uri, '/') + 1);
+    }
 
     private function getLiteral(string $property): string {
         if(isset($this->obj->getMetadata()->all($property)[0])) {
@@ -204,7 +208,13 @@ class DisseminationService {
         $obj = $this->obj->getMatchingResources($limit, $offset);
         
         foreach ($obj as $v) {
-            $result[] = $v->getUri();
+            $url = $v->getUri();
+            $title = "no_title";
+            $id = $this->getIdFromUri($v->getUri());
+            if($v->getMetadata()->get('https://vocabs.acdh.oeaw.ac.at/schema#hasTitle') != null) {
+                $title =$v->getMetadata()->get('https://vocabs.acdh.oeaw.ac.at/schema#hasTitle')->__toString();
+            }
+            $result[] = array("id" => $id, "url" => $url, "title" => $title);
         }        
         return $result;        
     }

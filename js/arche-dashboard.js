@@ -40,6 +40,7 @@
     var disserv_table = $('#dissserv-table').DataTable({
         "paging": true,
         "searching": true,
+        "pageLength": 25,
         "info": true,
         "ajax": "/browser/dashboard-dissserv-api",
         "columns": [
@@ -51,7 +52,7 @@
             },
             {"data": "url"},
             {"data": "title",
-                "render": function (data, dissid, row, meta) {
+                "render": function (data, type, row, meta) {
                     return '<a href="/browser/dashboard-dissserv-detail/' + row.id + '">' + data + '</a>';
                 }
             },
@@ -84,7 +85,30 @@
 
     ////// Dissemination service datatable settings  end //////////
 
+    /// Dissmeination service matching resources datatable settings /////
+    var dissId = $('#dissId').val();
+    
+    var disserv_matching_table = $('#dissserv-matching-table').DataTable({
+        "paging": true,
+        "searching": false,
+        "pageLength": 25,
+        "processing": true,
+        "serverSide": true,
+        "serverMethod": "post",
+        "ajax": "/browser/dashboard-dissserv-matching-api/"+dissId,
+        'columns': [
+            { data: 'url' },
+            { data: 'title',
+                "render": function (data, type, row, meta) {
+                    return '<a href="/browser/oeaw_detail/' + row.id + '">' + data + '</a>';
+                }
+            }
+        ]
+    });
 
+    /// Dissmeination service matching resources datatable settings END /////
+    
+    
     $(document).delegate("a#getAttributesView", "click", function (e) {
 
         $('table.display-dashboard-detail').DataTable();

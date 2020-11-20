@@ -49,7 +49,7 @@ dashboard_detail_api:
         _permission: 'access content'
         _access: 'TRUE' 
         
-dashboard_detail_view:    
+dashboard_dissemination_services:    
     path: '/dashboard-dissemination-services' 
     defaults:
         _controller: '\Drupal\arche_dashboard\Controller\DashboardController::dashboard_dissemination_services_list'
@@ -57,11 +57,26 @@ dashboard_detail_view:
         _permission: 'access content'
         _access: 'TRUE' 
         
-dashboard_detail_api:    
+dashboard_disserv_list_api:    
     path: '/dashboard-dissserv-api' 
     defaults:
         _controller: '\Drupal\arche_dashboard\Controller\DashboardController::getDisseminationServiceApi'
     requirements:
         _permission: 'access content'
         _access: 'TRUE'   
+    
+dashboard_dissemination_services_detail:    
+    path: '/dashboard-dissserv-detail/{id}' 
+    defaults:
+        _controller: '\Drupal\arche_dashboard\Controller\DashboardController::dashboard_dissemination_services_detail'
+    requirements:
+        _permission: 'access content'
+        _access: 'TRUE'    
         
+dashboard_disserv_matching_api:    
+    path: '/dashboard-dissserv-matching-api/{id}' 
+    defaults:
+        _controller: '\Drupal\arche_dashboard\Controller\DashboardController::getDisseminationServiceMatchingResourcesApi'
+    requirements:
+        _permission: 'access content'
+        _access: 'TRUE'           

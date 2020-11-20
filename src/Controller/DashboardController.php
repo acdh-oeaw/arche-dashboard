@@ -217,6 +217,10 @@ class DashboardController extends ControllerBase {
         ];
     }
 
+    /**
+     * Dissemination services list api call for the datatable
+     * @return Response
+     */
     public function getDisseminationServiceApi(): Response {
         $data = array();
 
@@ -225,6 +229,54 @@ class DashboardController extends ControllerBase {
         
         $response = new Response();
         $response->setContent(json_encode(array("data" => $data)));
+        $response->headers->set('Content-Type', 'application/json');
+        return $response;
+    }
+    
+    /**
+     * Dissemination service detail page with the basic infos
+     * @param string $id
+     * @return type
+     */
+    public function dashboard_dissemination_services_detail(string $id) {
+        $disservHelper = new \Drupal\arche_dashboard\Helper\DisseminationServiceHelper();
+        $data = $disservHelper->getDissServResourcesById((int)$id);
+        
+        return [
+            '#theme' => 'arche-dashboard-disserv-detail',
+            '#data' => $data,
+            '#cache' => ['max-age' => 0]
+        ];
+    }
+    
+    /**
+     * The matching resource api call for the dissemination service detail datatable
+     * @param string $id
+     * @param int $limit
+     * @param int $offset
+     * @return Response
+     */
+    public function getDisseminationServiceMatchingResourcesApi(string $id): Response {
+        $offset = (empty($_POST['start'])) ? 0 : $_POST['start'];
+        $limit = (empty($_POST['length'])) ? 10 : $_POST['length'];
+        $draw = (empty($_POST['draw'])) ? 0 : $_POST['draw'];
+        
+        $data = array();
+        $disservHelper = new \Drupal\arche_dashboard\Helper\DisseminationServiceHelper();
+        $data = $disservHelper->getDissServResourcesById((int)$id);
+        $matching = $data->getMatchingResources((int)$limit, (int)$offset);
+       
+        $response = new Response();
+        $response->setContent(
+            json_encode(
+                array(
+                    "aaData" => $matching, 
+                    "iTotalRecords" => $data->getCount(),
+                    "iTotalDisplayRecords" => $data->getCount(),
+                    "draw" => intval($draw),
+                )
+            )
+        );
         $response->headers->set('Content-Type', 'application/json');
         return $response;
     }

@@ -1,0 +1,96 @@
+<h3>{{ "Dissemination Service Detail View"|trans }}</h3>
+<input type="hidden" value="{{ data.getId() }}" name="dissId" id="dissId">
+
+<div class="row">
+    <div class="col-12">
+        <div class="row">
+            <span class="col-3 font-weight-bold">{{ "ID"|trans }}:</span> 
+            <span class="col-9">
+                {{ data.getId() }}   
+            </span>
+        </div>
+        <div class="row">
+            <span class="col-3 font-weight-bold">{{ "Title"|trans }}:</span> 
+            <span class="col-9">
+                {{ data.getTitle() }}   
+            </span>
+        </div>
+        <div class="row">
+            <span class="col-3 font-weight-bold">{{ "Url"|trans }}:</span> 
+            <span class="col-9">
+                {{ data.getUrl() }}   
+            </span>
+        </div>
+        <div class="row">
+            <span class="col-3 font-weight-bold">{{ "Location"|trans }}:</span> 
+            <span class="col-9">
+                {{ data.getLocation() }}   
+            </span>
+        </div>
+        <div class="row">
+            <span class="col-3 font-weight-bold">{{ "Formats"|trans }}:</span> 
+            <span class="col-9">
+                {{ data.getFormats() }}   
+            </span>
+        </div>
+        <div class="row">
+            <span class="col-3 font-weight-bold">{{ "Load Params"|trans }}:</span> 
+            <span class="col-9">
+                {{ data.getLoadParams() }}   
+            </span>
+        </div>
+        <div class="row">
+            <span class="col-3 font-weight-bold">{{ "Description"|trans }}:</span> 
+            <span class="col-9">
+                {{ data.getDescription() }}   
+            </span>
+        </div>
+        <div class="row">
+            <span class="col-3 font-weight-bold">{{ "ReturnType"|trans }}:</span> 
+            <span class="col-9">
+                {{ data.getReturnType() }}   
+            </span>
+        </div>
+        <div class="row">
+            <span class="col-3 font-weight-bold">{{ "MatchesProp"|trans }}:</span> 
+            <span class="col-9">
+                {{ data.getMatchesProp() }}   
+            </span>
+        </div>
+        <div class="row">
+            <span class="col-3 font-weight-bold">{{ "MatchesValue"|trans }}:</span> 
+            <span class="col-9">
+                {{ data.getMatchesValue() }}   
+            </span>
+        </div>
+        <div class="row">
+            <span class="col-3 font-weight-bold">{{ "serviceRevProxy"|trans }}:</span> 
+            <span class="col-9">
+                {{ data.getServiceRevProxy() }}   
+            </span>
+        </div>
+        <div class="row">
+            <span class="col-3 font-weight-bold">{{ "Count"|trans }}:</span> 
+            <span class="col-9">
+                {{ data.getCount() }}   
+            </span>
+        </div>    
+    </div>
+</div>
+<br>
+
+<h3>Matching resources</h3>
+<table id="dissserv-matching-table" class="table-striped" style="width:100%">
+    <thead>
+        <tr>
+            <th>Uri</th>
+            <th>{{ "Title"|trans }}</th>
+        </tr>
+    </thead>
+    <tfoot>
+        <tr>
+            <th>Uri</th>
+            <th>{{ "Title"|trans }}</th>
+        </tr>
+    </tfoot>
+</table>
