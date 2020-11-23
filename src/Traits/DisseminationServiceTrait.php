@@ -41,7 +41,8 @@ trait DisseminationServiceTrait {
     }
     
     private function setSearchTerm(): void {
-       $this->searchTerm = new \acdhOeaw\acdhRepoLib\SearchTerm(RdfConstants::RDF_TYPE, $this->repodb->getSchema()->__get('dissService')->class); 
+       $this->searchTerm = new \acdhOeaw\acdhRepoLib\SearchTerm(\zozlak\RdfConstants::RDF_TYPE, $this->repodb->getSchema()->__get('dissService')->class); 
+       //$this->searchTerm = new \acdhOeaw\acdhRepoLib\SearchTerm($this->repodb->getSchema()->id, 'https://id.acdh.oeaw.ac.at/dissemination/thumbnail'); 
     }    
 
     private function setRepoDb(): void {
@@ -51,7 +52,7 @@ trait DisseminationServiceTrait {
     private function setSearchConfig(): void {
         $this->searchCfg = new \acdhOeaw\acdhRepoLib\SearchConfig();
         $this->searchCfg->class = '\acdhOeaw\arche\disserv\dissemination\Service';
-        $this->searchCfg->metadataMode = RepoResourceInterface::META_RESOURCE;
+        $this->searchCfg->metadataMode = \acdhOeaw\acdhRepoLib\RepoResourceInterface::META_RESOURCE;
     }
     
 // </editor-fold>
@@ -60,8 +61,8 @@ trait DisseminationServiceTrait {
         $this->dissServices = $this->repodb->getResourcesBySearchTerms([$this->searchTerm], $this->searchCfg);
     }
     
-    private function createDissServObj(\acdhOeaw\arche\disserv\dissemination\Service $d): \Drupal\arche_dashboard\Object\DisseminationService {
-        $obj = new \Drupal\arche_dashboard\Object\DisseminationService($d);
+    private function createDissServObj(\acdhOeaw\arche\disserv\dissemination\Service $d, array $params): \Drupal\arche_dashboard\Object\DisseminationService {
+        $obj = new \Drupal\arche_dashboard\Object\DisseminationService($d, $params);
         $obj->setValues($this->repodb->getSchema());
         return $obj;
     }
@@ -81,7 +82,9 @@ trait DisseminationServiceTrait {
         $this->result = array();
         
         foreach($this->dissServices as $d) {
-            $obj = $this->createDissServObj($d);
+            $params = array();
+            $params = $d->getParameters();
+            $obj = $this->createDissServObj($d, $params);
             $this->result[] = $obj;
         }
         return $this->result;
@@ -101,6 +104,10 @@ trait DisseminationServiceTrait {
         }
         return new \stdClass();
     }
+    
+    
+    
+    
     
     
 }
