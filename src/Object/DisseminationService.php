@@ -1,7 +1,7 @@
 <?php
 
 namespace Drupal\arche_dashboard\Object;
-
+use zozlak\RdfConstants;
 /**
  * Description of DisseminationService
  *
@@ -10,6 +10,7 @@ namespace Drupal\arche_dashboard\Object;
 class DisseminationService {
     
     private $obj;
+    private $params = array();
     public $url;
     public $title;
     public $location;
@@ -24,9 +25,12 @@ class DisseminationService {
     public $serviceRevProxy; 
     public $count;
     public $id;
+    public $dissParams = array();
     
-    public function __construct(\acdhOeaw\arche\disserv\dissemination\Service $obj) {
-        $this->obj = $obj;        
+    
+    public function __construct(\acdhOeaw\arche\disserv\dissemination\Service $obj, array $params) {
+        $this->obj = $obj;  
+        $this->params = $params;
     }
     // <editor-fold defaultstate="collapsed" desc="getters">
 
@@ -44,6 +48,10 @@ class DisseminationService {
     
     public function getFormats() {
         return $this->formats;
+    }
+    
+    public function getDissParams() {
+        return $this->dissParams;
     }
 
     public function getLocation() {
@@ -98,12 +106,12 @@ class DisseminationService {
     }
 
     private function setTitle(): void {
-        $this->title = $this->getLiteral('https://vocabs.acdh.oeaw.ac.at/schema#hasTitle');
+        $this->title = $this->getLiteral($this->obj, 'https://vocabs.acdh.oeaw.ac.at/schema#hasTitle');
     }
 
 
     private function setDescription(): void {
-        $this->description = $this->getLiteral('https://vocabs.acdh.oeaw.ac.at/schema#hasDescription');
+        $this->description = $this->getLiteral($this->obj, 'https://vocabs.acdh.oeaw.ac.at/schema#hasDescription');
     }
 
     private function setLocation(): void {
@@ -129,27 +137,27 @@ class DisseminationService {
     }
 
     private function setNumberOfItems(): void {
-        $this->numberOfItems = $this->getLiteral('https://vocabs.acdh.oeaw.ac.at/schema#hasNumberOfItems');
+        $this->numberOfItems = $this->getLiteral($this->obj, 'https://vocabs.acdh.oeaw.ac.at/schema#hasNumberOfItems');
     }
 
     private function setReturnType(): void {
-        $this->returnType = $this->getLiteral('https://vocabs.acdh.oeaw.ac.at/schema#hasReturnType');
+        $this->returnType = $this->getLiteral($this->obj, 'https://vocabs.acdh.oeaw.ac.at/schema#hasReturnType');
     }
 
     private function setMatchesProp(): void {
-        $this->matchesProp = $this->getLiteral('https://vocabs.acdh.oeaw.ac.at/schema#matchesProp');
+        $this->matchesProp = $this->getLiteral($this->obj, 'https://vocabs.acdh.oeaw.ac.at/schema#matchesProp');
     }
 
     private function setMatchesValue(): void {
-        $this->matchesValue = $this->getLiteral('https://vocabs.acdh.oeaw.ac.at/schema#matchesValue');
+        $this->matchesValue = $this->getLiteral($this->obj, 'https://vocabs.acdh.oeaw.ac.at/schema#matchesValue');
     }
 
     private function setIsPartOf(): void {
-        $this->isPartOf = $this->getLiteral('https://vocabs.acdh.oeaw.ac.at/schema#isPartOf');
+        $this->isPartOf = $this->getLiteral($this->obj, 'https://vocabs.acdh.oeaw.ac.at/schema#isPartOf');
     }
 
     private function setServiceRevProxy(): void {
-        $this->serviceRevProxy = $this->getLiteral('https://vocabs.acdh.oeaw.ac.at/schema#serviceRevProxy');
+        $this->serviceRevProxy = $this->getLiteral($this->obj, 'https://vocabs.acdh.oeaw.ac.at/schema#serviceRevProxy');
     }
     
     private function setCount(int $count): void {
@@ -159,6 +167,19 @@ class DisseminationService {
     private function setId(): void {
         $this->id = $this->getIdFromUri($this->obj->getUri());
     }
+    
+    public function setDissParams(): void {
+        if(count($this->params) > 0) {
+            foreach($this->params as $k => $v) {
+                $this->dissParams[$k]['defaultValue'] = $this->getLiteral($v, 'https://vocabs.acdh.oeaw.ac.at/schema#hasDefaultValue');
+                $this->dissParams[$k]['isPartOf'] = $this->getLiteral($v, 'https://vocabs.acdh.oeaw.ac.at/schema#isPartOf');
+                $this->dissParams[$k]['hasTitle'] = $this->getLiteral($v, 'https://vocabs.acdh.oeaw.ac.at/schema#hasTitle');
+                $this->dissParams[$k]['matchesProp'] = $this->getLiteral($v, 'https://vocabs.acdh.oeaw.ac.at/schema#matchesProp');
+                $this->dissParams[$k]['matchesValue'] = $this->getLiteral($v, 'https://vocabs.acdh.oeaw.ac.at/schema#matchesValue');
+                $this->dissParams[$k]['isRequired'] = $this->getLiteral($v, 'https://vocabs.acdh.oeaw.ac.at/schema#isRequired');
+            }
+        }
+    }
 
     // </editor-fold>
 
@@ -167,9 +188,9 @@ class DisseminationService {
         return (int) substr($uri, strrpos($uri, '/') + 1);
     }
 
-    private function getLiteral(string $property): string {
-        if(isset($this->obj->getMetadata()->all($property)[0])) {
-            return $this->obj->getMetadata()->all($property)[0]->__toString();  
+    private function getLiteral(object $obj, string $property): string {
+        if(isset($obj->getMetadata()->all($property)[0])) {
+            return $obj->getMetadata()->all($property)[0]->__toString();  
         }
         return "";
     }
@@ -193,6 +214,7 @@ class DisseminationService {
         $this->setIsPartOf();
         $this->setServiceRevProxy();
         $this->countAllMatchingResource($schema);
+        $this->setDissParams();
     }
     
     /**
@@ -226,4 +248,5 @@ class DisseminationService {
         $db = new \Drupal\arche_dashboard\Model\DashboardModel();
         $this->setCount($db->countAllMatchingResourcesForDisseminationService($query));
     }
+
 }

@@ -9,7 +9,7 @@
     ////// Dissemination service datatable settings //////////
     function formatDisseminationServiceExtraInfo(d) {
         // `d` is the original data object for the row
-        return '<table cellspacing="0" border="0" style="padding-left:50px; width: 100%!important;">' +
+        var str = '<table cellspacing="0" border="0" style="padding-left:50px; width: 100%!important;">' +
                 '<tr>' +
                 '<td width="150px">Description:</td>' +
                 '<td>' + d.description + '</td>' +
@@ -23,18 +23,44 @@
                 '<td>' + d.returnType + '</td>' +
                 '</tr>' +
                 '<tr>' +
-                '<td width="150px">Load params:</td>' +
-                '<td>' + d.loadParams + '</td>' +
-                '</tr>' +
-                '<tr>' +
-                '<td width="150px">NumberOfItems:</td>' +
-                '<td>' + d.numberOfItems + '</td>' +
-                '</tr>' +
-                '<tr>' +
                 '<td width="150px">Location:</td>' +
                 '<td>' + d.location + '</td>' +
                 '</tr>' +
                 '</table>';
+                console.log();
+             if (!($.isEmptyObject(d.dissParams))){
+                str += '<b>PARAMS</b>:'; 
+            
+                str += '<table cellspacing="0" border="0" style="padding-left:50px; width: 100%!important;">';
+                $.each(d.dissParams, function(k, v){
+                    str += '<tr>';
+                        str += '<td><b>Param: ' + k + '</b></td>';
+                    str += '</tr>';
+                    str += '<tr>';
+                        str +='<td width="150px">isPartOf:</td>';
+                        str +='<td>'+v.isPartOf+'</td>';
+                    str += '</tr>';
+                    str += '<tr>';
+                        str +='<td width="150px">defaultValue:</td>';
+                        str +='<td>'+v.defaultValue+'</td>';
+                    str += '</tr>';
+                    str += '<tr>';
+                        str +='<td width="150px">matchesProp:</td>';
+                        str +='<td>'+v.matchesProp+'</td>';
+                    str += '</tr>';
+                    str += '<tr>';
+                        str +='<td width="150px">matchesValue:</td>';
+                        str +='<td>'+v.matchesValue+'</td>';
+                    str += '</tr>';
+                    str += '<tr>';
+                        str +='<td width="150px">isRequired:</td>';
+                        str +='<td>'+v.isRequired+'</td>';
+                    str += '</tr>';
+                });
+                str += '</table>';
+            }
+        
+        return str;
     }
 
     var disserv_table = $('#dissserv-table').DataTable({
