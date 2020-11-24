@@ -52,18 +52,6 @@
             </span>
         </div>
         <div class="row">
-            <span class="col-3 font-weight-bold">{{ "MatchesProp"|trans }}:</span> 
-            <span class="col-9">
-                {{ data.getMatchesProp() }}   
-            </span>
-        </div>
-        <div class="row">
-            <span class="col-3 font-weight-bold">{{ "MatchesValue"|trans }}:</span> 
-            <span class="col-9">
-                {{ data.getMatchesValue() }}   
-            </span>
-        </div>
-        <div class="row">
             <span class="col-3 font-weight-bold">{{ "serviceRevProxy"|trans }}:</span> 
             <span class="col-9">
                 {{ data.getServiceRevProxy() }}   
@@ -74,8 +62,38 @@
             <span class="col-9">
                 {{ data.getCount() }}   
             </span>
-        </div>    
+        </div> 
     </div>
+    
+    <div class="col-12">
+        <br><br>
+        <div class="row">
+            <h3>{{ "Dissemination Filter Values"|trans }}</h3>
+            <table class="table">
+                <thead>
+                  <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">{{ "matchesProp"|trans }}</th>
+                    <th scope="col">{{ "matchesValue"|trans }}</th>
+                    <th scope="col">{{ "isRequired"|trans }}</th>
+                  </tr>
+                </thead>
+                <tbody>
+                    {% for k,v in data.getFilterValues() %}
+                        {% if  v.matchesProp or v.matchesValue or v.isRequired %}
+                            <tr>
+                              <th scope="row">{{ k }}</th>
+                              <td>{{ v.matchesProp }}   </td>
+                              <td>{{ v.matchesValue }} </td>
+                              <td>{{ v.isRequired }}   </td>
+                            </tr>
+                        {% endif %}
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
 </div>
 <br>
 <hr>
