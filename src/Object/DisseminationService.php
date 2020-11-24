@@ -26,6 +26,7 @@ class DisseminationService {
     public $count;
     public $id;
     public $dissParams = array();
+    public $filterValues = array();
     
     
     public function __construct(\acdhOeaw\arche\disserv\dissemination\Service $obj, array $params) {
@@ -90,8 +91,12 @@ class DisseminationService {
         return $this->serviceRevProxy;
     }
 
-     public function getCount() {
+    public function getCount() {
         return $this->count;
+    }
+    
+    public function getFilterValues() {
+        return $this->filterValues;
     }
 
 // </editor-fold>
@@ -164,10 +169,18 @@ class DisseminationService {
         $this->count = $count;
     }
     
+    private function setFilterValues(array $data): void {
+        $this->filterValues = $data;
+    }
+    
     private function setId(): void {
         $this->id = $this->getIdFromUri($this->obj->getUri());
     }
     
+    /**
+     * Set up the dissemination service params
+     * @return void
+     */
     public function setDissParams(): void {
         if(count($this->params) > 0) {
             foreach($this->params as $k => $v) {
@@ -195,6 +208,13 @@ class DisseminationService {
         return "";
     }
     
+    private function getDisservParamLiteral(object $obj, string $property): string {
+        if(!$obj->get($property) == null) {
+            return $obj->get($property)->__toString();  
+        }
+        return "";
+    }
+    
     /**
      * Set the values based on the passed dissemination service object
      * @param \acdhOeaw\acdhRepoLib\Schema $schema
@@ -215,6 +235,7 @@ class DisseminationService {
         $this->setServiceRevProxy();
         $this->countAllMatchingResource($schema);
         $this->setDissParams();
+        $this->setDisseminationServiceFilterValues();
     }
     
     /**
@@ -248,5 +269,25 @@ class DisseminationService {
         $db = new \Drupal\arche_dashboard\Model\DashboardModel();
         $this->setCount($db->countAllMatchingResourcesForDisseminationService($query));
     }
-
+    
+    private function setDisseminationServiceFilterValues(): void
+    {
+        $data =  $this->obj->getGraph()->getGraph()->resources();
+        $result = array();
+        
+        if(count($data) > 0) {
+            foreach ($data as $v) {
+                if(isset($v->all('https://vocabs.acdh.oeaw.ac.at/schema#isPartOf')[0])
+                        && $v->all('https://vocabs.acdh.oeaw.ac.at/schema#isPartOf')[0]->__toString() == $this->obj->getUri()) {
+                    $result[] = array(
+                            "uri" => $v->getUri(),
+                            "matchesProp" => $this->getDisservParamLiteral($v, 'https://vocabs.acdh.oeaw.ac.at/schema#matchesProp'),
+                            "matchesValue" => $this->getDisservParamLiteral($v, 'https://vocabs.acdh.oeaw.ac.at/schema#matchesValue'),
+                            "isRequired" => $this->getDisservParamLiteral($v, 'https://vocabs.acdh.oeaw.ac.at/schema#isRequired')
+                        );
+                }
+            }
+        }
+        $this->setFilterValues($result);
+    }
 }

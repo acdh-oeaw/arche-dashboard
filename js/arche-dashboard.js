@@ -27,8 +27,8 @@
                 '<td>' + d.location + '</td>' +
                 '</tr>' +
                 '</table>';
-                console.log();
-             if (!($.isEmptyObject(d.dissParams))){
+        
+            if (!($.isEmptyObject(d.dissParams))){
                 str += '<b>PARAMS</b>:'; 
             
                 str += '<table cellspacing="0" border="0" style="padding-left:50px; width: 100%!important;">';
@@ -44,18 +44,32 @@
                         str +='<td width="150px">defaultValue:</td>';
                         str +='<td>'+v.defaultValue+'</td>';
                     str += '</tr>';
-                    str += '<tr>';
-                        str +='<td width="150px">matchesProp:</td>';
-                        str +='<td>'+v.matchesProp+'</td>';
-                    str += '</tr>';
-                    str += '<tr>';
-                        str +='<td width="150px">matchesValue:</td>';
-                        str +='<td>'+v.matchesValue+'</td>';
-                    str += '</tr>';
-                    str += '<tr>';
-                        str +='<td width="150px">isRequired:</td>';
-                        str +='<td>'+v.isRequired+'</td>';
-                    str += '</tr>';
+                });
+                str += '</table>';
+            }
+            
+            if (!($.isEmptyObject(d.filterValues))){
+                str += '<b>Filters</b>:'; 
+            
+                str += '<table cellspacing="0" border="0" style="padding-left:50px; width: 100%!important;">';
+                $.each(d.filterValues, function(k, v){
+                    if(v.matchesProp || v.matchesValue || v.isRequired) {
+                        str += '<tr>';
+                            str += '<td><b>Filter ' + k + ':</b></td>';
+                        str += '</tr>';
+                        str += '<tr>';
+                            str +='<td width="150px">matchesProp:</td>';
+                            str +='<td>'+v.matchesProp+'</td>';
+                        str += '</tr>';
+                        str += '<tr>';
+                            str +='<td width="150px">matchesValue:</td>';
+                            str +='<td>'+v.matchesValue+'</td>';
+                        str += '</tr>';
+                        str += '<tr>';
+                            str +='<td width="150px">matchesValue:</td>';
+                            str +='<td>'+v.isRequired+'</td>';
+                        str += '</tr>';
+                    }
                 });
                 str += '</table>';
             }

@@ -125,7 +125,7 @@ class DashboardController extends ControllerBase {
         } else {
             $cols = array();
         }
-
+      
         return [
             '#theme' => 'arche-dashboard-table',
             '#basic' => $data,
