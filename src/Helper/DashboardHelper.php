@@ -13,17 +13,19 @@ namespace Drupal\arche_dashboard\Helper;
  *
  * @author nczirjak
  */
-class DashboardHelper {
+class DashboardHelper
+{
     
     /**
      * This function handle the # removing problem in the browser
-     * 
+     *
      * @param array $data
      * @return array
     */
-    public function generatePropertyUrl(array &$data): array {
-        foreach($data as $k => $v) {
-            if(isset($v->property)) {
+    public function generatePropertyUrl(array &$data): array
+    {
+        foreach ($data as $k => $v) {
+            if (isset($v->property)) {
                 if (strpos($v->property, "#") !== false) {
                     $data[$k]->property = str_replace("#", "%23", $v->property);
                 }

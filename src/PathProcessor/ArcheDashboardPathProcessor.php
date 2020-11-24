@@ -9,12 +9,11 @@ class ArcheDashboardPathProcessor implements InboundPathProcessorInterface
 {
     public function processInbound($path, Request $request)
     {
-        
         if (strpos($path, '/dashboard-property/') === 0) {
             $names = preg_replace('|^\/dashboard-property\/|', '', $path);
             if (strpos($names, 'https:/') === 0) {
                 $names = str_replace('https:/', 'https://', $names);
-            } else if (strpos($names, 'http:/') === 0) {
+            } elseif (strpos($names, 'http:/') === 0) {
                 $names = str_replace('http:/', 'http://', $names);
             }
             
@@ -26,7 +25,7 @@ class ArcheDashboardPathProcessor implements InboundPathProcessorInterface
             $names = preg_replace('|^\/dashboard-class-property\/|', '', $path);
             if (strpos($names, 'https:/') === 0) {
                 $names = str_replace('https:/', 'https://', $names);
-            } else if (strpos($names, 'http:/') === 0) {
+            } elseif (strpos($names, 'http:/') === 0) {
                 $names = str_replace('http:/', 'http://', $names);
             }
             
@@ -38,7 +37,7 @@ class ArcheDashboardPathProcessor implements InboundPathProcessorInterface
             $names = preg_replace('|^\/dashboard-format-property\/|', '', $path);
             if (strpos($names, 'https:/') === 0) {
                 $names = str_replace('https:/', 'https://', $names);
-            } else if (strpos($names, 'http:/') === 0) {
+            } elseif (strpos($names, 'http:/') === 0) {
                 $names = str_replace('http:/', 'http://', $names);
             }
             
@@ -50,7 +49,7 @@ class ArcheDashboardPathProcessor implements InboundPathProcessorInterface
             $names = preg_replace('|^\/dashboard-detail-api\/|', '', $path);
             if (strpos($names, 'https:/') === 0) {
                 $names = str_replace('https:/', 'https://', $names);
-            } else if (strpos($names, 'http:/') === 0) {
+            } elseif (strpos($names, 'http:/') === 0) {
                 $names = str_replace('http:/', 'http://', $names);
             }
             
@@ -60,5 +59,4 @@ class ArcheDashboardPathProcessor implements InboundPathProcessorInterface
         
         return $path;
     }
-    
 }
