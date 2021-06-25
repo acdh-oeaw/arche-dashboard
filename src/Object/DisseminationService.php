@@ -31,7 +31,7 @@ class DisseminationService {
     public $filterValues = array();
     public $schema;
 
-    public function __construct(\acdhOeaw\arche\disserv\dissemination\Service $obj, array $params, object $schema) {
+public function __construct(\acdhOeaw\arche\lib\disserv\dissemination\Service $obj, array $params, object $schema) {
         $this->obj = $obj;
         $this->params = $params;
         $this->schema = $schema;
@@ -223,9 +223,9 @@ class DisseminationService {
 
     /**
      * Set the values based on the passed dissemination service object
-     * @param \acdhOeaw\acdhRepoLib\Schema $schema
+     * @param \acdhOeaw\arche\lib\Schema $schema
      */
-    public function setValues(\acdhOeaw\acdhRepoLib\Schema $schema) {
+    public function setValues(\acdhOeaw\arche\lib\Schema $schema) {
         $this->setTitle();
         $this->setId();
         $this->setUrl();
@@ -268,9 +268,9 @@ class DisseminationService {
         return $result;
     }
 
-    private function countAllMatchingResource(\acdhOeaw\acdhRepoLib\Schema $schema): void {
+    private function countAllMatchingResource(\acdhOeaw\arche\lib\Schema $schema): void {
 
-        $query = $this->obj::getMatchQuery($this->getId(), \acdhOeaw\arche\disserv\dissemination\ServiceInterface::QUERY_RES, $schema);
+        $query = $this->obj::getMatchQuery($this->getId(), \acdhOeaw\arche\lib\disserv\dissemination\ServiceInterface::QUERY_RES, $schema);
         $query->query = "SELECT count(*) FROM ($query->query) t";
         $db = new \Drupal\arche_dashboard\Model\DashboardModel();
         $this->setCount($db->countAllMatchingResourcesForDisseminationService($query));
@@ -285,9 +285,7 @@ class DisseminationService {
 
         if (count($data) > 0) {
             foreach ($data as $v) {
-                if ((string) $v->get($this->schema->dissService->parent) == $this->obj->getUri()) {      
-                    
-                    
+                if ((string) $v->get($this->schema->dissService->parent) == $this->obj->getUri()) {
                     $result[] = array(
                         "uri" => $v->getUri(),
                         "matchesProp" => $this->getDisservParamLiteral($v, $this->schema->dissService->matchProperty),

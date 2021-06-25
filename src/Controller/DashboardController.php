@@ -15,7 +15,7 @@ class DashboardController extends ControllerBase {
 
     public function __construct() {
         $this->config = drupal_get_path('module', 'acdh_repo_gui') . '/config/config.yaml';
-        $this->repo = \acdhOeaw\acdhRepoLib\Repo::factory($this->config);
+        $this->repo = \acdhOeaw\arche\lib\Repo::factory($this->config);
         //setup the dashboard model class
         $this->model = new \Drupal\arche_dashboard\Model\DashboardModel();
         $this->helper = new \Drupal\arche_dashboard\Helper\DashboardHelper();

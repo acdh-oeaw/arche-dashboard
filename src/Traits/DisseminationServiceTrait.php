@@ -2,7 +2,7 @@
 
 namespace Drupal\arche_dashboard\Traits;
 
-use acdhOeaw\acdhRepoLib\RepoResourceInterface;
+use acdhOeaw\arche\lib\RepoResourceInterface;
 use zozlak\RdfConstants;
 
 /**
@@ -11,7 +11,7 @@ use zozlak\RdfConstants;
  * @author nczirjak
  */
 trait DisseminationServiceTrait {
-    
+
     private $config;
     private $repo;
     private $searchTerm;
@@ -19,7 +19,7 @@ trait DisseminationServiceTrait {
     private $repodb;
     private $result = array();
     private $dissServices = array();
-    
+
     public function __construct() {
         $this->setConfig();
         $this->setRepo();
@@ -27,47 +27,47 @@ trait DisseminationServiceTrait {
         $this->setSearchTerm();
         $this->setSearchConfig();
     }
-    
-     // <editor-fold defaultstate="collapsed" desc="setter">
+
+    // <editor-fold defaultstate="collapsed" desc="setter">
     private function setConfig(): void {
         if (!(\Drupal::service('extension.list.module')->getPath('acdh_repo_gui') . '/config/config.yaml')) {
             throwException(t('No config file found!'));
         }
-        $this->config = \Drupal::service('extension.list.module')->getPath('acdh_repo_gui') . '/config/config.yaml';        
+        $this->config = \Drupal::service('extension.list.module')->getPath('acdh_repo_gui') . '/config/config.yaml';
     }
 
     private function setRepo(): void {
-        $this->repo = \acdhOeaw\acdhRepoLib\Repo::factory($this->config);
+        $this->repo = \acdhOeaw\arche\lib\Repo::factory($this->config);
     }
-    
+
     private function setSearchTerm(): void {
-       $this->searchTerm = new \acdhOeaw\acdhRepoLib\SearchTerm(\zozlak\RdfConstants::RDF_TYPE, $this->repodb->getSchema()->__get('dissService')->class); 
-    }    
+        $this->searchTerm = new \acdhOeaw\arche\lib\SearchTerm(\zozlak\RdfConstants::RDF_TYPE, $this->repodb->getSchema()->__get('dissService')->class);
+    }
 
     private function setRepoDb(): void {
-        $this->repodb = \acdhOeaw\acdhRepoLib\RepoDb::factory($this->config); 
+        $this->repodb = \acdhOeaw\arche\lib\RepoDb::factory($this->config);
     }
-    
+
     private function setSearchConfig(): void {
-        $this->searchCfg = new \acdhOeaw\acdhRepoLib\SearchConfig();
-        $this->searchCfg->class = '\acdhOeaw\arche\disserv\dissemination\Service';
-        $this->searchCfg->metadataMode = \acdhOeaw\acdhRepoLib\RepoResourceInterface::META_NEIGHBORS;
-        $this->searchCfg->metadataParentProperty  = $this->repodb->getSchema()->dissService->parent;
+        $this->searchCfg = new \acdhOeaw\arche\lib\SearchConfig();
+        $this->searchCfg->class = '\acdhOeaw\arche\lib\disserv\dissemination\Service';
+        $this->searchCfg->metadataMode = \acdhOeaw\arche\lib\RepoResourceInterface::META_NEIGHBORS;
+        $this->searchCfg->metadataParentProperty = $this->repodb->getSchema()->dissService->parent;
     }
-    
+
 // </editor-fold>
-    
+
     private function getDisseminationServicesData(): void {
-        $this->dissServices = $this->repodb->getResourcesBySearchTerms([$this->searchTerm], $this->searchCfg);
+        $this->dissServices = iterator_to_array($this->repo->getResourcesBySearchTerms([$this->searchTerm], $this->searchCfg));
     }
-    
-    private function createDissServObj(\acdhOeaw\arche\disserv\dissemination\Service &$d, array $params): \Drupal\arche_dashboard\Object\DisseminationService {
-        
+
+    private function createDissServObj(\acdhOeaw\arche\lib\disserv\dissemination\Service &$d, array $params): \Drupal\arche_dashboard\Object\DisseminationService {
+
         $obj = new \Drupal\arche_dashboard\Object\DisseminationService($d, $params, $this->repo->getSchema());
         $obj->setValues($this->repodb->getSchema());
         return $obj;
     }
-    
+
     /**
      * Get the actual dissemination servcices in an array where each 
      * array is a dashboard dissemination service object
@@ -75,36 +75,35 @@ trait DisseminationServiceTrait {
      */
     public function getDisseminationServices(): array {
         $this->getDisseminationServicesData();
-         
-        if(count($this->dissServices) == 0) {
+
+        if (count($this->dissServices) == 0) {
             return array();
         }
-        
+
         $this->result = array();
-        
-        
-        foreach($this->dissServices as $d) {
+
+
+        foreach ($this->dissServices as $d) {
             $params = array();
             $params = $d->getParameters();
-            $obj = $this->createDissServObj($d, $params);            
+            $obj = $this->createDissServObj($d, $params);
             $this->result[] = $obj;
         }
         return $this->result;
     }
-    
-    
+
     public function getDisseminationServicesById(int $id): object {
-        if(count($this->result) == 0) {
+        if (count($this->result) == 0) {
             $this->result = $this->getDisseminationServices();
         }
-        
+
         foreach ($this->result as $value) {
-            
-            if($value->getId() == $id) {
+
+            if ($value->getId() == $id) {
                 return $value;
             }
         }
         return new \stdClass();
     }
-    
+
 }
