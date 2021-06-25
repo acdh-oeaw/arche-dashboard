@@ -6,14 +6,15 @@ use Drupal\Core\Controller\ControllerBase;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
-class DashboardController extends ControllerBase {
-
+class DashboardController extends ControllerBase
+{
     private $data = array();
     private $repo;
     private $model;
     private $helper;
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->config = drupal_get_path('module', 'acdh_repo_gui') . '/config/config.yaml';
         $this->repo = \acdhOeaw\arche\lib\Repo::factory($this->config);
         //setup the dashboard model class
@@ -23,10 +24,11 @@ class DashboardController extends ControllerBase {
 
     /**
      * Dashboard property count view
-     * 
+     *
      * @return array
      */
-    public function dashboard_detail(string $key = "properties"): array {
+    public function dashboard_detail(string $key = "properties"): array
+    {
         //generate the view
         $data = $this->generateView($key);
 
@@ -64,7 +66,8 @@ class DashboardController extends ControllerBase {
         ];
     }
 
-    public function dashboard_format_property_detail(string $property): array {
+    public function dashboard_format_property_detail(string $property): array
+    {
         $property = base64_decode($property);
         $data = $this->model->getFacetDetail('https://vocabs.acdh.oeaw.ac.at/schema#hasFormat', $property);
 
@@ -74,7 +77,7 @@ class DashboardController extends ControllerBase {
             $cols = array();
         }
 
-        // print_r ($cols); 
+        // print_r ($cols);
         return [
             '#theme' => 'arche-dashboard-table',
             '#basic' => $data,
@@ -86,11 +89,12 @@ class DashboardController extends ControllerBase {
 
     /**
      * The rdf:type class properties detail view
-     * 
+     *
      * @param string $property
      * @return array
      */
-    public function dashboard_class_property_detail(string $property): array {
+    public function dashboard_class_property_detail(string $property): array
+    {
         $property = base64_decode($property);
         $data = $this->model->getFacetDetail('http://www.w3.org/1999/02/22-rdf-syntax-ns#type', $property);
 
@@ -100,7 +104,7 @@ class DashboardController extends ControllerBase {
             $cols = array();
         }
 
-        // print_r ($cols); 
+        // print_r ($cols);
         return [
             '#theme' => 'arche-dashboard-table',
             '#basic' => $data,
@@ -112,11 +116,11 @@ class DashboardController extends ControllerBase {
 
     /**
      * Dashboard property count distinct values  view
-     * 
+     *
      * @return array
      */
-    public function dashboard_property_detail(string $property): array {
-
+    public function dashboard_property_detail(string $property): array
+    {
         $property = base64_decode($property);
         $data = $this->model->getFacet($property);
 
@@ -137,11 +141,11 @@ class DashboardController extends ControllerBase {
 
     /**
      * The Dashboard Main Menu View
-     * 
+     *
      * @return array
      */
-    public function dashboard_overview(): array {
-
+    public function dashboard_overview(): array
+    {
         return [
             '#theme' => 'arche-dashboard-overview',
             '#cache' => ['max-age' => 0]
@@ -149,13 +153,14 @@ class DashboardController extends ControllerBase {
     }
 
     /**
-     * The basic view generation function, which will handle the sql queries based 
+     * The basic view generation function, which will handle the sql queries based
      * on the passed property
-     * 
+     *
      * @param type $key
      * @return array
      */
-    public function generateView($key): array {
+    public function generateView($key): array
+    {
 
         //get the data from the DB
         $this->data = $this->model->getViewData($key);
@@ -164,19 +169,19 @@ class DashboardController extends ControllerBase {
         return $this->data;
     }
 
-    public function generateHeaders($key): array {
-
+    public function generateHeaders($key): array
+    {
         return $this->model->getHeaders($key);
     }
 
     /**
      * The properties deatil view
-     * 
+     *
      * @param string $property
      * @return Response
      */
-    public function dashboard_property_detail_api(string $property): Response {
-
+    public function dashboard_property_detail_api(string $property): Response
+    {
         $property = base64_decode($property);
         //get the value the value after the last /
         $value = substr($property, strrpos($property, '/') + 1);
@@ -204,11 +209,12 @@ class DashboardController extends ControllerBase {
 
     /**
      * The properties deatil view
-     * 
+     *
      * @param string $property
      * @return Response
      */
-    public function dashboard_dissemination_services_list() {
+    public function dashboard_dissemination_services_list()
+    {
         $disservHelper = new \Drupal\arche_dashboard\Helper\DisseminationServiceHelper();
         $data = $disservHelper->getDissServices();
         return [
@@ -221,7 +227,8 @@ class DashboardController extends ControllerBase {
      * Dissemination services list api call for the datatable
      * @return Response
      */
-    public function getDisseminationServiceApi(): Response {
+    public function getDisseminationServiceApi(): Response
+    {
         $data = array();
 
         $disservHelper = new \Drupal\arche_dashboard\Helper\DisseminationServiceHelper();
@@ -238,7 +245,8 @@ class DashboardController extends ControllerBase {
      * @param string $id
      * @return type
      */
-    public function dashboard_dissemination_services_detail(string $id) {
+    public function dashboard_dissemination_services_detail(string $id)
+    {
         $disservHelper = new \Drupal\arche_dashboard\Helper\DisseminationServiceHelper();
         $data = $disservHelper->getDissServResourcesById((int)$id);
       
@@ -256,7 +264,8 @@ class DashboardController extends ControllerBase {
      * @param int $offset
      * @return Response
      */
-    public function getDisseminationServiceMatchingResourcesApi(string $id): Response {
+    public function getDisseminationServiceMatchingResourcesApi(string $id): Response
+    {
         $offset = (empty($_POST['start'])) ? 0 : $_POST['start'];
         $limit = (empty($_POST['length'])) ? 10 : $_POST['length'];
         $draw = (empty($_POST['draw'])) ? 0 : $_POST['draw'];
@@ -270,7 +279,7 @@ class DashboardController extends ControllerBase {
         $response->setContent(
             json_encode(
                 array(
-                    "aaData" => $matching, 
+                    "aaData" => $matching,
                     "iTotalRecords" => $data->getCount(),
                     "iTotalDisplayRecords" => $data->getCount(),
                     "draw" => intval($draw),
@@ -280,5 +289,4 @@ class DashboardController extends ControllerBase {
         $response->headers->set('Content-Type', 'application/json');
         return $response;
     }
-
 }
