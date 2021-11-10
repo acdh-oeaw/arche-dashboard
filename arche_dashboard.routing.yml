@@ -8,6 +8,8 @@ dashboard_overview:
     requirements:
         _permission: 'access content'
         _access: 'TRUE' 
+    options:
+        no_cache: 'TRUE'    
 
 dashboard_detail:    
     path: '/dashboard/{key}' 
@@ -16,7 +18,9 @@ dashboard_detail:
     requirements:
         _permission: 'access content'
         _access: 'TRUE' 
-
+    options:
+        no_cache: 'TRUE'
+        
 dashboard_property:    
     path: '/dashboard-property/{property}' 
     defaults:
@@ -24,6 +28,8 @@ dashboard_property:
     requirements:
         _permission: 'access content'
         _access: 'TRUE' 
+    options:
+        no_cache: 'TRUE'
         
 dashboard_class_property:    
     path: '/dashboard-class-property/{property}' 
@@ -32,6 +38,8 @@ dashboard_class_property:
     requirements:
         _permission: 'access content'
         _access: 'TRUE' 
+    options:
+        no_cache: 'TRUE'
 
 dashboard_format_property:    
     path: '/dashboard-format-property/{property}' 
@@ -40,6 +48,8 @@ dashboard_format_property:
     requirements:
         _permission: 'access content'
         _access: 'TRUE' 
+    options:
+        no_cache: 'TRUE'    
         
 dashboard_detail_api:    
     path: '/dashboard-detail-api/{property}' 
@@ -48,6 +58,8 @@ dashboard_detail_api:
     requirements:
         _permission: 'access content'
         _access: 'TRUE' 
+    options:
+        no_cache: 'TRUE'    
         
 dashboard_dissemination_services:    
     path: '/dashboard-dissemination-services' 
@@ -56,6 +68,8 @@ dashboard_dissemination_services:
     requirements:
         _permission: 'access content'
         _access: 'TRUE' 
+    options:
+        no_cache: 'TRUE'    
         
 dashboard_disserv_list_api:    
     path: '/dashboard-dissserv-api' 
@@ -64,6 +78,8 @@ dashboard_disserv_list_api:
     requirements:
         _permission: 'access content'
         _access: 'TRUE'   
+    options:
+        no_cache: 'TRUE'    
     
 dashboard_dissemination_services_detail:    
     path: '/dashboard-dissserv-detail/{id}' 
@@ -72,6 +88,8 @@ dashboard_dissemination_services_detail:
     requirements:
         _permission: 'access content'
         _access: 'TRUE'    
+    options:
+        no_cache: 'TRUE'    
         
 dashboard_disserv_matching_api:    
     path: '/dashboard-dissserv-matching-api/{id}' 
@@ -79,4 +97,7 @@ dashboard_disserv_matching_api:
         _controller: '\Drupal\arche_dashboard\Controller\DashboardController::getDisseminationServiceMatchingResourcesApi'
     requirements:
         _permission: 'access content'
-        _access: 'TRUE'           
+        _access: 'TRUE'     
+    options:
+        no_cache: 'TRUE'    
+        
