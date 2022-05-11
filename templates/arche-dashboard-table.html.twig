@@ -1,11 +1,11 @@
+{% set module_path = _self|split('/templates') %}
+{{ include(module_path[0] ~ '/templates/helper/helper-title.html.twig', {'title': key } ) }}
 
-<h2>Statistics - {{key}} </h2>
-        
 <table class="display table table-striped" id='db-properties' cellspacing="0" width="100%">
     <thead>
         <tr>
         {% for key,value in cols %}
-            <th>{{ key }}</th>
+            <th>{{ include(module_path[0] ~ '/templates/helper/helper-table-title.html.twig', {'title': key } ) }}</th>
 	{% endfor %}
         </tr>
     </thead>
@@ -35,7 +35,7 @@
                         <a href="/browser/oeaw_detail/{{ attribute(value, kc) }}" >
                             {{ attribute(value, kc) }}
                         </a>
-                    {% elseif kc == 'cnt' and attribute(value, 'type') and attribute(value, 'type') != 'REL' %} 
+                    {% elseif kc == 'count' and attribute(value, 'type') and attribute(value, 'type') != 'REL' %} 
                         <a href="#" id="getAttributesView" data-property="{{ key }}" data-value="{{ attribute(value, 'key') }}">{{ attribute(value, kc) }}</a>
 		    {% elseif kc == 'format' %}
                          <a href="/browser/{{ detailPageUrl }}/{{ attribute(value, kc) }}" >

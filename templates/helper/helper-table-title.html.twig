@@ -1,0 +1,12 @@
+{% set titles = { 'title': 'Title', 'format' : 'Format',
+ 'count': 'Count', 'sum_size' : 'Sum Size', 'type': 'Type', 'bsize': 'Binary Size',
+    'cnt': 'Count'} %}
+
+{% if title in titles|keys %}
+    {{ titles[title] }}
+{% else %}
+    {{title}}
+{% endif %}  
+
+    
+

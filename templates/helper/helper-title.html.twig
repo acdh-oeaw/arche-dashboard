@@ -1,0 +1,9 @@
+{% set titles = { 'classesproperties': 'Properties per class', 'topcollections' : 'Top collection',
+ 'formatspercollection': 'Formats per collection', 'dashboard-dissemination-services': 'Dissemination services'} %}
+
+{% if title in titles|keys %}
+    <h2>Statistics - {{ titles[title] }} </h2>
+{% else %}
+    <h2>Statistics - {{title}} </h2> 
+{% endif %}   
+ 

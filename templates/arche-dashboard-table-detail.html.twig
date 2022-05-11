@@ -30,7 +30,7 @@
                         <a href="/browser/oeaw_detail/{{ attribute(value, kc) }}" >
                             {{ attribute(value, kc) }}
                         </a>
-                    {% elseif kc == 'cnt' and attribute(value, 'type') %} 
+                    {% elseif kc == 'count' and attribute(value, 'type') %} 
                         <a href="#" id="getAttributesView" data-property="{{ key }}" data-value="{{ attribute(value, 'key') }}">{{ attribute(value, kc) }}</a>
 		    {% else %}
                         <!-- use this special function to pass the field names from the keys array -->
