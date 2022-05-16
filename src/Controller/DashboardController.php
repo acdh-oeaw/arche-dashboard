@@ -187,6 +187,7 @@ class DashboardController extends ControllerBase
         $value = substr($property, strrpos($property, '/') + 1);
         $property = str_replace('/' . $value, '', $property);
 
+       
         $data = $this->model->getFacetDetail($property, $value);
 
         if (count($data) > 0) {
@@ -282,6 +283,111 @@ class DashboardController extends ControllerBase
                     "aaData" => $matching,
                     "iTotalRecords" => $data->getCount(),
                     "iTotalDisplayRecords" => $data->getCount(),
+                    "draw" => intval($draw),
+                )
+            )
+        );
+        $response->headers->set('Content-Type', 'application/json');
+        return $response;
+    }
+    
+   
+    
+    public function dashboard_detail_api(string $key = "properties"): array
+    {
+        $offset = (empty($_POST['start'])) ? 0 : $_POST['start'];
+        $limit = (empty($_POST['length'])) ? 10 : $_POST['length'];
+        $draw = (empty($_POST['draw'])) ? 0 : $_POST['draw'];
+        
+        //generate the view
+        $data = $this->generateView($key, (int)$limit, (int)$offset);
+
+        if (count($data) > 0) {
+            $cols = get_object_vars($data[0]);
+        } else {
+            $cols = array();
+        }
+
+        /* if the key is the properties then we need to change the # in the url */
+        if ($key == 'properties' || $key == 'classes' || $key == 'classesproperties') {
+            $data = $this->helper->generatePropertyUrl($data);
+        }
+
+        switch ($key) {
+            case 'classes':
+                $detailPageUrl = 'dashboard-class-property';
+                break;
+            case 'formats':
+                $detailPageUrl = 'dashboard-format-property';
+                break;
+
+            default:
+                $detailPageUrl = 'dashboard-property';
+                break;
+        }
+
+        
+        $response = new Response();
+        $response->setContent(
+            json_encode(
+                array(
+                    "aaData" => $matching,
+                    "iTotalRecords" => $data->getCount(),
+                    "iTotalDisplayRecords" => $data->getCount(),
+                    "draw" => intval($draw),
+                )
+            )
+        );
+        $response->headers->set('Content-Type', 'application/json');
+        return $response;
+        /*
+        
+        return [
+            '#theme' => 'arche-dashboard-table',
+            '#basic' => $data,
+            '#key' => $key,
+            '#cols' => $cols,
+            '#detailPageUrl' => $detailPageUrl,
+            '#cache' => ['max-age' => 0]
+        ];*/
+    }
+    
+    
+    public function getValuesByProperty() {
+        
+        $data = $this->model->getViewData();
+        
+        return [
+            '#theme' => 'arche-dashboard-values-by-property',
+            '#data' => $data,
+            '#cache' => ['max-age' => 0]
+        ];
+        
+    }
+    
+    public function getValuesByPropertyApi(string $property): Response
+    {
+        $offset = (empty($_POST['start'])) ? 0 : $_POST['start'];
+        $limit = (empty($_POST['length'])) ? 10 : $_POST['length'];
+        $draw = (empty($_POST['draw'])) ? 0 : $_POST['draw'];
+       
+        //$property = base64_decode($property);
+        //get the value the value after the last /
+        //$value = substr($property, strrpos($property, '/') + 1);
+        //$property = str_replace('/' . $value, '', $property);
+        
+       
+        $property = 'https://vocabs.acdh.oeaw.ac.at/schema#hasSubject';
+        $data = array();
+        $data = $this->model->getValuesByPropertyApiData($property, $offset, $limit);
+      
+        $response = new Response();
+        $response->setContent(
+            json_encode(
+                array(
+                    "aaData" => $data,
+                    "iTotalRecords" => $data[0]->sumCount,
+                    "iTotalDisplayRecords" => $data[0]->sumCount,
                     "draw" => intval($draw),
                 )
             )

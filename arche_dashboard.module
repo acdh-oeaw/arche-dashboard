@@ -25,7 +25,11 @@ function arche_dashboard_theme($existing, $type, $theme, $path)
         ],
         'arche-dashboard-disserv-detail' => [
             'variables' => ['data' => NULL]
+        ],
+        'arche-dashboard-values-by-property' => [
+            'variables' => ['data' => NULL]
         ]
+        
     ];
 }
 

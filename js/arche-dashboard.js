@@ -27,53 +27,53 @@
                 '<td>' + d.location + '</td>' +
                 '</tr>' +
                 '</table>';
-        
-            if (!($.isEmptyObject(d.dissParams))){
-                str += '<b>PARAMS</b>:'; 
-            
-                str += '<table cellspacing="0" border="0" style="padding-left:50px; width: 100%!important;">';
-                $.each(d.dissParams, function(k, v){
+
+        if (!($.isEmptyObject(d.dissParams))) {
+            str += '<b>PARAMS</b>:';
+
+            str += '<table cellspacing="0" border="0" style="padding-left:50px; width: 100%!important;">';
+            $.each(d.dissParams, function (k, v) {
+                str += '<tr>';
+                str += '<td><b>Param: ' + k + '</b></td>';
+                str += '</tr>';
+                str += '<tr>';
+                str += '<td width="150px">isPartOf:</td>';
+                str += '<td>' + v.isPartOf + '</td>';
+                str += '</tr>';
+                str += '<tr>';
+                str += '<td width="150px">defaultValue:</td>';
+                str += '<td>' + v.defaultValue + '</td>';
+                str += '</tr>';
+            });
+            str += '</table>';
+        }
+
+        if (!($.isEmptyObject(d.filterValues))) {
+            str += '<b>Filters</b>:';
+
+            str += '<table cellspacing="0" border="0" style="padding-left:50px; width: 100%!important;">';
+            $.each(d.filterValues, function (k, v) {
+                if (v.matchesProp || v.matchesValue || v.isRequired) {
                     str += '<tr>';
-                        str += '<td><b>Param: ' + k + '</b></td>';
+                    str += '<td><b>Filter ' + k + ':</b></td>';
                     str += '</tr>';
                     str += '<tr>';
-                        str +='<td width="150px">isPartOf:</td>';
-                        str +='<td>'+v.isPartOf+'</td>';
+                    str += '<td width="150px">matchesProp:</td>';
+                    str += '<td>' + v.matchesProp + '</td>';
                     str += '</tr>';
                     str += '<tr>';
-                        str +='<td width="150px">defaultValue:</td>';
-                        str +='<td>'+v.defaultValue+'</td>';
+                    str += '<td width="150px">matchesValue:</td>';
+                    str += '<td>' + v.matchesValue + '</td>';
                     str += '</tr>';
-                });
-                str += '</table>';
-            }
-            
-            if (!($.isEmptyObject(d.filterValues))){
-                str += '<b>Filters</b>:'; 
-            
-                str += '<table cellspacing="0" border="0" style="padding-left:50px; width: 100%!important;">';
-                $.each(d.filterValues, function(k, v){
-                    if(v.matchesProp || v.matchesValue || v.isRequired) {
-                        str += '<tr>';
-                            str += '<td><b>Filter ' + k + ':</b></td>';
-                        str += '</tr>';
-                        str += '<tr>';
-                            str +='<td width="150px">matchesProp:</td>';
-                            str +='<td>'+v.matchesProp+'</td>';
-                        str += '</tr>';
-                        str += '<tr>';
-                            str +='<td width="150px">matchesValue:</td>';
-                            str +='<td>'+v.matchesValue+'</td>';
-                        str += '</tr>';
-                        str += '<tr>';
-                            str +='<td width="150px">matchesValue:</td>';
-                            str +='<td>'+v.isRequired+'</td>';
-                        str += '</tr>';
-                    }
-                });
-                str += '</table>';
-            }
-        
+                    str += '<tr>';
+                    str += '<td width="150px">matchesValue:</td>';
+                    str += '<td>' + v.isRequired + '</td>';
+                    str += '</tr>';
+                }
+            });
+            str += '</table>';
+        }
+
         return str;
     }
 
@@ -127,7 +127,7 @@
 
     /// Dissmeination service matching resources datatable settings /////
     var dissId = $('#dissId').val();
-    
+
     var disserv_matching_table = $('#dissserv-matching-table').DataTable({
         "paging": true,
         "searching": false,
@@ -135,10 +135,10 @@
         "processing": true,
         "serverSide": true,
         "serverMethod": "post",
-        "ajax": "/browser/dashboard-dissserv-matching-api/"+dissId,
+        "ajax": "/browser/dashboard-dissserv-matching-api/" + dissId,
         'columns': [
-            { data: 'url' },
-            { data: 'title',
+            {data: 'url'},
+            {data: 'title',
                 "render": function (data, type, row, meta) {
                     return '<a href="/browser/oeaw_detail/' + row.id + '">' + data + '</a>';
                 }
@@ -147,8 +147,8 @@
     });
 
     /// Dissmeination service matching resources datatable settings END /////
-    
-    
+
+
     $(document).delegate("a#getAttributesView", "click", function (e) {
 
         $('table.display-dashboard-detail').DataTable();
@@ -180,6 +180,33 @@
         });
         e.preventDefault();
     });
+
+
+    $('#values-by-property-table').hide();
+    $(document).delegate("#property-list", "change", function (e) {
+        console.log('changed');
+        //we need to destroy the table to we can reinit a new selection with new data
+        $('#values-by-property-table').DataTable().clear();
+        $('#values-by-property-table').DataTable().destroy();
+        $('#values-by-property-table').show();
+        console.log($(this).val());
+        var values_by_properties = $('#values-by-property-table').DataTable({
+            "paging": true,
+            "searching": true,
+            "pageLength": 10,
+            "processing": true,
+            "serverSide": true,
+            "serverMethod": "post",
+            "ajax": "/browser/dashboard-values-by-property-api/" + $(this).val(),
+            'columns': [
+                {data: 'property'},
+                {data: 'key'},
+                {data: 'count'}
+                
+            ]
+        });
+    });
+
 
 })(jQuery, Drupal);
 

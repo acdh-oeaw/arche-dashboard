@@ -147,6 +147,36 @@ class DashboardModel
         }
     }
  
+    /**
+     * Get the values by property data 
+     * @param string $property
+     * @return array
+     */
+    public function getValuesByPropertyApiData(string $property, int $offset, int $limit): array
+    {
+        try {
+            $query = $this->repodb->query(
+                "select * from gui.dash_get_facet_by_property_func(:property) limit :limit offset :offset;
+                ",
+                array(
+                    ':property' => $property,
+                    ':limit' => $limit,
+                    ':offset' => $offset 
+                )
+            );
+            $return = $query->fetchAll();
+            
+            $this->changeBackDBConnection();
+            return $return;
+        } catch (Exception $ex) {
+            \Drupal::logger('arche_dashboard')->notice($ex->getMessage());
+            return array();
+        } catch (\Drupal\Core\Database\DatabaseExceptionWrapper $ex) {
+            \Drupal::logger('arche_dashboard')->notice($ex->getMessage());
+            return array();
+        }
+    }
+    
     public function changeBackDBConnection()
     {
         \Drupal\Core\Database\Database::setActiveConnection();

@@ -1,6 +1,23 @@
 {% set module_path = _self|split('/templates') %}
 {{ include(module_path[0] ~ '/templates/helper/helper-title.html.twig', {'title': key } ) }}
-
+<script type="text/javascript">
+    $(document).ready(function(){
+   $('#db-properties').DataTable({
+      'processing': true,
+      'serverSide': true,
+      'ajax': {
+          'url':'ajaxfile.php'
+      },
+      'columns': [
+         { data: 'emp_name' },
+         { data: 'email' },
+         { data: 'gender' },
+         { data: 'salary' },
+         { data: 'city' },
+      ]
+   });
+});
+</script>
 <table class="display table table-striped" id='db-properties' cellspacing="0" width="100%">
     <thead>
         <tr>
@@ -16,6 +33,7 @@
                 <!-- loop through thekeys array -->
                 {% for kc,kv in cols %}
                     <td>
+                       
                     {% if kc == 'title' and kv is not empty  %}
                         {% if attribute(value, 'key') %}
                         <a href="/browser/oeaw_detail/{{ attribute(value, 'key') }}" >
@@ -34,7 +52,7 @@
                         <a href="/browser/oeaw_detail/{{ attribute(value, kc) }}" >
                             {{ attribute(value, kc) }}
                         </a>
-                    {% elseif (kc == 'count' or kc == 'cnt') and attribute(value, 'type') and attribute(value, 'type') != 'REL' %} 
+                    {% elseif kc == 'count' and attribute(value, 'type') and attribute(value, 'type') != 'REL' %} 
                         <a href="#" id="getAttributesView" data-property="{{ key }}" data-value="{{ attribute(value, 'key') }}">{{ attribute(value, kc) }}</a>
 		    {% elseif kc == 'format' %}
                          <a href="/browser/{{ detailPageUrl }}/{{ attribute(value, kc) }}" >

@@ -64,35 +64,40 @@
             </span>
         </div> 
     </div>
-    
-    <div class="col-12">
-        <br><br>
-        <div class="row">
-            <h3>{{ "Dissemination Filter Values"|trans }}</h3>
-            <table class="table">
-                <thead>
-                  <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">{{ "matchesProp"|trans }}</th>
-                    <th scope="col">{{ "matchesValue"|trans }}</th>
-                    <th scope="col">{{ "isRequired"|trans }}</th>
-                  </tr>
-                </thead>
-                <tbody>
-                    {% for k,v in data.getFilterValues() %}
-                        {% if  v.matchesProp or v.matchesValue or v.isRequired %}
-                            <tr>
-                              <th scope="row">{{ k }}</th>
-                              <td>{{ v.matchesProp }}   </td>
-                              <td>{{ v.matchesValue }} </td>
-                              <td>{{ v.isRequired }}   </td>
-                            </tr>
-                        {% endif %}
-                    {% endfor %}
-                </tbody>
-            </table>
+    {% if  data.getFilterValues().length > 0 %}
+        <div class="col-12">
+            <br><br>
+            <div class="row">
+                <h3>{{ "Dissemination Filter Values"|trans }}</h3>
+
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">{{ "matchesProp"|trans }}</th>
+                            <th scope="col">{{ "matchesValue"|trans }}</th>
+                            <th scope="col">{{ "isRequired"|trans }}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for k,v in data.getFilterValues() %}
+                            {% if  v.matchesProp or v.matchesValue or v.isRequired %}
+                                <tr>
+                                    <th scope="row">{{ k }}</th>
+                                    <td>{{ v.matchesProp }}   </td>
+                                    <td>{{ v.matchesValue }} </td>
+                                    <td>{{ v.isRequired }}   </td>
+                                </tr>
+                            {% endif %}
+                        {% endfor %}
+                    </tbody>
+                </table>
+
+            </div>
         </div>
-    </div>
+    {%  else %}
+        <p>There are no filter values!</p>
+    {% endif %}
 
 </div>
 <br>

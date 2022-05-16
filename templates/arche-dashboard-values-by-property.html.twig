@@ -1,0 +1,28 @@
+
+
+<label for="property-list">Choose a property:</label>
+<br>
+<select name="property-list" id="property-list" >
+    {% for k,v in data %}
+        <option value="{{ v.property }}">{{ v.property }}</option>
+    {% endfor %}   
+</select> 
+
+<br><br>
+<table id="values-by-property-table" class="table-striped" style="width:100%">
+    <thead>
+        <tr>
+            <th>{{ "Text"|trans }}</th>
+            <th>{{ "Property"|trans }}</th>
+            <th>{{ "Count"|trans }}</th>
+        </tr>
+    </thead>
+    <tfoot>
+        <tr>
+            <th>{{ "Text"|trans }}</th>
+            <th>{{ "Property"|trans }}</th>
+            <th>{{ "Count"|trans }}</th>
+        </tr>
+    </tfoot>
+</table>
+
