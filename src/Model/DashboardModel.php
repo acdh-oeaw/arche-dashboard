@@ -152,14 +152,16 @@ class DashboardModel
      * @param string $property
      * @return array
      */
-    public function getValuesByPropertyApiData(string $property, int $offset, int $limit, string $search = ""): array
+    public function getValuesByPropertyApiData(string $property, int $offset, int $limit, string $search = "", int $orderby = 1, string $order = 'asc'): array
     {
         $property = str_replace(':', '/', $property);
         $property = str_replace('//', '://', $property);
      
         try {
             $query = $this->repodb->query(
-                "select * from gui.dash_get_facet_by_property_func(:property) where LOWER(key) like  LOWER('%' || :search || '%') limit :limit offset :offset;",
+                "select * from gui.dash_get_facet_by_property_func(:property) where LOWER(key) like  LOWER('%' || :search || '%') "
+                    . "order by $orderby $order "
+                    . " limit :limit offset :offset;",
                 array(
                     ':property' => $property,
                     ':limit' => $limit,

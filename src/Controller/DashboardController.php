@@ -371,9 +371,12 @@ class DashboardController extends ControllerBase
         $limit = (empty($_POST['length'])) ? 10 : $_POST['length'];
         $draw = (empty($_POST['draw'])) ? 0 : $_POST['draw'];
         $search = (empty($_POST['search']['value'])) ? "" : $_POST['search']['value'];
-       
+        //datatable start columns from 0 but in db we have to start it from 1
+        $orderby = (empty($_POST['order'][0]['column'])) ? 1 : (int)$_POST['order'][0]['column'] + 1;
+        $order = (empty($_POST['order'][0]['dir'])) ? 'asc' : $_POST['order'][0]['dir'];
         $data = array();
-        $data = $this->model->getValuesByPropertyApiData($property, $offset, $limit, $search);
+        
+        $data = $this->model->getValuesByPropertyApiData($property, $offset, $limit, $search, $orderby, $order);
       
         $response = new Response();
         $response->setContent(
