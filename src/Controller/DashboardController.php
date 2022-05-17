@@ -341,7 +341,7 @@ class DashboardController extends ControllerBase
         $response->headers->set('Content-Type', 'application/json');
         return $response;
         /*
-        
+
         return [
             '#theme' => 'arche-dashboard-table',
             '#basic' => $data,
@@ -353,8 +353,8 @@ class DashboardController extends ControllerBase
     }
     
     
-    public function getValuesByProperty() {
-        
+    public function getValuesByProperty()
+    {
         $data = $this->model->getViewData();
         $data = $this->helper->generatePropertyUrl($data);
         return [
@@ -362,7 +362,6 @@ class DashboardController extends ControllerBase
             '#data' => $data,
             '#cache' => ['max-age' => 0]
         ];
-        
     }
     
     public function getValuesByPropertyApi(string $property): Response
