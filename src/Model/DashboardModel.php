@@ -148,7 +148,7 @@ class DashboardModel
     }
  
     /**
-     * Get the values by property data 
+     * Get the values by property data
      * @param string $property
      * @return array
      */
