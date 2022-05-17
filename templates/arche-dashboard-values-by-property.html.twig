@@ -1,10 +1,11 @@
 
-
+<h2>Property Count for TopCollections, Collections, Projects </h2> 
 <label for="property-list">Choose a property:</label>
 <br>
 <select name="property-list" id="property-list" >
+    <option value="#">-----</option>
     {% for k,v in data %}
-        <option value="{{ v.property }}">{{ v.property }}</option>
+        <option value="{{ v.property }}">{{ v.property|replace({'%23': '#'}) }}</option>
     {% endfor %}   
 </select> 
 
@@ -14,14 +15,14 @@
         <tr>
             <th>{{ "Text"|trans }}</th>
             <th>{{ "Property"|trans }}</th>
-            <th>{{ "Count"|trans }}</th>
+            <th width="15%">{{ "Count"|trans }}</th>
         </tr>
     </thead>
     <tfoot>
         <tr>
             <th>{{ "Text"|trans }}</th>
             <th>{{ "Property"|trans }}</th>
-            <th>{{ "Count"|trans }}</th>
+            <th width="15%">{{ "Count"|trans }}</th>
         </tr>
     </tfoot>
 </table>

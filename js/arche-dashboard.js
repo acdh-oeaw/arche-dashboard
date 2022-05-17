@@ -184,12 +184,12 @@
 
     $('#values-by-property-table').hide();
     $(document).delegate("#property-list", "change", function (e) {
-        console.log('changed');
+        
         //we need to destroy the table to we can reinit a new selection with new data
         $('#values-by-property-table').DataTable().clear();
         $('#values-by-property-table').DataTable().destroy();
         $('#values-by-property-table').show();
-        console.log($(this).val());
+        
         var values_by_properties = $('#values-by-property-table').DataTable({
             "paging": true,
             "searching": true,

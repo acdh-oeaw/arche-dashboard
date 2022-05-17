@@ -356,7 +356,7 @@ class DashboardController extends ControllerBase
     public function getValuesByProperty() {
         
         $data = $this->model->getViewData();
-        
+        $data = $this->helper->generatePropertyUrl($data);
         return [
             '#theme' => 'arche-dashboard-values-by-property',
             '#data' => $data,
@@ -370,24 +370,18 @@ class DashboardController extends ControllerBase
         $offset = (empty($_POST['start'])) ? 0 : $_POST['start'];
         $limit = (empty($_POST['length'])) ? 10 : $_POST['length'];
         $draw = (empty($_POST['draw'])) ? 0 : $_POST['draw'];
+        $search = (empty($_POST['search']['value'])) ? "" : $_POST['search']['value'];
        
-        //$property = base64_decode($property);
-        //get the value the value after the last /
-        //$value = substr($property, strrpos($property, '/') + 1);
-        //$property = str_replace('/' . $value, '', $property);
-        
-       
-        $property = 'https://vocabs.acdh.oeaw.ac.at/schema#hasSubject';
         $data = array();
-        $data = $this->model->getValuesByPropertyApiData($property, $offset, $limit);
+        $data = $this->model->getValuesByPropertyApiData($property, $offset, $limit, $search);
       
         $response = new Response();
         $response->setContent(
             json_encode(
                 array(
                     "aaData" => $data,
-                    "iTotalRecords" => $data[0]->sumCount,
-                    "iTotalDisplayRecords" => $data[0]->sumCount,
+                    "iTotalRecords" => ($data[0]->sumcount) ?  $data[0]->sumcount : 0,
+                    "iTotalDisplayRecords" => ($data[0]->sumcount) ?  $data[0]->sumcount : 0,
                     "draw" => intval($draw),
                 )
             )

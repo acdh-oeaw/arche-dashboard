@@ -152,20 +152,22 @@ class DashboardModel
      * @param string $property
      * @return array
      */
-    public function getValuesByPropertyApiData(string $property, int $offset, int $limit): array
+    public function getValuesByPropertyApiData(string $property, int $offset, int $limit, string $search = ""): array
     {
+        $property = str_replace(':', '/', $property);
+        $property = str_replace('//', '://', $property);
+     
         try {
             $query = $this->repodb->query(
-                "select * from gui.dash_get_facet_by_property_func(:property) limit :limit offset :offset;
-                ",
+                "select * from gui.dash_get_facet_by_property_func(:property) where LOWER(key) like  LOWER('%' || :search || '%') limit :limit offset :offset;",
                 array(
                     ':property' => $property,
                     ':limit' => $limit,
-                    ':offset' => $offset 
+                    ':offset' => $offset,
+                    ':search' => $search
                 )
             );
             $return = $query->fetchAll();
-            
             $this->changeBackDBConnection();
             return $return;
         } catch (Exception $ex) {
