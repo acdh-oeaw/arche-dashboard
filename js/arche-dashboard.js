@@ -1,6 +1,13 @@
 (function ($, Drupal) {
     'use strict';
 
+
+    $( document ).ready(function() {
+        $('.dashboard-desc-btn-hide').hide();
+    });
+    
+    
+
     var table = $('table.display').DataTable({
         "lengthMenu": [[20, 35, 50, -1], [20, 35, 50, "All"]]
     });
@@ -205,6 +212,18 @@
                 
             ]
         });
+    });
+
+    $('.dashboard-desc-btn-hide').on('click', function () {
+        $('.dashboard-desc-btn-hide').hide();
+        $('.dashboard-desc-btn-show').show();
+        $('.dashboard-description').hide();
+    });
+    
+    $('.dashboard-desc-btn-show').on('click', function () {
+        $('.dashboard-desc-btn-show').hide();
+        $('.dashboard-desc-btn-hide').show();
+        $('.dashboard-description').show();
     });
 
 

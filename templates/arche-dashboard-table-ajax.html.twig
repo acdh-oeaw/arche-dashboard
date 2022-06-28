@@ -1,23 +1,6 @@
 {% set module_path = _self|split('/templates') %}
 {{ include(module_path[0] ~ '/templates/helper/helper-title.html.twig', {'title': key } ) }}
-<script type="text/javascript">
-    $(document).ready(function(){
-   $('#db-properties').DataTable({
-      'processing': true,
-      'serverSide': true,
-      'ajax': {
-          'url':'ajaxfile.php'
-      },
-      'columns': [
-         { data: 'emp_name' },
-         { data: 'email' },
-         { data: 'gender' },
-         { data: 'salary' },
-         { data: 'city' },
-      ]
-   });
-});
-</script>
+
 <table class="display table table-striped" id='db-properties' cellspacing="0" width="100%">
     <thead>
         <tr>

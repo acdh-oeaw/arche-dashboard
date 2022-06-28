@@ -1,6 +1,12 @@
 <h3>{{ "Dissemination Service Detail View"|trans }}</h3>
 <input type="hidden" value="{{ data.getId() }}" name="dissId" id="dissId">
-
+<div class="mb-3">
+    <button type="button" class="dashboard-desc-btn-show btn btn-light">{{ "Display Description"|trans }}</button>
+    <button type="button" class="dashboard-desc-btn-hide btn btn-light">{{ "Hide Description"|trans }}</button>
+    <div class="dashboard-description alert alert-secondary hidden" role="alert">
+        {{ "The details of the selected Dissemination Service. Below the list contains the matching resources."|trans}}
+    </div>
+</div>
 <div class="row">
     <div class="col-12">
         <div class="row">
@@ -52,7 +58,7 @@
             </span>
         </div>
         <div class="row">
-            <span class="col-3 font-weight-bold">{{ "serviceRevProxy"|trans }}:</span> 
+            <span class="col-3 font-weight-bold">{{ "ServiceRevProxy"|trans }}:</span> 
             <span class="col-9">
                 {{ data.getServiceRevProxy() }}   
             </span>
@@ -96,7 +102,11 @@
             </div>
         </div>
     {%  else %}
-        <p>There are no filter values!</p>
+        <div class="row">
+            <div class="alert alert-danger" role="alert">
+                <p>{{ "There are no filter values!"|trans}}</p>
+            </div>
+        </div>    
     {% endif %}
 
 </div>

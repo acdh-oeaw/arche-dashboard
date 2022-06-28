@@ -1,6 +1,9 @@
 {% set titles = { 'title': 'Title', 'format' : 'Format',
  'count': 'Count', 'sum_size' : 'Sum Size', 'type': 'Type', 'bsize': 'Binary Size',
-    'cnt': 'Count'} %}
+    'cnt': 'Count', 'property': 'Property', 'class': 'Class', 
+    'cnt_distinct_value': 'Count Distinct value', 'max_relatives': 'Max. Relatives', 
+'binary_size': 'Binary Size', 'count_format': 'Count Format', 
+'count_rawbinarysize': 'Count RAW Binary Size', 'id': 'ID'} %}
 
 {% if title in titles|keys %}
     {{ titles[title] }}

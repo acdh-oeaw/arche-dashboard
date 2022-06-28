@@ -1,9 +1,19 @@
 {% set titles = { 'classesproperties': 'Properties per class', 'topcollections' : 'Top collection',
- 'formatspercollection': 'Formats per collection', 'dashboard-dissemination-services': 'Dissemination services'} %}
-
+ 'formatspercollection': 'Formats per collection', 'dashboard-dissemination-services': 'Dissemination services',
+    'properties': 'Properties'} %}
+    
+{% set descriptions = { 'properties': 'Properties description'} %}
+    
+    
 {% if title in titles|keys %}
     <h2>Statistics - {{ titles[title] }} </h2>
 {% else %}
     <h2>Statistics - {{title}} </h2> 
-{% endif %}   
+{% endif %}
+
+{% if title in descriptions|keys %}
+    <div class="page-description">{{ descriptions[title] }} </div>
+{% endif %}
+
+
  
