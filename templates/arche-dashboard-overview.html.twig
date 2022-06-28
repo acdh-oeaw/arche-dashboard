@@ -1,13 +1,26 @@
 <h1>Dashboard</h1>
-<p>Statistics about metadata</p>
+<div class="mb-3">
+    <button type="button" class="dashboard-desc-btn-show btn btn-light">{{ "Display Description"|trans }}</button>
+    <button type="button" class="dashboard-desc-btn-hide btn btn-light">{{ "Hide Description"|trans }}</button>
+    <div class="dashboard-description alert alert-secondary hidden" role="alert">
+        {{ "Every entity in ARCHE is enriched with metadata that allow for the resources to be discovered and understood and are thus an essential part of complying with the FAIR Data Principles, to make data Findable, Accessible, Interoperable, and Reusable (see FAQ)."|trans}}
+        <br/><br/>
+        {{ "The metadata in ARCHE follow the ARCHE schema. The complete ARCHE schema along with the documentation and annotations is available in an OWL-format and is also represented in a tabular form here and here. A tabular overview of properties per Project, Collection and Resource is available also in the Metadata requirements for depositing in ARCHE."|trans}}
+        <br/><br/>
+        {{ "This dashboard provides basic statistics about metadata used to describe entities in ARCHE and therefore allows for further exploration of data deposited to ARCHE. The dashboard is divided into tables listed below. Each table includes information about the count and size of a specific item (property, class, file format, dissemination service) for all entities deposited in ARCHE or per the main (top) collection."|trans}}
+    </div>
+</div>
+
+        <b>{{ "The following tables are available:"|trans}}</b>
+<br/>
 
 <ul>
-    <li><a href="dashboard/properties">Properties</a></li>
-    <li><a href="dashboard/classes" >Classes</a></li>
-    <li><a href="dashboard/classesproperties" >Classes properties</a></li>
-    <li><a href="dashboard/topcollections" >Top collections</a></li>
-    <li><a href="dashboard/formats" >Formats</a></li>
-    <li><a href="dashboard/formatspercollection" >Formats per top collection</a></li>
-    <li><a href="dashboard-dissemination-services" >Dissemination services list</a></li>
-    <li><a href="dashboard-values-by-property" >Summarize values by property for TopCollection/Collection/Project</a></li>
+    <li><a href="dashboard/properties" data-toggle="tooltip" title="{{ "Properties table indicates the count of how many times a property has been used across all entities in ARCHE. To see its instances, simply click on the property of interest. Each instance is a link to the ARCHE entry."|trans }}">Properties</a></li>
+    <li><a href="dashboard/classes" data-toggle="tooltip" title="{{ "Classes table specifies the count of how many times a Class has been used across all entities in ARCHE. To see its instances, simply click on the class of interest. Each instance is a link to the ARCHE entry."|trans }}">Classes</a></li>
+    <li><a href="dashboard/classesproperties" data-toggle="tooltip" title="{{ "Classes properties table lists the count of each property per class. One may also distinguish between the count of the distinct value and the total count a property has been used within a certain class. To see the instances of the properties, click on the one of interest."|trans }}">Classes properties</a></li>
+    <li><a href="dashboard/topcollections" data-toggle="tooltip" title="{{ "Top collections table lists all main Collections deposited to ARCHE and provides information about the number of items of a particular collection and their size (expressed in bytes)."|trans }}">Top collections</a></li>
+    <li><a href="dashboard/formats" data-toggle="tooltip" title="{{ "Formats table lists the count of formats of all resources deposited to ARCHE. The table provides also information on the total size (expressed in bytes) of resources per file format. To see the objects of a particular file format, simply click on it."|trans }}">Formats</a></li>
+    <li><a href="dashboard/formatspercollection" data-toggle="tooltip" title="{{ "Formats per collection similarly to the “Formats” table, 'Formats per collection'  provides information about the count of file formats of resources and their size (expressed in bytes), but for every main (top) collection separately. Additional information about the type of the object (Top collection/Collection/Resource) is also listed."|trans }}">Formats per top collection</a></li>
+    <li><a href="dashboard-dissemination-services" data-toggle="tooltip" title="{{ "Dissemination services list provides a list of dissemination services and their count provided in ARCHE. Each dissemination service link provides more detail about the service itself as well as a list of items for which the particular dissemination service is provided."|trans }}">Dissemination services list</a></li>
+    <li><a href="dashboard-values-by-property" data-toggle="tooltip" title="{{ "Summarize values by property for TopCollection/Collection/Project"|trans }}">Summarize values by property for TopCollection/Collection/Project</a></li>
 </ul>

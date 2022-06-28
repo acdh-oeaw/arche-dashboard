@@ -1,4 +1,5 @@
-
+{% set module_path = _self|split('/templates') %}
+{{ include(module_path[0] ~ '/templates/helper/helper-menu-button.html.twig' ) }}
 <h2>Property Count for TopCollections, Collections, Projects </h2> 
 <label for="property-list">Choose a property:</label>
 <br>

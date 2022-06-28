@@ -1,3 +1,6 @@
+{% set module_path = _self|split('/templates') %}
+{{ include(module_path[0] ~ '/templates/helper/helper-menu-button.html.twig' ) }}
+
 <h3>{{ "Dissemination Service Detail View"|trans }}</h3>
 <input type="hidden" value="{{ data.getId() }}" name="dissId" id="dissId">
 <div class="mb-3">

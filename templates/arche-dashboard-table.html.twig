@@ -1,4 +1,5 @@
 {% set module_path = _self|split('/templates') %}
+{{ include(module_path[0] ~ '/templates/helper/helper-menu-button.html.twig' ) }}
 {{ include(module_path[0] ~ '/templates/helper/helper-title.html.twig', {'title': key } ) }}
 
 <table class="display table table-striped" id='db-properties' cellspacing="0" width="100%">

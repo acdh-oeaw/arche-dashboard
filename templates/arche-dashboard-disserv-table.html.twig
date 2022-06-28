@@ -1,3 +1,6 @@
+{% set module_path = _self|split('/templates') %}
+{{ include(module_path[0] ~ '/templates/helper/helper-menu-button.html.twig' ) }}
+
 <h3>{{ "Dissemination Services"|trans }}</h3>
 <div class="mb-3">
     <button type="button" class="dashboard-desc-btn-show btn btn-light">{{ "Display Description"|trans }}</button>
