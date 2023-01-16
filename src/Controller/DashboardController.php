@@ -121,7 +121,6 @@ class DashboardController extends ControllerBase
      */
     public function dashboard_property_detail(string $property): array
     {
-       
         $property = base64_decode($property);
         $data = $this->model->getFacet($property);
 
