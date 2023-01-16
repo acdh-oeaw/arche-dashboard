@@ -121,6 +121,7 @@ class DashboardController extends ControllerBase
      */
     public function dashboard_property_detail(string $property): array
     {
+       
         $property = base64_decode($property);
         $data = $this->model->getFacet($property);
 
@@ -384,6 +385,47 @@ class DashboardController extends ControllerBase
                     "aaData" => $data,
                     "iTotalRecords" => ($data[0]->sumcount) ?  $data[0]->sumcount : 0,
                     "iTotalDisplayRecords" => ($data[0]->sumcount) ?  $data[0]->sumcount : 0,
+                    "draw" => intval($draw),
+                )
+            )
+        );
+        $response->headers->set('Content-Type', 'application/json');
+        return $response;
+    }
+    
+    
+    public function getProperty(string $property)
+    {
+        $property = base64_decode($property);
+      
+        return [
+            '#theme' => 'arche-dashboard-property',
+            '#property' => $property,
+            '#cache' => ['max-age' => 0]
+        ];
+    }
+    
+    public function getPropertyApi(string $property): Response
+    {
+        $property = base64_decode($property);
+        $offset = (empty($_POST['start'])) ? 0 : $_POST['start'];
+        $limit = (empty($_POST['length'])) ? 10 : $_POST['length'];
+        $draw = (empty($_POST['draw'])) ? 0 : $_POST['draw'];
+        $search = (empty($_POST['search']['value'])) ? "" : $_POST['search']['value'];
+        //datatable start columns from 0 but in db we have to start it from 1
+        $orderby = (empty($_POST['order'][0]['column'])) ? 1 : (int)$_POST['order'][0]['column'] + 1;
+        $order = (empty($_POST['order'][0]['dir'])) ? 'asc' : $_POST['order'][0]['dir'];
+        $data = array();
+        
+        $data = $this->model->getByPropertyApi($property, $offset, $limit, $orderby, $order);
+     
+        $response = new Response();
+        $response->setContent(
+            json_encode(
+                array(
+                    "aaData" => $data,
+                    "iTotalRecords" => (isset($data[0]->sumcount)) ?  $data[0]->sumcount : 0,
+                    "iTotalDisplayRecords" => (isset($data[0]->sumcount)) ?  $data[0]->sumcount : 0,
                     "draw" => intval($draw),
                 )
             )

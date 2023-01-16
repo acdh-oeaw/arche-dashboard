@@ -12,3 +12,23 @@ arche-dashboard-css-and-js:
     - core/jquery
     - core/drupal
     - core/drupalSettings
+    
+    
+    
+arche-dashboard-css-and-js:
+  css:
+    theme:
+      css/arche-dashboard.css: {}
+      css/dataTables.bootstrap4.min.css: {}
+  js:
+    js/jquery.dataTables.min.js: {}
+    js/dataTables.bootstrap4.min.js: {}
+    js/arche-ds-property.js: {}
+    
+  dependencies:
+    - core/jquery
+    - core/drupal
+    - core/drupalSettings
+    
+    
+    

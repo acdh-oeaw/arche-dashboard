@@ -1,0 +1,25 @@
+{% set module_path = _self|split('/templates') %}
+{{ include(module_path[0] ~ '/templates/helper/helper-menu-button.html.twig' ) }}
+
+<input type="hidden" name="dashboard-property" id="dashboard-property" value="{{ property }}"/>
+<br><br>
+<h2>{{ "Statistics"|trans }} - {{ property }}</h2>
+<table id="dashboard-property-table" class="table-striped" style="width:100%">
+    <thead>
+        <tr>
+            <th>{{ "Title"|trans }}</th>
+            <th>{{ "Type"|trans }}</th>
+            <th>{{ "Key"|trans }}</th>
+            <th width="15%">{{ "Count"|trans }}</th>
+        </tr>
+    </thead>
+    <tfoot>
+        <tr>
+            <th>{{ "Title"|trans }}</th>
+            <th>{{ "Type"|trans }}</th>
+            <th>{{ "Key"|trans }}</th>
+            <th width="15%">{{ "Count"|trans }}</th>
+        </tr>
+    </tfoot>
+</table>
+

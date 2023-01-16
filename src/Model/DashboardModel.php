@@ -65,6 +65,7 @@ class DashboardModel
      */
     public function getFacet(string $property): array
     {
+
         try {
             $query = $this->repodb->query(
                 "SELECT * FROM gui.dash_get_facet_func(:property);
@@ -144,6 +145,32 @@ class DashboardModel
         } catch (\Drupal\Core\Database\DatabaseExceptionWrapper $ex) {
             \Drupal::logger('arche_dashboard')->notice($ex->getMessage());
             return 0;
+        }
+    }
+    
+    public function getByPropertyApi(string $property, int $offset, int $limit, int $orderby = 1, string $order = 'asc'): array
+    {
+        try {
+            $query = $this->repodb->query(
+                "SELECT * FROM gui.dash_get_facet_func(:property)"
+                . "order by $orderby $order "
+                . " limit :limit offset :offset;",
+                array(
+                    ':property' => $property,
+                    ':limit' => $limit,
+                    ':offset' => $offset,
+                )
+            );
+            $return = $query->fetchAll();
+            
+            $this->changeBackDBConnection();
+            return $return;
+        } catch (Exception $ex) {
+            \Drupal::logger('arche_dashboard')->notice($ex->getMessage());
+            return array();
+        } catch (\Drupal\Core\Database\DatabaseExceptionWrapper $ex) {
+            \Drupal::logger('arche_dashboard')->notice($ex->getMessage());
+            return array();
         }
     }
  
