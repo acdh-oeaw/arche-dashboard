@@ -149,7 +149,7 @@ class DashboardModel
     
     /**
      * SQL for the property menu table
-     * 
+     *
      * @param string $property
      * @param int $offset
      * @param int $limit
@@ -160,8 +160,7 @@ class DashboardModel
      */
     public function getPropertyApi(string $property, int $offset, int $limit, string $search = "", int $orderby = 1, string $order = 'asc'): array
     {
-        
-         $property = str_replace(':', '/', $property);
+        $property = str_replace(':', '/', $property);
         $property = str_replace('//', '://', $property);
         
         try {
