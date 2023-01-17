@@ -115,32 +115,6 @@ class DashboardController extends ControllerBase
     }
 
     /**
-     * Dashboard property count distinct values  view
-     *
-     * @return array
-     */
-    public function dashboard_property_detail(string $property): array
-    {
-       
-        $property = base64_decode($property);
-        $data = $this->model->getFacet($property);
-
-        if (count($data) > 0) {
-            $cols = get_object_vars($data[0]);
-        } else {
-            $cols = array();
-        }
-      
-        return [
-            '#theme' => 'arche-dashboard-table',
-            '#basic' => $data,
-            '#key' => $property,
-            '#cols' => $cols,
-            '#cache' => ['max-age' => 0]
-        ];
-    }
-
-    /**
      * The Dashboard Main Menu View
      *
      * @return array
@@ -400,14 +374,20 @@ class DashboardController extends ControllerBase
       
         return [
             '#theme' => 'arche-dashboard-property',
-            '#property' => $property,
-            '#cache' => ['max-age' => 0]
+            '#property' => str_replace("#", "%23", $property),
+            '#propertyTitle' => $property,
+            '#cache' => ['max-age' => 0],
+            '#attached' => [
+                'library' => [
+                    'arche_dashboard/arche-ds-property-css-and-js',
+                ]
+            ]
         ];
     }
     
     public function getPropertyApi(string $property): Response
     {
-        $property = base64_decode($property);
+        
         $offset = (empty($_POST['start'])) ? 0 : $_POST['start'];
         $limit = (empty($_POST['length'])) ? 10 : $_POST['length'];
         $draw = (empty($_POST['draw'])) ? 0 : $_POST['draw'];
@@ -417,20 +397,22 @@ class DashboardController extends ControllerBase
         $order = (empty($_POST['order'][0]['dir'])) ? 'asc' : $_POST['order'][0]['dir'];
         $data = array();
         
-        $data = $this->model->getByPropertyApi($property, $offset, $limit, $orderby, $order);
+        $data = $this->model->getPropertyApi($property, $offset, $limit, $search, $orderby, $order);
      
+        
         $response = new Response();
         $response->setContent(
             json_encode(
                 array(
                     "aaData" => $data,
-                    "iTotalRecords" => (isset($data[0]->sumcount)) ?  $data[0]->sumcount : 0,
-                    "iTotalDisplayRecords" => (isset($data[0]->sumcount)) ?  $data[0]->sumcount : 0,
+                    "iTotalRecords" => ($data[0]->sumcount) ?  $data[0]->sumcount : 0,
+                    "iTotalDisplayRecords" => ($data[0]->sumcount) ?  $data[0]->sumcount : 0,
                     "draw" => intval($draw),
                 )
             )
         );
         $response->headers->set('Content-Type', 'application/json');
+        
         return $response;
     }
 }

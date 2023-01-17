@@ -30,7 +30,7 @@ function arche_dashboard_theme($existing, $type, $theme, $path)
             'variables' => ['data' => NULL]
         ],
         'arche-dashboard-property' => [
-            'variables' => ['data' => NULL, 'property' => NULL]
+            'variables' => ['data' => NULL, 'property' => NULL, 'propertyTitle' => NULL]
         ]
         
     ];

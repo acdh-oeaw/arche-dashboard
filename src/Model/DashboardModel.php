@@ -148,21 +148,36 @@ class DashboardModel
         }
     }
     
-    public function getByPropertyApi(string $property, int $offset, int $limit, int $orderby = 1, string $order = 'asc'): array
+    /**
+     * SQL for the property menu table
+     * 
+     * @param string $property
+     * @param int $offset
+     * @param int $limit
+     * @param string $search
+     * @param int $orderby
+     * @param string $order
+     * @return array
+     */
+    public function getPropertyApi(string $property, int $offset, int $limit, string $search = "", int $orderby = 1, string $order = 'asc'): array
     {
+        
+         $property = str_replace(':', '/', $property);
+        $property = str_replace('//', '://', $property);
+        
         try {
             $query = $this->repodb->query(
-                "SELECT * FROM gui.dash_get_facet_func(:property)"
-                . "order by $orderby $order "
-                . " limit :limit offset :offset;",
+                "select  * from gui.dash_get_facet_func(:property) where LOWER(key) like  LOWER('%' || :search || '%') "
+                    . "order by $orderby $order "
+                    . " limit :limit offset :offset;",
                 array(
                     ':property' => $property,
                     ':limit' => $limit,
                     ':offset' => $offset,
+                    ':search' => $search
                 )
             );
             $return = $query->fetchAll();
-            
             $this->changeBackDBConnection();
             return $return;
         } catch (Exception $ex) {

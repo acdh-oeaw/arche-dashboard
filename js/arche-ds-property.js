@@ -3,12 +3,10 @@
     'use strict';
 
     $( document ).ready(function() {
-        $('#dashboard-property-table').DataTable().clear();
-        $('#dashboard-property-table').DataTable().destroy();
-        $('#dashboard-property-table').show();
-        
+        console.log('ready');
+      
         let property = $('#dashboard-property').val();
-        
+        console.log(property);
         var values_by_properties = $('#dashboard-property-table').DataTable({
             "paging": true,
             "searching": true,
@@ -16,19 +14,17 @@
             "processing": true,
             "serverSide": true,
             "serverMethod": "post",
-            "ajax": "/browser/dashboard-by-property-api/" + property,
+            ajax:  "/browser/dashboard-property-api/"+property,
             'columns': [
                 {data: 'title'},
                 {data: 'type'},
                 {data: 'key'},
-                {data: 'count'}
+                {data: 'cnt'}
                 
             ]
+           
         });
     });
-    
-
-
 
 })(jQuery, Drupal);
 

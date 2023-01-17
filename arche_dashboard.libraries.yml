@@ -15,7 +15,7 @@ arche-dashboard-css-and-js:
     
     
     
-arche-dashboard-css-and-js:
+arche-ds-property-css-and-js:
   css:
     theme:
       css/arche-dashboard.css: {}

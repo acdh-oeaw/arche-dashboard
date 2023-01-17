@@ -21,16 +21,6 @@ dashboard_detail:
     options:
         no_cache: 'TRUE'
         
-dashboard_property:    
-    path: '/dashboard-property/{property}' 
-    defaults:
-        _controller: '\Drupal\arche_dashboard\Controller\DashboardController::dashboard_property_detail'
-    requirements:
-        _permission: 'access content'
-        _access: 'TRUE' 
-    options:
-        no_cache: 'TRUE'
-        
 dashboard_class_property:    
     path: '/dashboard-class-property/{property}' 
     defaults:
@@ -121,8 +111,8 @@ dashboard_values_by_property_api:
     options:
         no_cache: 'TRUE'
         
-dashboard_by_property:    
-    path: '/dashboard-by-property/{property}' 
+dashboard_property:    
+    path: '/dashboard-property/{property}' 
     defaults:
         _controller: '\Drupal\arche_dashboard\Controller\DashboardController::getProperty'
     requirements:
@@ -131,8 +121,8 @@ dashboard_by_property:
     options:
         no_cache: 'TRUE'        
 
-dashboard_by_property_api:    
-    path: '/dashboard-by-property-api/{property}' 
+dashboard_property_api:    
+    path: '/dashboard-property-api/{property}' 
     defaults:
         _controller: '\Drupal\arche_dashboard\Controller\DashboardController::getPropertyApi'
     requirements:

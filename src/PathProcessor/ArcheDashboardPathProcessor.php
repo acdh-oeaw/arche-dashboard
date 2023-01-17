@@ -21,6 +21,12 @@ class ArcheDashboardPathProcessor implements InboundPathProcessorInterface
             return "/dashboard-property/$names";
         }
         
+        if (strpos($path, '/dashboard-property-api/') === 0) {
+            $names = preg_replace('|^\/dashboard-property-api\/|', '', $path);
+            $names = str_replace('/', ':', $names);
+            return "/dashboard-property-api/$names";
+        }
+        
         if (strpos($path, '/dashboard-class-property/') === 0) {
             $names = preg_replace('|^\/dashboard-class-property\/|', '', $path);
             if (strpos($names, 'https:/') === 0) {
