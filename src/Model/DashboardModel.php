@@ -65,7 +65,6 @@ class DashboardModel
      */
     public function getFacet(string $property): array
     {
-
         try {
             $query = $this->repodb->query(
                 "SELECT * FROM gui.dash_get_facet_func(:property);

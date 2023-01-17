@@ -115,6 +115,34 @@ class DashboardController extends ControllerBase
     }
 
     /**
+<<<<<<< HEAD
+=======
+     * Dashboard property count distinct values  view
+     *
+     * @return array
+     */
+    public function dashboard_property_detail(string $property): array
+    {
+        $property = base64_decode($property);
+        $data = $this->model->getFacet($property);
+
+        if (count($data) > 0) {
+            $cols = get_object_vars($data[0]);
+        } else {
+            $cols = array();
+        }
+      
+        return [
+            '#theme' => 'arche-dashboard-table',
+            '#basic' => $data,
+            '#key' => $property,
+            '#cols' => $cols,
+            '#cache' => ['max-age' => 0]
+        ];
+    }
+
+    /**
+>>>>>>> 6529209fc231e305f3fba35c203ad65ed0c2667b
      * The Dashboard Main Menu View
      *
      * @return array
@@ -267,7 +295,11 @@ class DashboardController extends ControllerBase
     }
     
    
-    
+   /**
+    * 
+    * @param string $key
+    * @return array
+    */ 
     public function dashboard_detail_api(string $key = "properties"): array
     {
         $offset = (empty($_POST['start'])) ? 0 : $_POST['start'];
@@ -328,6 +360,10 @@ class DashboardController extends ControllerBase
     }
     
     
+    /**
+     * 
+     * @return type
+     */
     public function getValuesByProperty()
     {
         $data = $this->model->getViewData();
@@ -339,6 +375,12 @@ class DashboardController extends ControllerBase
         ];
     }
     
+    
+    /**
+     * 
+     * @param string $property
+     * @return Response
+     */
     public function getValuesByPropertyApi(string $property): Response
     {
         $offset = (empty($_POST['start'])) ? 0 : $_POST['start'];
@@ -367,7 +409,12 @@ class DashboardController extends ControllerBase
         return $response;
     }
     
-    
+    /**
+     * The properties menu template generation
+     * 
+     * @param string $property
+     * @return type
+     */
     public function getProperty(string $property)
     {
         $property = base64_decode($property);
@@ -385,6 +432,12 @@ class DashboardController extends ControllerBase
         ];
     }
     
+    /**
+     * The properties menu API call backend for the table data generation
+     * 
+     * @param string $property
+     * @return Response
+     */
     public function getPropertyApi(string $property): Response
     {
         
