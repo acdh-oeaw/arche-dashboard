@@ -348,11 +348,11 @@ class DashboardController extends ControllerBase
     }
     
    
-   /**
-    * 
-    * @param string $key
-    * @return array
-    */ 
+    /**
+     *
+     * @param string $key
+     * @return array
+     */
     public function dashboard_detail_api(string $key = "properties"): array
     {
         $offset = (empty($_POST['start'])) ? 0 : $_POST['start'];
@@ -414,7 +414,7 @@ class DashboardController extends ControllerBase
     
     
     /**
-     * 
+     *
      * @return type
      */
     public function getValuesByProperty()
@@ -430,7 +430,7 @@ class DashboardController extends ControllerBase
     
     
     /**
-     * 
+     *
      * @param string $property
      * @return Response
      */
@@ -464,7 +464,7 @@ class DashboardController extends ControllerBase
     
     /**
      * The properties menu template generation
-     * 
+     *
      * @param string $property
      * @return type
      */
@@ -487,13 +487,12 @@ class DashboardController extends ControllerBase
     
     /**
      * The properties menu API call backend for the table data generation
-     * 
+     *
      * @param string $property
      * @return Response
      */
     public function getPropertyApi(string $property): Response
     {
-        
         $offset = (empty($_POST['start'])) ? 0 : $_POST['start'];
         $limit = (empty($_POST['length'])) ? 10 : $_POST['length'];
         $draw = (empty($_POST['draw'])) ? 0 : $_POST['draw'];
