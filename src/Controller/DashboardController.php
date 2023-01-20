@@ -73,7 +73,6 @@ class DashboardController extends ControllerBase
      */
     public function dashboardDetailAjax(string $key = "properties"): array
     {
-        
         return [
             '#theme' => 'arche-dashboard-ajax',
             '#key' => $key,
@@ -93,7 +92,6 @@ class DashboardController extends ControllerBase
      */
     public function dashboardDetailAjaxApi(string $key): Response
     {
-        
         $offset = (empty($_POST['start'])) ? 0 : $_POST['start'];
         $limit = (empty($_POST['length'])) ? 10 : $_POST['length'];
         $draw = (empty($_POST['draw'])) ? 0 : $_POST['draw'];
