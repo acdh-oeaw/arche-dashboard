@@ -1,0 +1,55 @@
+
+{% set array = {
+  'properties': [
+    'Property',
+    'Count',
+  ],
+  'classes': [
+    'Class',
+    'Count',
+  ],
+  'classesproperties': [
+    'Class',
+    'Property',
+    'Count Distinct Value',
+    'Count',
+  ],
+'topcollections': [
+    'ID',
+    'Title',
+    'Count',
+    'Max.Relatives',
+    'Sum.Size',
+    'Sum.BinarySize',
+  ],
+'formats': [
+    'Format',
+    'Count Format','Count Raw BinarySize',
+    'Sum.Size',
+  ],
+'formatspercollection': [
+    'Id',
+    'Title',
+    'Type',
+    'Format',
+    'Count',
+    'Sum.Size',
+    'Sum.Count'
+  ]
+}
+%}
+
+<thead>
+    <tr>
+        {% for item in array[key] %}
+            <th>{{ item|trans }}</th>
+        {% endfor %}
+    </tr>
+</thead>
+<tfoot>
+    <tr>
+        {% for item in array[key] %}
+            <th>{{ item|trans }}</th>
+            {% endfor %}
+    </tr>
+</tfoot>

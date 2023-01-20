@@ -30,5 +30,34 @@ arche-ds-property-css-and-js:
     - core/drupal
     - core/drupalSettings
     
+arche-ds-properties-css-and-js:
+  css:
+    theme:
+      css/arche-dashboard.css: {}
+      css/dataTables.bootstrap4.min.css: {}
+  js:
+    js/jquery.dataTables.min.js: {}
+    js/dataTables.bootstrap4.min.js: {}
+    js/arche-ds-properties.js: {}
     
+  dependencies:
+    - core/jquery
+    - core/drupal
+    - core/drupalSettings    
+    
+    
+arche-ds-detailajax-css-and-js:
+  css:
+    theme:
+      css/arche-dashboard.css: {}
+      css/dataTables.bootstrap4.min.css: {}
+  js:
+    js/jquery.dataTables.min.js: {}
+    js/dataTables.bootstrap4.min.js: {}
+    js/arche-ds-detailajax.js: {}
+    
+  dependencies:
+    - core/jquery
+    - core/drupal
+    - core/drupalSettings    
     

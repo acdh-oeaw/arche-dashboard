@@ -1,0 +1,26 @@
+
+{% if  key == 'properties' %}
+    <p>
+        {{ "Properties table indicates the count of how many times a property has been used across all entities in ARCHE. To see its instances, simply click on the property of interest. Each instance is a link to the ARCHE entry."|trans }}
+    </p>
+{% elseif key == 'classes' %}
+    <p>
+        {{ "Classes table specifies the count of how many times a Class has been used across all entities in ARCHE. To see its instances, simply click on the class of interest. Each instance is a link to the ARCHE entry."|trans }}
+    </p>
+{% elseif key == 'classesproperties' %}
+    <p>
+        {{ "Classes properties table lists the count of each property per class. One may also distinguish between the count of the distinct value and the total count a property has been used within a certain class. To see the instances of the properties, click on the one of interest."|trans }}
+    </p>    
+{%  elseif key ==  'topcollections' %}
+    <p>
+        {{ "Top collections table lists all main Collections deposited to ARCHE and provides information about the number of items of a particular collection and their size (expressed in bytes)."|trans }}
+    </p>
+{%  elseif key ==  'formats' %}
+    <p>
+        {{ "Formats table lists the count of formats of all resources deposited to ARCHE. The table provides also information on the total size (expressed in bytes) of resources per file format. To see the objects of a particular file format, simply click on it."|trans }}
+    </p>
+{%  elseif key ==  'formatspercollection' %}
+    <p>
+        {{ "Formats per collection similarly to the “Formats” table, 'Formats per collection'  provides information about the count of file formats of resources and their size (expressed in bytes), but for every main (top) collection separately. Additional information about the type of the object (Top collection/Collection/Resource) is also listed."|trans }}
+    </p>
+{% endif %}

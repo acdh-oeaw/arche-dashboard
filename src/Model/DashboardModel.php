@@ -12,12 +12,21 @@ class DashboardModel
     private $repodb;
 
     private $queries = array(
-        "properties"            =>  "SELECT * FROM gui.dash_properties_func();",
-        "classes"               =>  "SELECT * FROM gui.dash_classes_func();",
-        "classesproperties"     =>  "SELECT * FROM gui.dash_classes_properties_func();",
-        "topcollections"        =>  "SELECT * FROM gui.dash_topcollections_func();",
-        "formats"               =>  "SELECT * FROM gui.dash_formats_func();",
-    "formatspercollection"  =>  "SELECT * FROM gui.dash_formatspercollection_func();"
+        "properties"            =>  "SELECT * FROM gui.dash_properties_func() ",
+        "classes"               =>  "SELECT * FROM gui.dash_classes_func()",
+        "classesproperties"     =>  "SELECT * FROM gui.dash_classes_properties_func()",
+        "topcollections"        =>  "SELECT * FROM gui.dash_topcollections_func()",
+        "formats"               =>  "SELECT * FROM gui.dash_formats_func()",
+        "formatspercollection"  =>  "SELECT * FROM gui.dash_formatspercollection_func()"
+    );
+    
+    private static $queryKeys = array(
+        "properties"            =>  "properties",
+        "classes"               =>  "class",
+        "classesproperties"     =>  "class",
+        "topcollections"        =>  "topcollections",
+        "formats"               =>  "formats",
+        "formatspercollection"  =>  "formatspercollection"
     );
    
     public function __construct()
@@ -32,7 +41,7 @@ class DashboardModel
      * @param string $key
      * @return array
      */
-    public function getViewData(string $key="properties"): array
+    public function getViewData(string $key, int $offset, int $limit, string $search, int $orderby, string $order): array
     {
         if (array_key_exists($key, $this->queries)) {
             $queryStr = $this->queries[$key];
@@ -44,7 +53,15 @@ class DashboardModel
             group by property";
         }
         try {
-            $query = $this->repodb->query($queryStr);
+            $query = $this->repodb->query($queryStr." where LOWER(:searchKey) like  LOWER('%' || :search || '%') "
+                    . "order by $orderby $order "
+                    . " limit :limit offset :offset;",
+                array(
+                    ':limit' => $limit,
+                    ':offset' => $offset,
+                    ':search' => $search,
+                    ':searchKey' => $this::$queryKeys[$key]
+                ));
             $return = $query->fetchAll();
             
             $this->changeBackDBConnection();

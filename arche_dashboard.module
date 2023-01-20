@@ -31,6 +31,9 @@ function arche_dashboard_theme($existing, $type, $theme, $path)
         ],
         'arche-dashboard-property' => [
             'variables' => ['data' => NULL, 'property' => NULL, 'propertyTitle' => NULL]
+        ],
+        'arche-dashboard-ajax' => [
+            'variables' => ['data' => NULL, 'property' => NULL,  'key' => NULL, 'cols' => NULL, 'detailPageUrl' => NULL]
         ]
         
     ];

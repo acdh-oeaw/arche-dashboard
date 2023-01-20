@@ -27,11 +27,11 @@ class DashboardController extends ControllerBase
      *
      * @return array
      */
-    public function dashboard_detail(string $key = "properties"): array
+    public function dashboardDetail(string $key = "properties"): array
     {
         //generate the view
         $data = $this->generateView($key);
-
+        
         if (count($data) > 0) {
             $cols = get_object_vars($data[0]);
         } else {
@@ -65,7 +65,63 @@ class DashboardController extends ControllerBase
             '#cache' => ['max-age' => 0]
         ];
     }
-
+    
+    /**
+     * AJAX related table main template - latest
+     * @param string $key
+     * @return array
+     */
+    public function dashboardDetailAjax(string $key = "properties"): array
+    {
+        
+        return [
+            '#theme' => 'arche-dashboard-ajax',
+            '#key' => $key,
+            '#cache' => ['max-age' => 0],
+            '#attached' => [
+                'library' => [
+                    'arche_dashboard/arche-ds-detailajax-css-and-js',
+                ]
+            ]
+        ];
+    }
+    
+    /**
+     * Ajax related table main API call - latest
+     * @param string $key
+     * @return Response
+     */
+    public function dashboardDetailAjaxApi(string $key): Response
+    {
+        
+        $offset = (empty($_POST['start'])) ? 0 : $_POST['start'];
+        $limit = (empty($_POST['length'])) ? 10 : $_POST['length'];
+        $draw = (empty($_POST['draw'])) ? 0 : $_POST['draw'];
+        $search = (empty($_POST['search']['value'])) ? "" : $_POST['search']['value'];
+        //datatable start columns from 0 but in db we have to start it from 1
+        $orderby = (empty($_POST['order'][0]['column'])) ? 1 : (int)$_POST['order'][0]['column'] + 1;
+        $order = (empty($_POST['order'][0]['dir'])) ? 'asc' : $_POST['order'][0]['dir'];
+        $data = array();
+        
+        $data = $this->generateView($key, $offset, $limit, $search, $orderby, $order);
+        
+        $response = new Response();
+        $response->setContent(
+            json_encode(
+                array(
+                    "aaData" => $data,
+                    "iTotalRecords" => ($data[0]->sumcount) ?  $data[0]->sumcount : 0,
+                    "iTotalDisplayRecords" => ($data[0]->sumcount) ?  $data[0]->sumcount : 0,
+                    "draw" => intval($draw),
+                    "cols" =>  get_object_vars($data[0])
+                )
+            )
+        );
+        $response->headers->set('Content-Type', 'application/json');
+        
+        return $response;
+    }
+    
     public function dashboard_format_property_detail(string $property): array
     {
         $property = base64_decode($property);
@@ -115,8 +171,6 @@ class DashboardController extends ControllerBase
     }
 
     /**
-<<<<<<< HEAD
-=======
      * Dashboard property count distinct values  view
      *
      * @return array
@@ -142,7 +196,6 @@ class DashboardController extends ControllerBase
     }
 
     /**
->>>>>>> 6529209fc231e305f3fba35c203ad65ed0c2667b
      * The Dashboard Main Menu View
      *
      * @return array
@@ -162,13 +215,13 @@ class DashboardController extends ControllerBase
      * @param type $key
      * @return array
      */
-    public function generateView($key): array
+    public function generateView(string $key, int $offset = 0, int $limit = 10, string $search = "", int $orderby = 1, string $order = "asc"): array
     {
 
         //get the data from the DB
-        $this->data = $this->model->getViewData($key);
+        $this->data = $this->model->getViewData($key, $offset, $limit, $search, $orderby, $order);
         //pass the DB result to the Object generate functions
-
+        $this->data = $this->helper->addUrlToTableData($this->data, $key);
         return $this->data;
     }
 
@@ -452,7 +505,6 @@ class DashboardController extends ControllerBase
         
         $data = $this->model->getPropertyApi($property, $offset, $limit, $search, $orderby, $order);
      
-        
         $response = new Response();
         $response->setContent(
             json_encode(

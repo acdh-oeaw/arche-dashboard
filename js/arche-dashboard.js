@@ -196,7 +196,7 @@
         $('#values-by-property-table').DataTable().clear();
         $('#values-by-property-table').DataTable().destroy();
         $('#values-by-property-table').show();
-        console.log($(this).val());
+        
         var values_by_properties = $('#values-by-property-table').DataTable({
             "paging": true,
             "searching": true,
