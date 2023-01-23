@@ -53,8 +53,8 @@ class DashboardModel
             group by property";
         }
         try {
-
-            $query = $this->repodb->query($queryStr." where LOWER(:searchKey) like LOWER('%' || :search || '%') "
+            $query = $this->repodb->query(
+                $queryStr." where LOWER(:searchKey) like LOWER('%' || :search || '%') "
                     . "order by $orderby $order "
                     . " limit :limit offset :offset;",
                 array(
@@ -169,7 +169,7 @@ class DashboardModel
     
     /**
      * SQL for the property menu table
-     * 
+     *
      * @param string $property
      * @param int $offset
      * @param int $limit
@@ -180,8 +180,7 @@ class DashboardModel
      */
     public function getPropertyApi(string $property, int $offset, int $limit, string $search = "", int $orderby = 1, string $order = 'asc'): array
     {
-        
-         $property = str_replace(':', '/', $property);
+        $property = str_replace(':', '/', $property);
         $property = str_replace('//', '://', $property);
         
         try {

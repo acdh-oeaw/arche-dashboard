@@ -77,16 +77,15 @@ class DashboardHelper
     {
         $keys = array_keys((array)$data[0]);
 
-        if(isset($this->tableInfo[$key])) {
-            for($i = 0; $i < count($data); $i++) {
+        if (isset($this->tableInfo[$key])) {
+            for ($i = 0; $i < count($data); $i++) {
                 $id = "";
-                if(isset($data[$i]->id)) {
+                if (isset($data[$i]->id)) {
                     $id = $data[$i]->id;
                 }
                 
-                foreach($data[$i] as $k => $v) {
-                    
-                    if($k == "property") {
+                foreach ($data[$i] as $k => $v) {
+                    if ($k == "property") {
                         $data[$i]->{$k} = '<a href="/browser/dashboard-property/'.$v.'">'.$v.'</a>';
                     }
 
