@@ -53,6 +53,7 @@ class DashboardModel
             group by property";
         }
         try {
+
             $query = $this->repodb->query($queryStr." where LOWER(:searchKey) like LOWER('%' || :search || '%') "
                     . "order by $orderby $order "
                     . " limit :limit offset :offset;",
@@ -61,20 +62,8 @@ class DashboardModel
                     ':offset' => $offset,
                     ':search' => $search,
                     ':searchKey' => $this::$queryKeys[$key]
-                ));
-            
-            
-            error_log($queryStr." where  LOWER(:searchKey) like  LOWER('%' || :search || '%') "
-                    . "order by $orderby $order "
-                    . " limit :limit offset :offset;");
-            
-            error_log($this::$queryKeys[$key]);
-            error_log($search);
-            error_log($orderby);
-            error_log($order);
-            error_log($limit);
-            error_log($offset);
-            
+                )
+            );
             
             $return = $query->fetchAll();
             
