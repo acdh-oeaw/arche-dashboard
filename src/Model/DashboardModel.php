@@ -13,15 +13,15 @@ class DashboardModel
 
     private $queries = array(
         "properties"            =>  "SELECT * FROM gui.dash_properties_func() ",
-        "classes"               =>  "SELECT * FROM gui.dash_classes_func()",
-        "classesproperties"     =>  "SELECT * FROM gui.dash_classes_properties_func()",
-        "topcollections"        =>  "SELECT * FROM gui.dash_topcollections_func()",
-        "formats"               =>  "SELECT * FROM gui.dash_formats_func()",
-        "formatspercollection"  =>  "SELECT * FROM gui.dash_formatspercollection_func()"
+        "classes"               =>  "SELECT * FROM gui.dash_classes_func() ",
+        "classesproperties"     =>  "SELECT * FROM gui.dash_classes_properties_func() ",
+        "topcollections"        =>  "SELECT * FROM gui.dash_topcollections_func() ",
+        "formats"               =>  "SELECT * FROM gui.dash_formats_func() ",
+        "formatspercollection"  =>  "SELECT * FROM gui.dash_formatspercollection_func() "
     );
     
     private static $queryKeys = array(
-        "properties"            =>  "properties",
+        "properties"            =>  "property",
         "classes"               =>  "class",
         "classesproperties"     =>  "class",
         "topcollections"        =>  "topcollections",
@@ -53,7 +53,7 @@ class DashboardModel
             group by property";
         }
         try {
-            $query = $this->repodb->query($queryStr." where LOWER(:searchKey) like  LOWER('%' || :search || '%') "
+            $query = $this->repodb->query($queryStr." where LOWER(:searchKey) like LOWER('%' || :search || '%') "
                     . "order by $orderby $order "
                     . " limit :limit offset :offset;",
                 array(
@@ -62,6 +62,20 @@ class DashboardModel
                     ':search' => $search,
                     ':searchKey' => $this::$queryKeys[$key]
                 ));
+            
+            
+            error_log($queryStr." where  LOWER(:searchKey) like  LOWER('%' || :search || '%') "
+                    . "order by $orderby $order "
+                    . " limit :limit offset :offset;");
+            
+            error_log($this::$queryKeys[$key]);
+            error_log($search);
+            error_log($orderby);
+            error_log($order);
+            error_log($limit);
+            error_log($offset);
+            
+            
             $return = $query->fetchAll();
             
             $this->changeBackDBConnection();
@@ -166,7 +180,7 @@ class DashboardModel
     
     /**
      * SQL for the property menu table
-     *
+     * 
      * @param string $property
      * @param int $offset
      * @param int $limit
@@ -177,7 +191,8 @@ class DashboardModel
      */
     public function getPropertyApi(string $property, int $offset, int $limit, string $search = "", int $orderby = 1, string $order = 'asc'): array
     {
-        $property = str_replace(':', '/', $property);
+        
+         $property = str_replace(':', '/', $property);
         $property = str_replace('//', '://', $property);
         
         try {

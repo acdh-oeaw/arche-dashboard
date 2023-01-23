@@ -78,7 +78,11 @@ class DashboardHelper {
        
         if(isset($this->tableInfo[$key])) {
             for($i = 0; $i < count($data); $i++) {
-                $id = $data[$i]->id;
+                $id = "";
+                if(isset($data[$i]->id)) {
+                    $id = $data[$i]->id;
+                }
+                
                 foreach($data[$i] as $k => $v) {
                     
                     if($k == "property") {
@@ -96,7 +100,7 @@ class DashboardHelper {
                      if($k == "format") {
                         $data[$i]->{$k} = '<a href="/browser/dashboard-format-property/'.$v.'">'.$v.'</a>';
                     }
-                    if ($k == "title") {
+                    if ($k == "title" && !empty($id)) {
                         $data[$i]->{$k} = '<a href="/browser/oeaw_detail/'.$id.'">'.$v.'</a>';
                     }
                     if($k == "id") {

@@ -11,18 +11,8 @@ dashboard_overview:
     options:
         no_cache: 'TRUE'    
 
-dashboard_detail:    
-    path: '/dashboard/{key}' 
-    defaults:
-        _controller: '\Drupal\arche_dashboard\Controller\DashboardController::dashboardDetail'
-    requirements:
-        _permission: 'access content'
-        _access: 'TRUE' 
-    options:
-        no_cache: 'TRUE'
-
 dashboard_detail_ajax:    
-    path: '/dashboardnew/{key}' 
+    path: '/dashboard/{key}' 
     defaults:
         _controller: '\Drupal\arche_dashboard\Controller\DashboardController::dashboardDetailAjax'
     requirements:
@@ -31,8 +21,8 @@ dashboard_detail_ajax:
     options:
         no_cache: 'TRUE'        
 
-dashboardnew_detail_ajax_api:    
-    path: '/dashboardnew-detail-api/{key}' 
+dashboard_detail_ajax_api:    
+    path: '/dashboard-detail-api/{key}' 
     defaults:
         _controller: '\Drupal\arche_dashboard\Controller\DashboardController::dashboardDetailAjaxApi'
     requirements:
@@ -62,7 +52,7 @@ dashboard_format_property:
         no_cache: 'TRUE'    
         
 dashboard_detail_api:    
-    path: '/dashboard-detail-api/{property}' 
+    path: '/dashboard-detail-prop-api/{property}' 
     defaults:
         _controller: '\Drupal\arche_dashboard\Controller\DashboardController::dashboard_property_detail_api'
     requirements:

@@ -51,8 +51,8 @@ class ArcheDashboardPathProcessor implements InboundPathProcessorInterface
             return "/dashboard-format-property/$names";
         }
         
-        if (strpos($path, '/dashboard-detail-api/') === 0) {
-            $names = preg_replace('|^\/dashboard-detail-api\/|', '', $path);
+        if (strpos($path, '/dashboard-detail-prop-api/') === 0) {
+            $names = preg_replace('|^\/dashboard-detail-prop-api\/|', '', $path);
             if (strpos($names, 'https:/') === 0) {
                 $names = str_replace('https:/', 'https://', $names);
             } elseif (strpos($names, 'http:/') === 0) {
@@ -60,7 +60,7 @@ class ArcheDashboardPathProcessor implements InboundPathProcessorInterface
             }
             
             $names = strtr(base64_encode($names), '+/=', '._-');
-            return "/dashboard-detail-api/$names";
+            return "/dashboard-detail-prop-api/$names";
         }
         
         if (strpos($path, '/dashboard-values-by-property-api/') === 0) {

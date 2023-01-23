@@ -1,0 +1,4 @@
+/* we need it for the tbale width formatting */
+#dashboard-detail-ajax {
+    table-layout:fixed;
+}

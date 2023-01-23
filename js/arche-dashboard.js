@@ -175,7 +175,7 @@
         });
 
         $.ajax({
-            url: '/browser/dashboard-detail-api/' + property + '/' + value,
+            url: '/browser/dashboard-detail-prop-api/' + property + '/' + value,
             type: "POST",
             success: function (data, status) {
                 $('#dashboard_property_details_table').html(data);

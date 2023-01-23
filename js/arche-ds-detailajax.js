@@ -13,9 +13,13 @@
             formatspercollection: [{data: 'id'}, {data: 'title'}, {data: 'type'}, {data: 'format'}, {data: 'count'}, {data: 'sum_size'}, {data: 'sumcount'}],
         };
 
+        let columnsWidth = {
+
+        };
+
 
         let key = $('#dashboard-detail-ajax-key').val();
-        
+
         var values_by_properties = $('#dashboard-detail-ajax').DataTable({
             paging: true,
             searching: true,
@@ -23,10 +27,14 @@
             processing: true,
             serverSide: true,
             responsive: true,
+            bAutoWidth: false,
             serverMethod: "post",
-            ajax: "/browser/dashboardnew-detail-api/" + key,
-            'columns': categoryColumns[key]
+            ajax: "/browser/dashboard-detail-api/" + key,
+            columns: categoryColumns[key],
+            
         });
+        
+       
     });
 
 
