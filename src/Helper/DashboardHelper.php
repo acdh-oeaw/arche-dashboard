@@ -17,7 +17,7 @@ class DashboardHelper
 {
     private $tableInfo = [
         'properties' => [
-            'property' => ['name' => 'property' ,'url' => '/browser/oeaw_detail/dashboard-property/'],
+            'property' => ['name' => 'property' ],
             'count' => ['name' => 'count' ],
         ],
         'classesproperties' => [

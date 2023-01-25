@@ -21,12 +21,12 @@ class DashboardModel
     );
     
     private static $queryKeys = array(
-        "properties"            =>  "property",
-        "classes"               =>  "class",
-        "classesproperties"     =>  "class",
-        "topcollections"        =>  "topcollections",
-        "formats"               =>  "formats",
-        "formatspercollection"  =>  "formatspercollection"
+        "properties"            =>  ["property"],
+        "classes"               =>  ["class"],
+        "classesproperties"     =>  ["class", "property"],
+        "topcollections"        =>  ["title"],
+        "formats"               =>  ["format"],
+        "formatspercollection"  =>  ["title", "type", "format"]
     );
    
     public function __construct()
@@ -52,21 +52,21 @@ class DashboardModel
             from public.metadata_view 
             group by property";
         }
+        
         try {
+            $searchText = (!empty($search)) ? "WHERE ".$this->setUpSearch($this::$queryKeys[$key], $search) : "";
 
-            $query = $this->repodb->query($queryStr." where LOWER(:searchKey) like LOWER('%' || :search || '%') "
+            $query = $this->repodb->query($queryStr." ".$searchText
                     . "order by $orderby $order "
                     . " limit :limit offset :offset;",
                 array(
-                    ':limit' => $limit,
+                    
+                     ':limit' => $limit,
                     ':offset' => $offset,
-                    ':search' => $search,
-                    ':searchKey' => $this::$queryKeys[$key]
                 )
             );
-            
+          
             $return = $query->fetchAll();
-            
             $this->changeBackDBConnection();
             return $return;
         } catch (Exception $ex) {
@@ -78,6 +78,21 @@ class DashboardModel
         }
     }
        
+    private function setUpSearch(array $keys, string $value): string {
+        $str = "";
+        
+        $count = count($keys);
+        $i = 0;
+        foreach($keys as $k) {
+            $str .= "(LOWER($k) LIKE LOWER('%$value%'))";
+            if( $count > 1) {
+                $str .=  ' OR '; 
+                $count--;
+            }
+        }
+        return $str;
+    }
+    
     /**
      * Retrieve the data: faceting: distinct values of a property
      * @param string $property

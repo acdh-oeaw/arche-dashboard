@@ -13,11 +13,6 @@
             formatspercollection: [{data: 'id'}, {data: 'title'}, {data: 'type'}, {data: 'format'}, {data: 'count'}, {data: 'sum_size'}, {data: 'sumcount'}],
         };
 
-        let columnsWidth = {
-
-        };
-
-
         let key = $('#dashboard-detail-ajax-key').val();
 
         var values_by_properties = $('#dashboard-detail-ajax').DataTable({
@@ -30,13 +25,8 @@
             bAutoWidth: false,
             serverMethod: "post",
             ajax: "/browser/dashboard-detail-api/" + key,
-            columns: categoryColumns[key],
-            
+            columns: categoryColumns[key]
         });
-        
-       
     });
-
-
 })(jQuery, Drupal);
 
