@@ -75,10 +75,10 @@ class DashboardModel
         }
         
         try {
-
             $searchText = (!empty($search)) ? "WHERE ".$this->setUpSearch($this::$queryKeys[$key], $search) : "";
 
-            $query = $this->repodb->query($queryStr." ".$searchText
+            $query = $this->repodb->query(
+                $queryStr." ".$searchText
                     . "order by $orderby $order "
                     . " limit :limit offset :offset;",
                 array(
@@ -106,15 +106,16 @@ class DashboardModel
      * @param string $value
      * @return string
      */
-    private function setUpSearch(array $keys, string $value): string {
+    private function setUpSearch(array $keys, string $value): string
+    {
         $str = "";
         
         $count = count($keys);
         $i = 0;
-        foreach($keys as $k) {
+        foreach ($keys as $k) {
             $str .= "(LOWER($k) LIKE LOWER('%$value%'))";
-            if( $count > 1) {
-                $str .=  ' OR '; 
+            if ($count > 1) {
+                $str .=  ' OR ';
                 $count--;
             }
         }
