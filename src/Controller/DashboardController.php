@@ -420,7 +420,7 @@ class DashboardController extends ControllerBase
      * @return type
      */
     public function getValuesByProperty()
-    { 
+    {
         $data = $this->model->getValuesByProperty();
         $data = $this->helper->generatePropertyUrl($data);
       
