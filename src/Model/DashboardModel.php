@@ -54,6 +54,7 @@ class DashboardModel
         }
         
         try {
+
             $searchText = (!empty($search)) ? "WHERE ".$this->setUpSearch($this::$queryKeys[$key], $search) : "";
 
             $query = $this->repodb->query($queryStr." ".$searchText
@@ -78,6 +79,12 @@ class DashboardModel
         }
     }
        
+    /**
+     * We have to setup the sql for the datatable search fields
+     * @param array $keys
+     * @param string $value
+     * @return string
+     */
     private function setUpSearch(array $keys, string $value): string {
         $str = "";
         
@@ -109,7 +116,6 @@ class DashboardModel
                 )
             );
             $return = $query->fetchAll();
-            
             $this->changeBackDBConnection();
             return $return;
         } catch (Exception $ex) {
@@ -184,7 +190,7 @@ class DashboardModel
     
     /**
      * SQL for the property menu table
-     * 
+     *
      * @param string $property
      * @param int $offset
      * @param int $limit
@@ -195,8 +201,7 @@ class DashboardModel
      */
     public function getPropertyApi(string $property, int $offset, int $limit, string $search = "", int $orderby = 1, string $order = 'asc'): array
     {
-        
-         $property = str_replace(':', '/', $property);
+        $property = str_replace(':', '/', $property);
         $property = str_replace('//', '://', $property);
         
         try {
