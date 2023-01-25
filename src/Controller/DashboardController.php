@@ -420,9 +420,10 @@ class DashboardController extends ControllerBase
      * @return type
      */
     public function getValuesByProperty()
-    {
-        $data = $this->model->getViewData();
+    { 
+        $data = $this->model->getValuesByProperty();
         $data = $this->helper->generatePropertyUrl($data);
+      
         return [
             '#theme' => 'arche-dashboard-values-by-property',
             '#data' => $data,

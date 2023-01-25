@@ -36,6 +36,27 @@ class DashboardModel
         $this->repodb = \Drupal\Core\Database\Database::getConnection('repo');
     }
     
+    public function getValuesByProperty() {
+        try {
+
+            $query = $this->repodb->query(" SELECT 
+                property, count(*) as cnt
+            from public.metadata_view 
+            group by property"
+            );
+          
+            $return = $query->fetchAll();
+            $this->changeBackDBConnection();
+            return $return;
+        } catch (Exception $ex) {
+            \Drupal::logger('arche_dashboard')->notice($ex->getMessage());
+            return array();
+        } catch (\Drupal\Core\Database\DatabaseExceptionWrapper $ex) {
+            \Drupal::logger('arche_dashboard')->notice($ex->getMessage());
+            return array();
+        }
+    }
+    
     /**
      * Generate the sql data
      * @param string $key
