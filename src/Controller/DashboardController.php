@@ -12,6 +12,7 @@ class DashboardController extends ControllerBase
     private $repo;
     private $model;
     private $helper;
+    private static $cacheTypes = ['formatspercollection'];
 
     public function __construct()
     {
@@ -20,50 +21,6 @@ class DashboardController extends ControllerBase
         //setup the dashboard model class
         $this->model = new \Drupal\arche_dashboard\Model\DashboardModel();
         $this->helper = new \Drupal\arche_dashboard\Helper\DashboardHelper();
-    }
-
-    /**
-     * Dashboard property count view
-     *
-     * @return array
-     */
-    public function dashboardDetail(string $key = "properties"): array
-    {
-        //generate the view
-        $data = $this->generateView($key);
-        
-        if (count($data) > 0) {
-            $cols = get_object_vars($data[0]);
-        } else {
-            $cols = array();
-        }
-
-        /* if the key is the properties then we need to change the # in the url */
-        if ($key == 'properties' || $key == 'classes' || $key == 'classesproperties') {
-            $data = $this->helper->generatePropertyUrl($data);
-        }
-
-        switch ($key) {
-            case 'classes':
-                $detailPageUrl = 'dashboard-class-property';
-                break;
-            case 'formats':
-                $detailPageUrl = 'dashboard-format-property';
-                break;
-
-            default:
-                $detailPageUrl = 'dashboard-property';
-                break;
-        }
-
-        return [
-            '#theme' => 'arche-dashboard-table',
-            '#basic' => $data,
-            '#key' => $key,
-            '#cols' => $cols,
-            '#detailPageUrl' => $detailPageUrl,
-            '#cache' => ['max-age' => 0]
-        ];
     }
     
     /**
@@ -99,13 +56,40 @@ class DashboardController extends ControllerBase
         //datatable start columns from 0 but in db we have to start it from 1
         $orderby = (empty($_POST['order'][0]['column'])) ? 1 : (int)$_POST['order'][0]['column'] + 1;
         $order = (empty($_POST['order'][0]['dir'])) ? 'asc' : $_POST['order'][0]['dir'];
-        $data = array();
         
+        $data = array();
+        /*
+        if(in_array($key, $this::$cacheTypes)) {
+            $lastmodify = $this->model->getDBLastModificationDate();
+            $cfPath = $this->helper->getCachedFilePath();
+            $cf = new \Drupal\arche_dashboard\Object\CacheFile($cfPath, $key.'.json');
+            $dbCall = false;
+        
+            if(!$cf->checkFileExists() || $cf->getSize() === 0 ) {
+                $dbCall = true;
+            }
+            
+            if($cf->compareDates($lastmodify)) {
+                $dbCall = true;
+            }
+          
+            if($dbCall) {
+                $data = $this->generateView($key, 0, 10000, $search, $orderby, $order);
+                $cf->addContent(json_encode($data));
+            }
+            $data = json_decode($cf->getJsonContent(), true);
+            
+        } else {
+            $data = $this->generateView($key, $offset, $limit, $search, $orderby, $order);
+        }
+        */
         $data = $this->generateView($key, $offset, $limit, $search, $orderby, $order);
+       
         $cols = [];
         if (count($data) > 0) {
-            $cols = get_object_vars($data[0]);
+            $cols = array_keys((array)$data[0]);
         }
+   
         
         $response = new Response();
         $response->setContent(
@@ -402,16 +386,7 @@ class DashboardController extends ControllerBase
         );
         $response->headers->set('Content-Type', 'application/json');
         return $response;
-        /*
-
-        return [
-            '#theme' => 'arche-dashboard-table',
-            '#basic' => $data,
-            '#key' => $key,
-            '#cols' => $cols,
-            '#detailPageUrl' => $detailPageUrl,
-            '#cache' => ['max-age' => 0]
-        ];*/
+       
     }
     
     
@@ -447,6 +422,9 @@ class DashboardController extends ControllerBase
         $orderby = (empty($_POST['order'][0]['column'])) ? 1 : (int)$_POST['order'][0]['column'] + 1;
         $order = (empty($_POST['order'][0]['dir'])) ? 'asc' : $_POST['order'][0]['dir'];
         $data = array();
+        
+        
+        
         
         $data = $this->model->getValuesByPropertyApiData($property, $offset, $limit, $search, $orderby, $order);
       

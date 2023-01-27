@@ -288,4 +288,29 @@ class DashboardModel
     {
         \Drupal\Core\Database\Database::setActiveConnection();
     }
+    
+    
+    
+    /**
+     * Get the latest modification date
+     * @return string
+     */
+    public function getDBLastModificationDate(): string {
+        try {
+            $query = $this->repodb->query(
+                "select MAX(date) from public.metadata_history"
+            );
+            
+            $return = $query->fetchObject();
+
+            $this->changeBackDBConnection();
+            return $return->max;
+        } catch (Exception $ex) {
+            \Drupal::logger('arche_dashboard')->notice($ex->getMessage());
+            return "";
+        } catch (\Drupal\Core\Database\DatabaseExceptionWrapper $ex) {
+            \Drupal::logger('arche_dashboard')->notice($ex->getMessage());
+            return "";
+        }
+    }
 }

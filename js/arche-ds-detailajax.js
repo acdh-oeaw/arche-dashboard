@@ -10,7 +10,7 @@
             classesproperties: [{data: 'class'}, {data: 'property'}, {data: 'cnt_distinct_value'}, {data: 'cnt'}],
             topcollections: [{data: 'id'}, {data: 'title'}, {data: 'count'}, {data: 'max_relatives'}, {data: 'sum_size'}, {data: 'binary_size'}],
             formats: [{data: 'format'}, {data: 'count_format'}, {data: 'count_rawbinarysize'}, {data: 'sum_size'}],
-            formatspercollection: [{data: 'id'}, {data: 'title'}, {data: 'type'}, {data: 'format'}, {data: 'count'}, {data: 'sum_size'}, {data: 'sumcount'}],
+            formatspercollection: [{data: 'id'}, {data: 'title'}, {data: 'type'}, {data: 'format'}, {data: 'count'}, {data: 'sum_size'}],
         };
 
         let key = $('#dashboard-detail-ajax-key').val();

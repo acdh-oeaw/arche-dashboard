@@ -11,8 +11,8 @@
     </div>
 </div>
 
+{{ include(module_path[0] ~ '/templates/helper/helper-title.html.twig', {'title': key } ) }}
 
-<h2>{{ "Statistics"|trans }} - {{ key }}</h2>
 <table id="dashboard-detail-ajax" class="table-striped" style="width:100%">
     {{ include('/modules/contrib/arche-dashboard/templates/arche-dashboard-detail-table-ajax-header.html.twig', {'key': key } ) }}
 </table>

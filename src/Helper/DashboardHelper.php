@@ -1,12 +1,9 @@
 <?php
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 namespace Drupal\arche_dashboard\Helper;
+
+use Drupal\file\Entity\File;
+use Drupal\arche_dashboard\Object\CacheFile;
 
 /**
  * Description of DashboardHelper
@@ -72,7 +69,13 @@ class DashboardHelper
         }
         return $data;
     }
-
+    
+    /**
+     * We have to change the field values for the server side generated tables case.
+     * @param array $data
+     * @param string $key
+     * @return array
+     */
     public function addUrlToTableData(array $data, string $key = "properties"): array
     {
         $keys = array_keys((array)$data[0]);
@@ -129,6 +132,19 @@ class DashboardHelper
         return $data;
     }
     
+    
+    public function getCachedFilePath() {
+        $extension_list = \Drupal::service('extension.list.module');
+        return $extension_list->getPath('arche_dashboard') . '/cache/';
+    }
+    
+    
+    
+    /**
+     * Formalize the bytes to MB/GB/etc for the gui
+     * @param int $size
+     * @return string
+     */
     private function formatNumberToGuiFriendlyFormat(int $size): string
     {
         $base = log($size) / log(1024);
