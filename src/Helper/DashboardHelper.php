@@ -133,7 +133,8 @@ class DashboardHelper
     }
     
     
-    public function getCachedFilePath() {
+    public function getCachedFilePath()
+    {
         $extension_list = \Drupal::service('extension.list.module');
         return $extension_list->getPath('arche_dashboard') . '/cache/';
     }
