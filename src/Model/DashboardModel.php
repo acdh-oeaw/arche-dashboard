@@ -36,10 +36,11 @@ class DashboardModel
         $this->repodb = \Drupal\Core\Database\Database::getConnection('repo');
     }
     
-    public function getValuesByProperty() {
+    public function getValuesByProperty()
+    {
         try {
-
-            $query = $this->repodb->query(" SELECT 
+            $query = $this->repodb->query(
+                " SELECT 
                 property, count(*) as cnt
             from public.metadata_view 
             group by property"
