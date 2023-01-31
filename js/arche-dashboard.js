@@ -190,13 +190,14 @@
 
 
     $('#values-by-property-table').hide();
-    $(document).delegate("#property-list", "change", function (e) {
-        
+     $(document).delegate("a#valuesByPropertyBtn", "click", function (e) {
+        e.preventDefault();
         //we need to destroy the table to we can reinit a new selection with new data
         $('#values-by-property-table').DataTable().clear();
         $('#values-by-property-table').DataTable().destroy();
         $('#values-by-property-table').show();
-        
+        let rdf = $('#rdftype-list').val();
+        let prop = $('#property-list').val();
         var values_by_properties = $('#values-by-property-table').DataTable({
             "paging": true,
             "searching": true,
@@ -204,7 +205,7 @@
             "processing": true,
             "serverSide": true,
             "serverMethod": "post",
-            "ajax": "/browser/dashboard-values-by-property-api/" + $(this).val(),
+            "ajax": "/browser/dashboard-values-by-property-api/" + prop+"&"+rdf,
             'columns': [
                 {data: 'property'},
                 {data: 'key'},

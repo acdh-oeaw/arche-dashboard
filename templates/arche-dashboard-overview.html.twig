@@ -1,8 +1,6 @@
 <h1>Dashboard</h1>
 <div class="mb-3">
-    <button type="button" class="dashboard-desc-btn-show btn btn-light">{{ "Display Description"|trans }}</button>
-    <button type="button" class="dashboard-desc-btn-hide btn btn-light">{{ "Hide Description"|trans }}</button>
-    <div class="dashboard-description alert alert-secondary hidden" role="alert">
+    <div class="dashboard-description alert alert-secondary" role="alert">
         {{ "Every entity in ARCHE is enriched with metadata that allow for the resources to be discovered and understood and are thus an essential part of complying with the FAIR Data Principles, to make data Findable, Accessible, Interoperable, and Reusable"|trans}} <a href="https://arche.acdh.oeaw.ac.at/browser/faq">{{ "(see FAQ)."|trans}}</a>
         <br/><br/>
         {{ "The metadata in ARCHE follow the ARCHE schema. The complete ARCHE schema along with the documentation and annotations is available in an"|trans }} <a href="https://euc-word-edit.officeapps.live.com/we/%5d(https:/github.com/acdh-oeaw/arche-schema">{{ "OWL-format"|trans}} {{ "and is also represented in a tabular form"|trans}} <a href="https://euc-word-edit.officeapps.live.com/we/(https:/teiminator.acdh.oeaw.ac.at/services/owl2html.xql?owl=https%3A%2F%2Fraw.githubusercontent.com%2Facdh-oeaw%2Frepo-schema%2Fmaster%2Facdh-schema.owl&format=table">{{ "here"|trans }}</a> {{ "and"|trans }} <a href="https://teiminator.acdh.oeaw.ac.at/services/owl2html.xql?owl=https%3A%2F%2Fraw.githubusercontent.com%2Facdh-oeaw%2Frepo-schema%2Fmaster%2Facdh-schema.owl">{{ "here"|trans }}</a>. {{ "A tabular overview of properties per Project, Collection and Resource is available also in the"|trans }} <a href="https://arche.acdh.oeaw.ac.at/browser/formats-filenames-and-metadata#metadata">{{ "Metadata requirements"|trans }}</a> {{ "for depositing in ARCHE."|trans}}

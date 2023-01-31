@@ -1,7 +1,7 @@
 {% set module_path = _self|split('/templates') %}
 {{ include(module_path[0] ~ '/templates/helper/helper-menu-button.html.twig' ) }}
 <h2>Property Count for TopCollections, Collections, Projects </h2> 
-<label for="property-list">Choose a property:</label>
+<label for="property-list"><b>Choose a property:</b></label>
 <br>
 <select name="property-list" id="property-list" >
     <option value="#">-----</option>
@@ -9,8 +9,21 @@
         <option value="{{ v.property }}">{{ v.property|replace({'%23': '#'}) }}</option>
     {% endfor %}   
 </select> 
+<br><br>
+<label for="rdftype-list"><b>Choose an RDF Type:</b></label>
+<br>
+<select name="rdftype-list" id="rdftype-list" >
+    <option value="#">-----</option>
+    {% for k,v in rdftype %}
+        <option value="{{ v.value }}">{{ v.value|replace({'%23': '#'}) }}</option>
+    {% endfor %}   
+</select> 
 
 <br><br>
+<div class="res-act-button res-act-button mb-3">
+    <a href="#" id="valuesByPropertyBtn">Get the Data</a>
+</div>
+
 <table id="values-by-property-table" class="table-striped" style="width:100%">
     <thead>
         <tr>

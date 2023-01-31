@@ -58,12 +58,12 @@ class DashboardHelper
      * @param array $data
      * @return array
      */
-    public function generatePropertyUrl(array &$data): array
+    public function generatePropertyUrl(array &$data, string $field = "property"): array
     {
         foreach ($data as $k => $v) {
-            if (isset($v->property)) {
-                if (strpos($v->property, "#") !== false) {
-                    $data[$k]->property = str_replace("#", "%23", $v->property);
+            if (isset($v->{$field})) {
+                if (strpos($v->{$field}, "#") !== false) {
+                    $data[$k]->{$field} = str_replace("#", "%23", $v->{$field});
                 }
             }
         }
@@ -151,5 +151,19 @@ class DashboardHelper
         $suffix = array("", " kb", " MB", " GB", " TB")[floor($base)];
         $result = pow(1024, $base - floor($base));
         return round((float)$result, 2) . $suffix;
+    }
+    
+    /**
+     * Create array from the passed properties
+     * @param string $params
+     * @return array
+     */
+    public function processValuesByPropApiParamaters(string $params): array {
+        $params = explode("&", $params);
+        $property = str_replace(':', '/', $params[0]);
+        $property = str_replace('//', '://', $property);
+        $rdf = str_replace(':', '/', $params[1]);
+        $rdf = str_replace('//', '://', $rdf);
+        return ['property' => $property, 'rdf' => $rdf];
     }
 }

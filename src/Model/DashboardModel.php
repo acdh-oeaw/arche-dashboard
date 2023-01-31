@@ -36,14 +36,47 @@ class DashboardModel
         $this->repodb = \Drupal\Core\Database\Database::getConnection('repo');
     }
     
-    public function getValuesByProperty()
+    /**
+     * Get all of the properties for the dropdown menu
+     * @return array
+     */
+    public function getValuesByProperty(): array
     {
         try {
             $query = $this->repodb->query(
                 " SELECT 
                 property, count(*) as cnt
             from public.metadata_view 
-            group by property"
+            group by property order by property;"
+            );
+          
+            $return = $query->fetchAll();
+            $this->changeBackDBConnection();
+            return $return;
+        } catch (Exception $ex) {
+            \Drupal::logger('arche_dashboard')->notice($ex->getMessage());
+            return array();
+        } catch (\Drupal\Core\Database\DatabaseExceptionWrapper $ex) {
+            \Drupal::logger('arche_dashboard')->notice($ex->getMessage());
+            return array();
+        }
+    }
+    
+    
+    
+    /**
+     * Get the ACDH RDf:TYPE-s for the dropdown list
+     * @return array
+     */
+    public function getAcdhTypes(): array
+    {
+        try {
+            $query = $this->repodb->query(
+                "SELECT 
+                    DISTINCT(value)
+                from public.metadata_view 
+                where property = 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type'
+                order by value;"
             );
           
             $return = $query->fetchAll();
@@ -72,7 +105,7 @@ class DashboardModel
             SELECT 
                 property as key, count(*) as cnt
             from public.metadata_view 
-            group by property";
+            group by property order by property;";
         }
         
         try {
@@ -256,14 +289,23 @@ class DashboardModel
      * @param string $property
      * @return array
      */
-    public function getValuesByPropertyApiData(string $property, int $offset, int $limit, string $search = "", int $orderby = 1, string $order = 'asc'): array
+    public function getValuesByPropertyApiData(string $property, array $types, int $offset, int $limit, string $search = "", int $orderby = 1, string $order = 'asc'): array
     {
-        $property = str_replace(':', '/', $property);
-        $property = str_replace('//', '://', $property);
-     
+       
+        error_log('property');
+        error_log(print_R($property, true));
+        
+        error_log('types');
+        error_log(print_R($types, true));
+        
+        $typeStr = $this->formatTypeArray($types);
+        
+        error_log('typestr');
+        error_log(print_R($typeStr, true));
+        
         try {
             $query = $this->repodb->query(
-                "select * from gui.dash_get_facet_by_property_func(:property) where LOWER(key) like  LOWER('%' || :search || '%') "
+                "select * from gui.dash_get_facet_by_property_func(:property, $typeStr) where LOWER(key) like  LOWER('%' || :search || '%') "
                     . "order by $orderby $order "
                     . " limit :limit offset :offset;",
                 array(
@@ -271,9 +313,11 @@ class DashboardModel
                     ':limit' => $limit,
                     ':offset' => $offset,
                     ':search' => $search
-                )
+                ),
+                    ['allow_delimiter_in_query' => true, 'allow_square_brackets' => true]
             );
             $return = $query->fetchAll();
+           
             $this->changeBackDBConnection();
             return $return;
         } catch (Exception $ex) {
@@ -291,6 +335,21 @@ class DashboardModel
     }
     
     
+    private function formatTypeArray(array $types): string {
+        $typeStr = 'ARRAY [ ';
+        $count = count($types);
+        $i = 0;
+        foreach ($types as $t) {
+            $typeStr .= "'$t'";
+            if ($count - 1 != $i) {
+                $typeStr .= ', ';
+            } else {
+                $typeStr .= ' ]';
+            }
+            $i++;
+        }
+        return $typeStr;        
+    }
     
     /**
      * Get the latest modification date

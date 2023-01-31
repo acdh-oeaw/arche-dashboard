@@ -4,9 +4,7 @@
 <input type="hidden" name="dashboard-detail-ajax-key" id="dashboard-detail-ajax-key" value="{{ key }}"/>
 <br><br>
 <div class="mb-3">
-    <button type="button" class="dashboard-desc-btn-show btn btn-light">{{ "Display Description"|trans }}</button>
-    <button type="button" class="dashboard-desc-btn-hide btn btn-light">{{ "Hide Description"|trans }}</button>
-    <div class="dashboard-description alert alert-secondary hidden" role="alert">
+    <div class="dashboard-description alert alert-secondary" role="alert">
         {{ include('/modules/contrib/arche-dashboard/templates/helper/helper-descriptions.html.twig', {'key': key } ) }}
     </div>
 </div>

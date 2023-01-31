@@ -398,10 +398,13 @@ class DashboardController extends ControllerBase
     {
         $data = $this->model->getValuesByProperty();
         $data = $this->helper->generatePropertyUrl($data);
-      
+        $rdftype = $this->model->getAcdhTypes();
+        $rdftype = $this->helper->generatePropertyUrl($rdftype, "value");
+        
         return [
             '#theme' => 'arche-dashboard-values-by-property',
             '#data' => $data,
+            '#rdftype' => $rdftype,
             '#cache' => ['max-age' => 0]
         ];
     }
@@ -414,6 +417,7 @@ class DashboardController extends ControllerBase
      */
     public function getValuesByPropertyApi(string $property): Response
     {
+        
         $offset = (empty($_POST['start'])) ? 0 : $_POST['start'];
         $limit = (empty($_POST['length'])) ? 10 : $_POST['length'];
         $draw = (empty($_POST['draw'])) ? 0 : $_POST['draw'];
@@ -422,11 +426,12 @@ class DashboardController extends ControllerBase
         $orderby = (empty($_POST['order'][0]['column'])) ? 1 : (int)$_POST['order'][0]['column'] + 1;
         $order = (empty($_POST['order'][0]['dir'])) ? 'asc' : $_POST['order'][0]['dir'];
         $data = array();
+       
+        $params = $this->helper->processValuesByPropApiParamaters($property);
         
+        //$type = ['https://vocabs.acdh.oeaw.ac.at/schema#Collection', 'https://vocabs.acdh.oeaw.ac.at/schema#TopCollection', 'https://vocabs.acdh.oeaw.ac.at/schema#Project'];
         
-        
-        
-        $data = $this->model->getValuesByPropertyApiData($property, $offset, $limit, $search, $orderby, $order);
+        $data = $this->model->getValuesByPropertyApiData($params['property'], array($params['rdf']), $offset, $limit, $search, $orderby, $order);
       
         $response = new Response();
         $response->setContent(
