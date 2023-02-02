@@ -29,6 +29,9 @@ function arche_dashboard_theme($existing, $type, $theme, $path)
         'arche-dashboard-values-by-property' => [
             'variables' => ['data' => NULL, 'rdftype' => NULL]
         ],
+        'arche-dashboard-values-by-property-detail' => [
+            'variables' => ['params' => NULL]
+        ],
         'arche-dashboard-property' => [
             'variables' => ['data' => NULL, 'property' => NULL, 'propertyTitle' => NULL]
         ],

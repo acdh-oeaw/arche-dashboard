@@ -118,6 +118,27 @@ dashboard_values_by_property_api:
         _access: 'TRUE' 
     options:
         no_cache: 'TRUE'
+ 
+dashboard-vbp-detail:    
+    path: '/dashboard-vbp-detail/{params}' 
+    defaults:
+        _controller: '\Drupal\arche_dashboard\Controller\DashboardController::getValuesByPropertyDetail'
+    requirements:
+        _permission: 'access content'
+        _access: 'TRUE' 
+    options:
+        no_cache: 'TRUE'        
+
+dashboard-vbp-detail-api:    
+    path: '/dashboard-vbp-detail-api/{params}' 
+    defaults:
+        _controller: '\Drupal\arche_dashboard\Controller\DashboardController::getValuesByPropertyDetailApi'
+    requirements:
+        _permission: 'access content'
+        _access: 'TRUE' 
+    options:
+        no_cache: 'TRUE'         
+        
         
 dashboard_property:    
     path: '/dashboard-property/{property}' 
@@ -138,3 +159,5 @@ dashboard_property_api:
         _access: 'TRUE' 
     options:
         no_cache: 'TRUE'           
+        
+        

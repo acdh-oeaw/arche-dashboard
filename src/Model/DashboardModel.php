@@ -291,17 +291,7 @@ class DashboardModel
      */
     public function getValuesByPropertyApiData(string $property, array $types, int $offset, int $limit, string $search = "", int $orderby = 1, string $order = 'asc'): array
     {
-       
-        error_log('property');
-        error_log(print_R($property, true));
-        
-        error_log('types');
-        error_log(print_R($types, true));
-        
         $typeStr = $this->formatTypeArray($types);
-        
-        error_log('typestr');
-        error_log(print_R($typeStr, true));
         
         try {
             $query = $this->repodb->query(
@@ -371,6 +361,51 @@ class DashboardModel
         } catch (\Drupal\Core\Database\DatabaseExceptionWrapper $ex) {
             \Drupal::logger('arche_dashboard')->notice($ex->getMessage());
             return "";
+        }
+    }
+    
+    
+    public function getValuesByPropertyDetailData(array $params, int $offset, int $limit, string $search = "", int $orderby = 1, string $order = 'asc'): array
+    {
+        
+        try {
+            $query = $this->repodb->query(
+                "WITH query_data as (
+                    select mv2.id, 
+                    COALESCE(
+                    (select mv3.value from metadata_view as mv3 where mv3.id = mv2.id  and mv3.property = 'https://vocabs.acdh.oeaw.ac.at/schema#hasTitle' and mv3.lang = 'en' LIMIT 1),
+                    (select mv3.value from metadata_view as mv3 where mv3.id = mv2.id  and mv3.property = 'https://vocabs.acdh.oeaw.ac.at/schema#hasTitle' and mv3.lang = 'de' LIMIT 1),
+                    (select mv3.value from metadata_view as mv3 where mv3.id = mv2.id  and mv3.property = 'https://vocabs.acdh.oeaw.ac.at/schema#hasTitle' and mv3.lang = 'und' LIMIT 1),
+                    (select mv3.value from metadata_view as mv3 where mv3.id = mv2.id  and mv3.property = 'https://vocabs.acdh.oeaw.ac.at/schema#hasTitle' LIMIT 1)
+                    ) as title
+                    from public.metadata_view as mv
+                    left join metadata_view as mv2 on mv.id = mv2.id
+                    where mv.property = 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type'
+			and mv.value = :rdf
+                    and mv2.value = :keyword and mv2.property = :property)
+                    Select qd.id, qd.title, (select count(qd2.*) from query_data as qd2) as sumcount from query_data as qd  where LOWER(title ) like  LOWER('%' || :search || '%') 
+                    "
+                    . "order by $orderby $order "
+                    . " limit :limit offset :offset;",
+                array(
+                    ':property' => $params['property'],
+                    ':keyword' => $params['keyword'],
+                    ':rdf' => $params['rdf'],
+                    ':limit' => $limit,
+                    ':offset' => $offset,
+                    ':search' => $search
+                ),
+                    ['allow_delimiter_in_query' => true, 'allow_square_brackets' => true]
+            );
+            $return = $query->fetchAll();
+            $this->changeBackDBConnection();
+            return $return;
+        } catch (Exception $ex) {
+            \Drupal::logger('arche_dashboard')->notice($ex->getMessage());
+            return array();
+        } catch (\Drupal\Core\Database\DatabaseExceptionWrapper $ex) {
+            \Drupal::logger('arche_dashboard')->notice($ex->getMessage());
+            return array();
         }
     }
 }

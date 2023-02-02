@@ -1,0 +1,21 @@
+{% set module_path = _self|split('/templates') %}
+{{ include(module_path[0] ~ '/templates/helper/helper-menu-button.html.twig' ) }}
+<h2>{{ "Property Count Detail View"|trans }}</h2> 
+
+<input type="hidden" name="params" id="params" value="{{ params }}" />
+
+<table id="dashboard-values-property-detail" class="table-striped" style="width:100%">
+    <thead>
+        <tr>
+            <th>{{ "ID"|trans }}</th>
+            <th>{{ "Title"|trans }}</th>
+        </tr>
+    </thead>
+    <tfoot>
+        <tr>
+            <th>{{ "ID"|trans }}</th>
+            <th>{{ "Title"|trans }}</th>
+        </tr>
+    </tfoot>
+</table>
+

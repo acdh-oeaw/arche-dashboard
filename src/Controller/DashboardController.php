@@ -390,11 +390,12 @@ class DashboardController extends ControllerBase
     }
     
     
+   
     /**
-     *
-     * @return type
+     * dashboard-values-by-property page
+     * @return array
      */
-    public function getValuesByProperty()
+    public function getValuesByProperty(): array
     {
         $data = $this->model->getValuesByProperty();
         $data = $this->helper->generatePropertyUrl($data);
@@ -411,7 +412,7 @@ class DashboardController extends ControllerBase
     
     
     /**
-     *
+     * dashboard-values-by-property API call
      * @param string $property
      * @return Response
      */
@@ -429,10 +430,8 @@ class DashboardController extends ControllerBase
        
         $params = $this->helper->processValuesByPropApiParamaters($property);
         
-        //$type = ['https://vocabs.acdh.oeaw.ac.at/schema#Collection', 'https://vocabs.acdh.oeaw.ac.at/schema#TopCollection', 'https://vocabs.acdh.oeaw.ac.at/schema#Project'];
-        
         $data = $this->model->getValuesByPropertyApiData($params['property'], array($params['rdf']), $offset, $limit, $search, $orderby, $order);
-      
+        $data = $this->helper->dashboardValuesByPropertyTableFormat($data, $params['property'], array($params['rdf']));
         $response = new Response();
         $response->setContent(
             json_encode(
@@ -447,6 +446,67 @@ class DashboardController extends ControllerBase
         $response->headers->set('Content-Type', 'application/json');
         return $response;
     }
+    
+    
+    /**
+     * dashboard-vbp-detail page
+     * @param string $params
+     * @return array
+     */
+    public function getValuesByPropertyDetail(string $params): array {
+       
+        $params = str_replace(':', '/', $params);
+        $params = str_replace('//', '://', $params);
+      
+        return [
+            '#theme' => 'arche-dashboard-values-by-property-detail',
+            '#params' => $params,
+            '#cache' => ['max-age' => 0],
+            '#attached' => [
+                'library' => [
+                    'arche_dashboard/arche-ds-vbp-css-and-js',
+                ]
+            ]
+        ];
+    }
+
+    /**
+     * dashboard-vbp-detail API
+     * @param string $property
+     * @return Response
+     */
+    public function getValuesByPropertyDetailApi(string $params): Response
+    {
+        
+        $offset = (empty($_POST['start'])) ? 0 : $_POST['start'];
+        $limit = (empty($_POST['length'])) ? 10 : $_POST['length'];
+        $draw = (empty($_POST['draw'])) ? 0 : $_POST['draw'];
+        $search = (empty($_POST['search']['value'])) ? "" : $_POST['search']['value'];
+        //datatable start columns from 0 but in db we have to start it from 1
+        $orderby = (empty($_POST['order'][0]['column'])) ? 1 : (int)$_POST['order'][0]['column'] + 1;
+        $order = (empty($_POST['order'][0]['dir'])) ? 'asc' : $_POST['order'][0]['dir'];
+        $data = array();
+        
+        //because we are passing more values and it could be urls also, we have to prerocess them
+        $params = $this->helper->processValuesByPropApiParamaters($params);
+        
+        $data = $this->model->getValuesByPropertyDetailData($params, $offset, $limit, $search, $orderby, $order);
+        
+        $response = new Response();
+        $response->setContent(
+            json_encode(
+                array(
+                    "aaData" => $data,
+                    "iTotalRecords" => ($data[0]->sumcount) ?  $data[0]->sumcount : 0,
+                    "iTotalDisplayRecords" => ($data[0]->sumcount) ?  $data[0]->sumcount : 0,
+                    "draw" => intval($draw),
+                )
+            )
+        );
+        $response->headers->set('Content-Type', 'application/json');
+        return $response;
+    }
+    
     
     /**
      * The properties menu template generation

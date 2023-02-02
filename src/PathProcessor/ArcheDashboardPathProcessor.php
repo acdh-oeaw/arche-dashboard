@@ -69,6 +69,19 @@ class ArcheDashboardPathProcessor implements InboundPathProcessorInterface
             return "/dashboard-values-by-property-api/$names";
         }
         
+        
+        if (strpos($path, '/dashboard-vbp-detail/') === 0) {
+            $names = preg_replace('|^\/dashboard-vbp-detail\/|', '', $path);
+            $names = str_replace('/', ':', $names);
+            return "/dashboard-vbp-detail/$names";
+        }
+        
+        if (strpos($path, '/dashboard-vbp-detail-api/') === 0) {
+            $names = preg_replace('|^\/dashboard-vbp-detail-api\/|', '', $path);
+            $names = str_replace('/', ':', $names);
+            return "/dashboard-vbp-detail-api/$names";
+        }
+        
         return $path;
     }
 }

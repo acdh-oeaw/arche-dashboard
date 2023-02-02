@@ -133,6 +133,10 @@ class DashboardHelper
     }
     
     
+    /**
+     * Get the cached query files path
+     * @return type
+     */
     public function getCachedFilePath() {
         $extension_list = \Drupal::service('extension.list.module');
         return $extension_list->getPath('arche_dashboard') . '/cache/';
@@ -159,11 +163,33 @@ class DashboardHelper
      * @return array
      */
     public function processValuesByPropApiParamaters(string $params): array {
+        $result = [];
         $params = explode("&", $params);
         $property = str_replace(':', '/', $params[0]);
-        $property = str_replace('//', '://', $property);
+        $result['property'] = str_replace('//', '://', $property);
         $rdf = str_replace(':', '/', $params[1]);
-        $rdf = str_replace('//', '://', $rdf);
-        return ['property' => $property, 'rdf' => $rdf];
+        $result['rdf'] = str_replace('//', '://', $rdf);
+        
+        if(isset($params[2])) {
+            $kw = str_replace(':', '/', $params[2]);
+            $result['keyword'] = str_replace('//', '://', $kw);
+        }
+        return $result;
+    }
+    
+    public function dashboardValuesByPropertyTableFormat(array &$data, string $prop, array $rdf): array {
+        $prop = str_replace("#", "%23", $prop);
+        $rdf = implode("?", $rdf);
+        $rdf = str_replace("#", "%23", $rdf);
+                
+        for ($x = 0; $x <= count($data); $x++) {
+            if(isset($data[$x]->count)) {
+                
+                
+                $data[$x]->count = '<a href="/browser/dashboard-vbp-detail/'.$prop.'&'.$rdf.'&'.str_replace("#", "%23", $data[$x]->key).'" >'.$data[$x]->count.'</a>';
+            }
+        } 
+        
+        return $data;
     }
 }

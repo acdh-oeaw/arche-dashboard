@@ -61,3 +61,18 @@ arche-ds-detailajax-css-and-js:
     - core/drupal
     - core/drupalSettings    
     
+arche-ds-vbp-css-and-js:
+  css:
+    theme:
+      css/arche-dashboard.css: {}
+      css/dataTables.bootstrap4.min.css: {}
+  js:
+    js/jquery.dataTables.min.js: {}
+    js/dataTables.bootstrap4.min.js: {}
+    js/arche-ds-values-by-property-detail.js: {}
+    
+  dependencies:
+    - core/jquery
+    - core/drupal
+    - core/drupalSettings    
+    
