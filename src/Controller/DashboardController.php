@@ -64,21 +64,21 @@ class DashboardController extends ControllerBase
             $cfPath = $this->helper->getCachedFilePath();
             $cf = new \Drupal\arche_dashboard\Object\CacheFile($cfPath, $key.'.json');
             $dbCall = false;
-        
+
             if(!$cf->checkFileExists() || $cf->getSize() === 0 ) {
                 $dbCall = true;
             }
-            
+
             if($cf->compareDates($lastmodify)) {
                 $dbCall = true;
             }
-          
+
             if($dbCall) {
                 $data = $this->generateView($key, 0, 10000, $search, $orderby, $order);
                 $cf->addContent(json_encode($data));
             }
             $data = json_decode($cf->getJsonContent(), true);
-            
+
         } else {
             $data = $this->generateView($key, $offset, $limit, $search, $orderby, $order);
         }
@@ -386,7 +386,6 @@ class DashboardController extends ControllerBase
         );
         $response->headers->set('Content-Type', 'application/json');
         return $response;
-       
     }
     
     

@@ -133,6 +133,7 @@ class DashboardHelper
     }
     
     
+
     /**
      * Get the cached query files path
      * @return type

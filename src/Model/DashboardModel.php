@@ -345,7 +345,8 @@ class DashboardModel
      * Get the latest modification date
      * @return string
      */
-    public function getDBLastModificationDate(): string {
+    public function getDBLastModificationDate(): string
+    {
         try {
             $query = $this->repodb->query(
                 "select MAX(date) from public.metadata_history"
