@@ -417,7 +417,6 @@ class DashboardController extends ControllerBase
      */
     public function getValuesByPropertyApi(string $property): Response
     {
-        
         $offset = (empty($_POST['start'])) ? 0 : $_POST['start'];
         $limit = (empty($_POST['length'])) ? 10 : $_POST['length'];
         $draw = (empty($_POST['draw'])) ? 0 : $_POST['draw'];
@@ -452,8 +451,8 @@ class DashboardController extends ControllerBase
      * @param string $params
      * @return array
      */
-    public function getValuesByPropertyDetail(string $params): array {
-       
+    public function getValuesByPropertyDetail(string $params): array
+    {
         $params = str_replace(':', '/', $params);
         $params = str_replace('//', '://', $params);
       
@@ -476,7 +475,6 @@ class DashboardController extends ControllerBase
      */
     public function getValuesByPropertyDetailApi(string $params): Response
     {
-        
         $offset = (empty($_POST['start'])) ? 0 : $_POST['start'];
         $limit = (empty($_POST['length'])) ? 10 : $_POST['length'];
         $draw = (empty($_POST['draw'])) ? 0 : $_POST['draw'];
