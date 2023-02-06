@@ -304,7 +304,7 @@ class DashboardModel
                     ':offset' => $offset,
                     ':search' => $search
                 ),
-                    ['allow_delimiter_in_query' => true, 'allow_square_brackets' => true]
+                ['allow_delimiter_in_query' => true, 'allow_square_brackets' => true]
             );
             $return = $query->fetchAll();
            
@@ -325,7 +325,8 @@ class DashboardModel
     }
     
     
-    private function formatTypeArray(array $types): string {
+    private function formatTypeArray(array $types): string
+    {
         $typeStr = 'ARRAY [ ';
         $count = count($types);
         $i = 0;
@@ -338,7 +339,7 @@ class DashboardModel
             }
             $i++;
         }
-        return $typeStr;        
+        return $typeStr;
     }
     
     /**
@@ -368,7 +369,6 @@ class DashboardModel
     
     public function getValuesByPropertyDetailData(array $params, int $offset, int $limit, string $search = "", int $orderby = 1, string $order = 'asc'): array
     {
-        
         try {
             $query = $this->repodb->query(
                 "WITH query_data as (
@@ -396,7 +396,7 @@ class DashboardModel
                     ':offset' => $offset,
                     ':search' => $search
                 ),
-                    ['allow_delimiter_in_query' => true, 'allow_square_brackets' => true]
+                ['allow_delimiter_in_query' => true, 'allow_square_brackets' => true]
             );
             $return = $query->fetchAll();
             $this->changeBackDBConnection();
