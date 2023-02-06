@@ -1,6 +1,10 @@
 {% set module_path = _self|split('/templates') %}
 {{ include(module_path[0] ~ '/templates/helper/helper-menu-button.html.twig' ) }}
 <h2>{{ "Property Count Detail View"|trans }}</h2> 
+<br>
+<h3 style="text-align: center;">Property: {{ params| split('&', 3)[0] }}</h3>
+<h3 style="text-align: center;">RDF Type: {{ params| split('&', 3)[1] }}</h3>
+<h3 style="text-align: center;">Keyword: {{ params| split('&', 3)[2] }}</h3>
 
 <input type="hidden" name="params" id="params" value="{{ params }}" />
 

@@ -88,20 +88,21 @@ class DashboardHelper
                 }
                 
                 foreach ($data[$i] as $k => $v) {
+                    $fv = str_replace('#', '%23', $v);
                     if ($k == "property") {
-                        $data[$i]->{$k} = '<a href="/browser/dashboard-property/'.$v.'">'.$v.'</a>';
+                        $data[$i]->{$k} = '<a href="/browser/dashboard-property/'.$fv.'">'.$v.'</a>';
                     }
 
                     if ($k == "format") {
-                        $data[$i]->{$k} = '<a href="/browser/dashboard-format-property/'.$v.'">'.$v.'</a>';
+                        $data[$i]->{$k} = '<a href="/browser/dashboard-format-property/'.$fv.'">'.$v.'</a>';
                     }
                     
                     if ($k == "class") {
-                        $data[$i]->{$k} = '<a href="/browser/dashboard-class-property/'.$v.'">'.$v.'</a>';
+                        $data[$i]->{$k} = '<a href="/browser/dashboard-class-property/'.$fv.'">'.$v.'</a>';
                     }
                     
                     if ($k == "format") {
-                        $data[$i]->{$k} = '<a href="/browser/dashboard-format-property/'.$v.'">'.$v.'</a>';
+                        $data[$i]->{$k} = '<a href="/browser/dashboard-format-property/'.$fv.'">'.$v.'</a>';
                     }
                     if ($k == "title" && !empty($id)) {
                         $data[$i]->{$k} = '<a href="/browser/oeaw_detail/'.$id.'">'.$v.'</a>';

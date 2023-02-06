@@ -91,6 +91,7 @@ class DashboardController extends ControllerBase
         }
    
         
+        
         $response = new Response();
         $response->setContent(
             json_encode(
@@ -108,7 +109,7 @@ class DashboardController extends ControllerBase
         return $response;
     }
     
-    public function dashboard_format_property_detail(string $property): array
+    public function dashboardFormatPropertyDetail(string $property): array
     {
         $property = base64_decode($property);
         $data = $this->model->getFacetDetail('https://vocabs.acdh.oeaw.ac.at/schema#hasFormat', $property);
@@ -135,7 +136,7 @@ class DashboardController extends ControllerBase
      * @param string $property
      * @return array
      */
-    public function dashboard_class_property_detail(string $property): array
+    public function dashboardClassPropertyDetail(string $property): array
     {
         $property = base64_decode($property);
         $data = $this->model->getFacetDetail('http://www.w3.org/1999/02/22-rdf-syntax-ns#type', $property);
@@ -157,36 +158,11 @@ class DashboardController extends ControllerBase
     }
 
     /**
-     * Dashboard property count distinct values  view
-     *
-     * @return array
-     */
-    public function dashboard_property_detail(string $property): array
-    {
-        $property = base64_decode($property);
-        $data = $this->model->getFacet($property);
-
-        if (count($data) > 0) {
-            $cols = get_object_vars($data[0]);
-        } else {
-            $cols = array();
-        }
-      
-        return [
-            '#theme' => 'arche-dashboard-table',
-            '#basic' => $data,
-            '#key' => $property,
-            '#cols' => $cols,
-            '#cache' => ['max-age' => 0]
-        ];
-    }
-
-    /**
      * The Dashboard Main Menu View
      *
      * @return array
      */
-    public function dashboard_overview(): array
+    public function dashboardOverview(): array
     {
         return [
             '#theme' => 'arche-dashboard-overview',
@@ -222,7 +198,7 @@ class DashboardController extends ControllerBase
      * @param string $property
      * @return Response
      */
-    public function dashboard_property_detail_api(string $property): Response
+    public function dashboardPropertyDetailApi(string $property): Response
     {
         $property = base64_decode($property);
         //get the value the value after the last /
@@ -256,7 +232,7 @@ class DashboardController extends ControllerBase
      * @param string $property
      * @return Response
      */
-    public function dashboard_dissemination_services_list()
+    public function dashboardDisseminationServicesList()
     {
         $disservHelper = new \Drupal\arche_dashboard\Helper\DisseminationServiceHelper();
         $data = $disservHelper->getDissServices();
@@ -288,7 +264,7 @@ class DashboardController extends ControllerBase
      * @param string $id
      * @return type
      */
-    public function dashboard_dissemination_services_detail(string $id)
+    public function dashboardDisseminationServicesDetail(string $id)
     {
         $disservHelper = new \Drupal\arche_dashboard\Helper\DisseminationServiceHelper();
         $data = $disservHelper->getDissServResourcesById((int)$id);
@@ -334,61 +310,6 @@ class DashboardController extends ControllerBase
     }
     
    
-    /**
-     *
-     * @param string $key
-     * @return array
-     */
-    public function dashboard_detail_api(string $key = "properties"): array
-    {
-        $offset = (empty($_POST['start'])) ? 0 : $_POST['start'];
-        $limit = (empty($_POST['length'])) ? 10 : $_POST['length'];
-        $draw = (empty($_POST['draw'])) ? 0 : $_POST['draw'];
-        
-        //generate the view
-        $data = $this->generateView($key, (int)$limit, (int)$offset);
-
-        if (count($data) > 0) {
-            $cols = get_object_vars($data[0]);
-        } else {
-            $cols = array();
-        }
-
-        /* if the key is the properties then we need to change the # in the url */
-        if ($key == 'properties' || $key == 'classes' || $key == 'classesproperties') {
-            $data = $this->helper->generatePropertyUrl($data);
-        }
-
-        switch ($key) {
-            case 'classes':
-                $detailPageUrl = 'dashboard-class-property';
-                break;
-            case 'formats':
-                $detailPageUrl = 'dashboard-format-property';
-                break;
-
-            default:
-                $detailPageUrl = 'dashboard-property';
-                break;
-        }
-
-        
-        $response = new Response();
-        $response->setContent(
-            json_encode(
-                array(
-                    "aaData" => $matching,
-                    "iTotalRecords" => $data->getCount(),
-                    "iTotalDisplayRecords" => $data->getCount(),
-                    "draw" => intval($draw),
-                )
-            )
-        );
-        $response->headers->set('Content-Type', 'application/json');
-        return $response;
-    }
-    
-    
    
     /**
      * dashboard-values-by-property page

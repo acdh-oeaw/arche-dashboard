@@ -2,7 +2,7 @@
 dashboard_overview: 
     path: '/dashboard' 
     defaults:
-        _controller: '\Drupal\arche_dashboard\Controller\DashboardController::dashboard_overview'
+        _controller: '\Drupal\arche_dashboard\Controller\DashboardController::dashboardOverview'
     requirements:
         _permission: 'access content'
         _access: 'TRUE' 
@@ -32,7 +32,7 @@ dashboard_detail_ajax_api:
 dashboard_class_property:    
     path: '/dashboard-class-property/{property}' 
     defaults:
-        _controller: '\Drupal\arche_dashboard\Controller\DashboardController::dashboard_class_property_detail'
+        _controller: '\Drupal\arche_dashboard\Controller\DashboardController::dashboardClassPropertyDetail'
     requirements:
         _permission: 'access content'
         _access: 'TRUE' 
@@ -42,7 +42,7 @@ dashboard_class_property:
 dashboard_format_property:    
     path: '/dashboard-format-property/{property}' 
     defaults:
-        _controller: '\Drupal\arche_dashboard\Controller\DashboardController::dashboard_format_property_detail'
+        _controller: '\Drupal\arche_dashboard\Controller\DashboardController::dashboardFormatPropertyDetail'
     requirements:
         _permission: 'access content'
         _access: 'TRUE' 
@@ -52,7 +52,7 @@ dashboard_format_property:
 dashboard_detail_api:    
     path: '/dashboard-detail-prop-api/{property}' 
     defaults:
-        _controller: '\Drupal\arche_dashboard\Controller\DashboardController::dashboard_property_detail_api'
+        _controller: '\Drupal\arche_dashboard\Controller\DashboardController::dashboardPropertyDetailApi'
     requirements:
         _permission: 'access content'
         _access: 'TRUE' 
@@ -62,7 +62,7 @@ dashboard_detail_api:
 dashboard_dissemination_services:    
     path: '/dashboard-dissemination-services' 
     defaults:
-        _controller: '\Drupal\arche_dashboard\Controller\DashboardController::dashboard_dissemination_services_list'
+        _controller: '\Drupal\arche_dashboard\Controller\DashboardController::dashboardDisseminationServicesList'
     requirements:
         _permission: 'access content'
         _access: 'TRUE' 
@@ -82,7 +82,7 @@ dashboard_disserv_list_api:
 dashboard_dissemination_services_detail:    
     path: '/dashboard-dissserv-detail/{id}' 
     defaults:
-        _controller: '\Drupal\arche_dashboard\Controller\DashboardController::dashboard_dissemination_services_detail'
+        _controller: '\Drupal\arche_dashboard\Controller\DashboardController::dashboardDisseminationServicesDetail'
     requirements:
         _permission: 'access content'
         _access: 'TRUE'    

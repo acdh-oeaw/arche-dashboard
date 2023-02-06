@@ -17,9 +17,6 @@ function arche_dashboard_theme($existing, $type, $theme, $path)
         'arche-dashboard-overview' => [
             'variables' => ['basic' => NULL]
         ],
-        'arche-dashboard-table-detail' => [
-            'variables' => ['basic' => NULL, 'key' => NULL, 'keyValue' => NULL, 'cols' => NULL]
-        ],
         'arche-dashboard-disserv-table' => [
             'variables' => ['basic' => NULL]
         ],
